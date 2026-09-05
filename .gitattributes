@@ -1,0 +1,21 @@
+# Development happens on Windows (ACE Toolkit); the runtime is AIX.
+# Git for Windows defaults to core.autocrlf=true, which rewrites checked-out
+# files to CRLF. A shell script converted to CRLF fails immediately with
+# "set: Illegal option -" or "bad interpreter", so pin these to LF regardless
+# of platform or the developer's autocrlf setting.
+*.sh    text eol=lf
+*.ksh   text eol=lf
+
+# ACE source is edited in the Toolkit on Windows. Leave line endings alone
+# rather than fighting the tool -- the BAR carries the content either way.
+*.esql      -text
+*.msgflow   -text
+*.subflow   -text
+*.xsd       -text
+*.xsdx      -text
+*.map       -text
+*.policyxml -text
+*.descriptor -text
+
+*.zip   binary
+*.bar   binary

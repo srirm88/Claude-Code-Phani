@@ -229,6 +229,16 @@ scan_absent "$STEM".flow HIGH FLOW011 'ComIbm(MQInput|HTTPInput|SOAPInput|FileIn
 scan_absent "$STEM".flow MED  FLOW012 'ComIbm(HTTPRequest|SOAPRequest|RESTRequest)' '(requestTimeout|timeoutForServer)=' \
   'Outbound request node with no explicit timeout - inherits a default that can pin a flow instance for a long time.'
 
+# --- Windows-authored, AIX-deployed ---------------------------------------
+# Code is written in the Toolkit on Windows and runs on AIX. Anything that
+# encodes the development platform breaks on promotion.
+for L in esql java flow conf; do
+  scan "$STEM".$L HIGH WIN001 '([A-Za-z]:\\|\\\\[A-Za-z0-9_.-]+\\)' \
+    'Windows path (drive letter or UNC) - the runtime is AIX; this path cannot exist there.'
+  scan "$STEM".$L MED  WIN002 '(0D0A|0d0a|\\r\\n)' \
+    'Hardcoded CRLF line ending - developer workstation is Windows, the runtime and its data are AIX (LF).'
+done
+
 # --- Config / descriptors / overrides -------------------------------------
 scan_x "$STEM".conf HIGH CONF001 "$SECRET" "$NOTSECRET" \
   'Possible credential in a configuration/override file.'

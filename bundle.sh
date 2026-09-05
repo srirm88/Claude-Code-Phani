@@ -9,7 +9,7 @@
 # files that the Claude Code install resolves by relative path are COPIED into
 # each bundle here:
 #
-#   ace-build   <- conventions.md, ace-prescan.sh
+#   ace-build   <- conventions.md, windows-to-aix.md, ace-prescan.sh
 #   ace-triage  <- conventions.md, patterns.md, RootCauseException.esql
 #
 # Those copies are a SNAPSHOT. Edit the originals in the repo, then re-run this
@@ -46,6 +46,9 @@ for target in ace-build ace-triage; do
         > "$STAGE/$target/references/conventions.md"
 done
 
+{ printf '%s\n\n' "$COPY_NOTE"; cat "$REVIEW/references/windows-to-aix.md"; } \
+    > "$STAGE/ace-build/references/windows-to-aix.md"
+
 cp "$REVIEW/scripts/ace-prescan.sh" "$STAGE/ace-build/scripts/ace-prescan.sh"
 chmod +x "$STAGE/ace-build/scripts/ace-prescan.sh"
 
@@ -62,6 +65,7 @@ rewrite() {
 }
 rewrite "$STAGE/ace-build/SKILL.md"  '\.\./ace-code-review/references/conventions\.md' 'references/conventions.md'
 rewrite "$STAGE/ace-build/SKILL.md"  '\.\./ace-code-review/scripts/ace-prescan\.sh'    'scripts/ace-prescan.sh'
+rewrite "$STAGE/ace-build/SKILL.md"  '\.\./ace-code-review/references/windows-to-aix\.md' 'references/windows-to-aix.md'
 rewrite "$STAGE/ace-triage/SKILL.md" '\.\./ace-build/references/patterns\.md'          'references/patterns.md'
 rewrite "$STAGE/ace-triage/references/exception-list.md" \
         '\.\./ace-build/templates/RootCauseException\.esql' 'templates/RootCauseException.esql'

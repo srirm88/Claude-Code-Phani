@@ -2,7 +2,8 @@
 
 Claude Code skills for IBM ACE integration work.
 
-Target runtime: **IBM ACE 12.0.12.26 on AIX 7.3 (ksh), IBM MQ 9.3.0.35**.
+Development on **Windows** (ACE Toolkit). Runtime: **IBM ACE 12.0.12.26 on
+AIX 7.3 (ksh), IBM MQ 9.3.0.35**.
 
 Three skills covering the actual working cycle — review what exists, write what
 does not, diagnose what broke. They are deliberately connected: the review rules,
@@ -68,6 +69,11 @@ sh install.sh --remove     # uninstall
 Installs into `~/.claude/skills/` (override with `CLAUDE_SKILLS_DIR`). Start a
 new Claude Code session afterwards and run `/doctor` to confirm they loaded.
 
+**On Windows, run these in Git Bash, not `cmd` or PowerShell.** They are POSIX
+shell scripts. Git Bash ships with Git for Windows; WSL works too. `--copy` is
+the safer choice on Windows, since symlinks need Developer Mode or an elevated
+shell.
+
 **All three install together, by design.** `ace-build` and `ace-triage` reach
 into `ace-code-review` by relative path — for the shared conventions file and
 the pre-scan script. The installer refuses a partial install and warns if the
@@ -94,6 +100,22 @@ the paths, then fails the build if any `../ace-*` reference survives.
 `ace-code-review/references/conventions.md`, re-run `bundle.sh` and re-upload,
 or the uploaded skills drift from the repo. `dist/` is gitignored for that
 reason — build it, do not commit it.
+
+### Windows checkouts — read this first
+
+Git for Windows defaults to `core.autocrlf=true`, which rewrites checked-out
+files to CRLF. **A shell script converted to CRLF fails immediately** with
+`set: Illegal option -`. The `.gitattributes` here pins `*.sh` and `*.ksh` to LF
+to prevent that.
+
+If you cloned before that file existed, force a re-checkout:
+
+```sh
+git rm --cached -r . && git reset --hard
+```
+
+Verify: `file install.sh` should say `ASCII text`, not `with CRLF line
+terminators`.
 
 ### What actually works where
 

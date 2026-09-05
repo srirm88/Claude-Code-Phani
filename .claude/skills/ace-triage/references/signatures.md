@@ -77,6 +77,44 @@ serialises every instance by design; and database connection pool exhaustion.
 
 ---
 
+## Works in the Toolkit on Windows, fails on AIX
+
+**Looks like:** flows that test clean in the local integration server fail on
+first deployment to AIX — `ClassNotFoundException`, a file poll that finds
+nothing, a path that does not exist, mangled non-ASCII, or a trailing character
+on every parsed record.
+
+**Usual cause, in order:**
+
+1. **Case.** Windows is case-insensitive, AIX is not. A Java package vs its
+   directory, a jar name, a schema reference, a File node pattern, or a BAR
+   override key whose case does not match — all resolve on Windows and fail on
+   AIX. The override case mismatch is the nastiest: no error, it just does not
+   apply.
+2. **Charset.** Windows default is windows-1252 or UTF-8; the AIX service user's
+   locale is often ISO8859-1. Any no-arg `getBytes()` / `new String(byte[])`, or
+   an output message built without copying `Properties`, changes behaviour on
+   the move.
+3. **Line endings in data.** Test data authored on Windows is CRLF; the real
+   AIX files are LF. A DFDL separator or a fixed-width record length tuned
+   against CRLF test data parses locally and breaks — or silently leaves `\r`
+   on the last field.
+4. **Paths.** Drive letters, backslashes, UNC.
+5. **Permissions.** The ACE service user on AIX is not an administrator; the
+   developer on Windows usually is. Output, archive and temp directories must
+   exist and be writable by that user.
+
+**Discriminate:** deployment-time failures point at case and paths; runtime data
+corruption points at charset and line endings. `ls` the exact path on AIX with
+the exact case used in the code — that settles the largest group in one command.
+
+**Also consider:** concurrency. Local debugging runs a single instance, so
+`static SimpleDateFormat` and unguarded `SHARED` variables cannot reproduce on
+Windows and appear as intermittent wrong data on AIX. **A clean local test is
+not evidence of thread safety.**
+
+---
+
 ## Works in SIT, fails in PRD
 
 **Looks like:** MQ 2085 (unknown object), connection refused, authentication

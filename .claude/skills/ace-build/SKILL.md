@@ -64,6 +64,8 @@ Java. The short version:
 - Every exception: a message catalog, a number, and inserts that identify the
   message — never bare text.
 - No mutable statics in Java, no unguarded `SHARED` in ESQL.
+- No Windows path literals, no platform-default charset. You are writing on
+  Windows for an AIX runtime — see `../ace-code-review/references/windows-to-aix.md`.
 - XMLNSC for XML, DFDL for fixed-width/delimited, JSON for JSON. Not XMLNS, not
   MRM.
 

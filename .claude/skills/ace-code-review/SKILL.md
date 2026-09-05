@@ -55,6 +55,7 @@ artifacts and check for these yourself, consulting the references as you go:
 | JavaCompute and user-defined nodes | `references/java.md` |
 | Message flows, subflows, node properties, policies | `references/msgflow.md` |
 | Shop naming and structure standards | `references/conventions.md` |
+| Windows-authored code deployed to AIX | `references/windows-to-aix.md` |
 
 Judge each artifact against three questions:
 
@@ -66,7 +67,10 @@ Judge each artifact against three questions:
    static fields and unclosed message trees only break here.
 3. **What breaks on promotion?** Any queue name, hostname, port, URL, DSN,
    file path, or credential that is not overridable will break in the next
-   environment.
+   environment. This code is written on Windows and runs on AIX, so also check
+   path literals, name casing, and charset assumptions — see
+   `references/windows-to-aix.md`. The Toolkit's local integration server is a
+   Windows broker and proves none of it.
 
 ### 4. Verify before reporting
 
