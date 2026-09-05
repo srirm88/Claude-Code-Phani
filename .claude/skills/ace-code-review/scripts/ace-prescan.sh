@@ -110,6 +110,32 @@ scan_x() {
     done < "$1"
 }
 
+# ESQL THROW statements span lines, so grep alone misreads them. Join each
+# THROW ... ; statement before deciding whether it names a message catalog.
+#   list sev rule message
+scan_throw() {
+    [ -s "$1" ] || return 0
+    while IFS= read -r f; do
+        [ -f "$f" ] || continue
+        awk '
+        { line[NR] = $0 }
+        END {
+            for (i = 1; i <= NR; i++) {
+                if (tolower(line[i]) ~ /throw[ \t]+user[ \t]+exception/) {
+                    stmt = ""
+                    for (j = i; j <= NR && j < i + 10; j++) {
+                        stmt = stmt " " tolower(line[j])
+                        if (line[j] ~ /;/) break
+                    }
+                    if (stmt !~ /catalog/) print i
+                }
+            }
+        }' "$f" 2>/dev/null | while IFS= read -r ln; do
+            printf '%s|%s|%s:%s|%s\n' "$2" "$3" "$f" "$ln" "$4"
+        done
+    done < "$1"
+}
+
 SECRET='(password|passwd|pwd|secret|apikey|api_key|accesskey|privatekey|credential|token)[^;]{0,40}('"'"'|")[^'"'"'"]{3,}('"'"'|")'
 # lines that only *name* a secret rather than embed one
 NOTSECRET='(getUserDefinedAttribute|EXTERNAL|mqsisetdbparms|getenv|System\.getProperty|securityIdentity|\$\{|@@|CHANGEME|xxxx|\*\*\*)'
@@ -135,7 +161,7 @@ scan "$STEM".esql MED  ESQL008 'DECLARE[[:space:]]+[A-Za-z0-9_]+[[:space:]]+SHAR
   'SHARED variable - every read-modify-write on it must sit inside a BEGIN ATOMIC block.'
 scan "$STEM".esql MED  ESQL009 'WHILE[^;]*CARDINALITY[[:space:]]*\(' \
   'CARDINALITY() re-evaluated on each loop iteration - hoist it into a variable.'
-scan_x "$STEM".esql MED  ESQL010 'THROW[[:space:]]+USER[[:space:]]+EXCEPTION' 'CATALOG' \
+scan_throw "$STEM".esql MED ESQL010 \
   'THROW USER EXCEPTION with no message CATALOG/MESSAGE number - the exception list will carry free text that monitoring cannot key on.'
 scan "$STEM".esql MED  ESQL011 'CAST[[:space:]]*\([^)]*AS[[:space:]]+(TIMESTAMP|DATE|TIME)[[:space:]]*\)' \
   'CAST to a temporal type without FORMAT - relies on locale defaults and will drift between environments.'
@@ -216,9 +242,9 @@ for sev in HIGH MED LOW; do
 done
 
 TOTAL=`wc -l < "$STEM".out | tr -d ' '`
-HI=`grep -c '^HIGH|' "$STEM".out 2>/dev/null || echo 0`
-ME=`grep -c '^MED|'  "$STEM".out 2>/dev/null || echo 0`
-LO=`grep -c '^LOW|'  "$STEM".out 2>/dev/null || echo 0`
+HI=`grep '^HIGH|' "$STEM".out 2>/dev/null | wc -l | tr -d ' '`
+ME=`grep '^MED|'  "$STEM".out 2>/dev/null | wc -l | tr -d ' '`
+LO=`grep '^LOW|'  "$STEM".out 2>/dev/null | wc -l | tr -d ' '`
 FILES=`wc -l < "$STEM".all | tr -d ' '`
 printf '\n--- prescan summary: %s candidate(s) across %s file(s) [HIGH %s / MED %s / LOW %s] ---\n' \
     "$TOTAL" "$FILES" "$HI" "$ME" "$LO"

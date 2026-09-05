@@ -1,0 +1,74 @@
+-- Template: Compute module with the mandatory patterns already in place.
+-- Replace the schema, module name and body; do not remove the handler,
+-- the UDP declarations, or the RETURN.
+
+BROKER SCHEMA com.acme.order
+
+CREATE COMPUTE MODULE Order_To_Sap_BuildRequest
+
+    -- ---------------------------------------------------------------------
+    -- UDPs. Overridable per environment with mqsiapplybaroverride.
+    -- Anything environment-specific belongs here, never as a literal below.
+    -- ---------------------------------------------------------------------
+    DECLARE TARGET_QUEUE   EXTERNAL CHARACTER '';
+    DECLARE MSG_CATALOG    EXTERNAL CHARACTER 'ACMEmsgs';
+    DECLARE ERR_MSG_NUMBER EXTERNAL INTEGER   3001;
+
+    CREATE FUNCTION Main() RETURNS BOOLEAN
+    BEGIN
+        DECLARE corrId CHARACTER COALESCE(
+            InputRoot.MQMD.CorrelId, InputLocalEnvironment.Variables.CorrelationId, '');
+
+        -- Fail loudly and with context. Without this the Catch/Failure terminal
+        -- receives an exception that names no business identifier.
+        DECLARE EXIT HANDLER FOR SQLSTATE LIKE '%'
+        BEGIN
+            THROW USER EXCEPTION
+                CATALOG MSG_CATALOG
+                MESSAGE ERR_MSG_NUMBER
+                SEVERITY 3
+                VALUES('Order_To_Sap_BuildRequest',
+                       corrId,
+                       COALESCE(SQLCODE, 0),
+                       COALESCE(SQLERRORTEXT, ''));
+        END;
+
+        CALL CopyMessageHeaders();
+
+        -- ---- transformation ------------------------------------------------
+        SET OutputRoot.XMLNSC.SapOrder.Header.OrderId   = InputRoot.XMLNSC.Order.Id;
+        SET OutputRoot.XMLNSC.SapOrder.Header.CreatedAt =
+            CAST(InputRoot.XMLNSC.Order.Created AS TIMESTAMP FORMAT 'yyyy-MM-dd''T''HH:mm:ss');
+
+        -- Hoist CARDINALITY out of the loop condition; navigate with a
+        -- REFERENCE rather than re-walking the tree from the root each pass.
+        DECLARE lineCount INTEGER CARDINALITY(InputRoot.XMLNSC.Order.Line[]);
+        DECLARE i         INTEGER 1;
+        DECLARE outRef    REFERENCE TO OutputRoot.XMLNSC.SapOrder;
+
+        WHILE i <= lineCount DO
+            CREATE LASTCHILD OF outRef AS outRef NAME 'Item';
+            SET outRef.Sku = InputRoot.XMLNSC.Order.Line[i].Sku;
+            SET outRef.Qty = InputRoot.XMLNSC.Order.Line[i].Qty;
+            MOVE outRef PARENT;
+            SET i = i + 1;
+        END WHILE;
+
+        -- Routing driven by a UDP, not a literal queue name.
+        SET OutputLocalEnvironment.Destination.MQDestinationList
+                .DestinationData[1].queueName = TARGET_QUEUE;
+
+        RETURN TRUE;
+    END;
+
+    -- Standard header copy. Copies every folder EXCEPT the body (I < J).
+    CREATE PROCEDURE CopyMessageHeaders() BEGIN
+        DECLARE i INTEGER 1;
+        DECLARE j INTEGER CARDINALITY(InputRoot.*[]);
+        WHILE i < j DO
+            SET OutputRoot.*[i] = InputRoot.*[i];
+            SET i = i + 1;
+        END WHILE;
+    END;
+
+END MODULE;

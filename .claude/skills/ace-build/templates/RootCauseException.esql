@@ -1,0 +1,42 @@
+-- Reusable: pull the ROOT CAUSE out of an ExceptionList.
+--
+-- ExceptionList nests wrappers outermost-first. The first exception you meet is
+-- almost never the real one -- the deepest nested child carrying a Number is.
+-- Reading the outer exception is the most common triage mistake.
+--
+-- Usage, typically in an error-handling subflow:
+--
+--   DECLARE excNum  INTEGER;
+--   DECLARE excText CHARACTER '';
+--   DECLARE excNode CHARACTER '';
+--   DECLARE excRef  REFERENCE TO InputExceptionList;
+--   CALL GetRootException(excRef, excNum, excText, excNode);
+
+BROKER SCHEMA com.acme.common
+
+CREATE PROCEDURE GetRootException(
+        IN    excRef REFERENCE,
+        INOUT num    INTEGER,
+        INOUT txt    CHARACTER,
+        INOUT node   CHARACTER)
+BEGIN
+    DECLARE child REFERENCE TO excRef;
+
+    -- Record this level if it carries a message; deeper levels overwrite it,
+    -- so the deepest wins.
+    IF excRef.Number IS NOT NULL THEN
+        SET num  = excRef.Number;
+        SET txt  = COALESCE(excRef.Text, '');
+        SET node = COALESCE(excRef.Label, '');
+    END IF;
+
+    -- Descend into every child that is itself an exception. Insert and the
+    -- scalar fields are skipped by the name test.
+    MOVE child FIRSTCHILD;
+    WHILE LASTMOVE(child) DO
+        IF FIELDNAME(child) LIKE '%Exception' THEN
+            CALL GetRootException(child, num, txt, node);
+        END IF;
+        MOVE child NEXTSIBLING;
+    END WHILE;
+END;
