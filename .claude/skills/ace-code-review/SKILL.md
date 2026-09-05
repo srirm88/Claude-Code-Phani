@@ -8,7 +8,7 @@ description: Review IBM ACE / IIB integration code — ESQL (.esql), JavaCompute
 Review ACE integration artifacts the way an experienced integration architect
 does: find the failures that reach production, not the ones a linter would find.
 
-Target runtime is **IBM ACE 12.0.12.0 on AIX 7.3**. Assume ksh, assume the
+Target runtime is **IBM ACE 12.0.12.26 on AIX 7.3, IBM MQ 9.3.0.35**. Assume ksh, assume the
 deployed unit is a BAR, assume the same source is promoted DEV → SIT → UAT → PRD
 with only overrides changing. Anything that pins a flow to one environment is a
 defect, not a style issue.

@@ -5,8 +5,8 @@ description: Write new IBM ACE / IIB integration code — ESQL compute and datab
 
 # Writing IBM ACE code
 
-Target: **IBM ACE 12.0.12.0 on AIX 7.3**. Same source promoted DEV → SIT → UAT →
-PRD with only overrides changing.
+Target: **IBM ACE 12.0.12.26 on AIX 7.3, IBM MQ 9.3.0.35**.
+Same source promoted DEV → SIT → UAT → PRD with only overrides changing.
 
 This skill is the inverse of `ace-code-review`. Every HIGH-severity finding that
 review looks for is a pattern this skill writes correctly the first time. If code

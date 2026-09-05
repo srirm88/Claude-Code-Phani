@@ -71,7 +71,8 @@ TBD — paste the expected directory structure here
 
 ## Deployment
 
-- Target ACE version: 12.0.12.0
+- Target ACE version: 12.0.12.26
+- Target MQ version: 9.3.0.35
 - Target OS: AIX 7.3
 - BAR build command in use: `TBD`
 - Anything that must never be committed: `TBD`

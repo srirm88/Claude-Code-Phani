@@ -1,4 +1,4 @@
-# Evidence-gathering playbook (AIX 7.3, ACE 12.0.12.0)
+# Evidence-gathering playbook (AIX 7.3, ACE 12.0.12.26, MQ 9.3.0.35)
 
 Give the user the **smallest set of commands that discriminates between your
 hypotheses**, not a dump. Say what each command would show under each hypothesis
@@ -43,24 +43,96 @@ mqsiformatlog -i trace.xml -o trace.txt
 Read `trace.txt` from the failure backwards. The last node reached before the
 exception is where to look, not the node named in the outermost exception.
 
-## MQ
+## MQ 9.3
+
+```ksh
+dspmqver                                  # confirm the level you are actually on
+dspmq                                     # queue managers and their state
+```
+
+### Queue state
 
 ```ksh
 runmqsc <QMGR>
 DIS QL(ORDER.IN) CURDEPTH MAXDEPTH BOTHRESH BOQNAME
 DIS QSTATUS(ORDER.IN) TYPE(QUEUE) IPPROCS OPPROCS
+DIS QSTATUS(ORDER.IN) TYPE(HANDLE) ALL      -- which application has it open
 DIS QL(ORDER.IN.BO) CURDEPTH
 END
 ```
 
 - `CURDEPTH` rising with `IPPROCS` at 0 → nothing is consuming; the flow is
-  stopped, failed to deploy, or not connected.
+  stopped, failed to deploy, or not connected. `TYPE(HANDLE)` proves whether the
+  integration server is actually attached.
 - `CURDEPTH` rising with `IPPROCS` > 0 → consuming slower than arrival; look at
   additional instances and downstream latency.
-- Backout queue filling → poison messages. **Read one before purging.** Purging
-  destroys the evidence you need.
-- `BOTHRESH` of 0 with a failing flow → infinite redelivery loop. This one pins a
-  flow instance and can look like a hang.
+- `BOTHRESH` of 0 with a failing flow → infinite redelivery loop. Pins a flow
+  instance and can present as a hang.
+
+### Read a backed-out message WITHOUT destroying it
+
+This is the single most valuable habit in ACE triage. The poison message is the
+evidence; a purge throws away the only copy.
+
+```ksh
+amqsbcg ORDER.IN.BO <QMGR> > bo_dump.txt   # browse only, dumps MQMD + payload
+```
+
+`amqsbcg` uses `MQGET` with browse and cannot consume. Read `BackoutCount` and
+`CorrelId` in the dumped MQMD — a `BackoutCount` climbing across browses
+confirms a redelivery loop rather than a one-off failure.
+
+`dmpmqmsg` also ships with MQ 9.3 and is more capable, but **confirm whether your
+invocation browses or destructively gets before pointing it at a production
+queue** — the default is not browse. When in doubt use `amqsbcg`.
+
+### MQ error logs and FDCs
+
+ACE exceptions carry an MQ reason code but not the MQ-side detail. That lives
+here:
+
+```ksh
+ls -lt /var/mqm/qmgrs/<QMGR>/errors/AMQERR0*.LOG    # queue-manager scoped
+ls -lt /var/mqm/errors/                             # qmgr-independent + FDCs
+ls -lt /var/mqm/errors/*.FDC 2>/dev/null | head     # first-failure data capture
+```
+
+`AMQERR01.LOG` is current; 02 and 03 are older rotations. An FDC written at the
+same timestamp as your ACE failure changes the diagnosis — that is an MQ defect
+or resource problem, not a flow problem, and it is the point at which a PMR with
+the FDC attached beats more flow debugging.
+
+### Authorisation (MQ 2035)
+
+```ksh
+dspmqaut -m <QMGR> -n ORDER.IN -t queue -p <ace_service_user>
+dspmqaut -m <QMGR> -t qmgr -p <ace_service_user>
+```
+
+2035 after a promotion is usually the service user missing authority in the new
+environment, not a code change. Check the queue *and* the queue manager object —
+`connect` and `inq` on the qmgr are needed as well as queue authority.
+
+### Connection mode
+
+ACE reaches MQ either in local bindings or as a client, decided by the MQEndpoint
+policy or the node properties. It matters for diagnosis:
+
+- **Bindings** — ACE and the queue manager must be on the same AIX LPAR, and the
+  service user needs local `mqm` group membership.
+- **Client** — a channel and listener are involved, so `DIS CHSTATUS(<channel>)`
+  and the listener state become part of the picture, and 2059 may mean the
+  listener rather than the queue manager.
+
+```ksh
+runmqsc <QMGR>
+DIS CHSTATUS(<SVRCONN.CHANNEL>) ALL
+DIS LSSTATUS(*) ALL
+END
+```
+
+Establish which mode is in use before theorising. Chasing channel status on a
+bindings-mode connection wastes an outage.
 
 ## AIX
 

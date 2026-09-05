@@ -5,7 +5,7 @@ description: Diagnose IBM ACE / IIB production and test failures — decode an E
 
 # Diagnosing IBM ACE failures
 
-Target: **IBM ACE 12.0.12.0 on AIX 7.3 (ksh)**.
+Target: **IBM ACE 12.0.12.26 on AIX 7.3 (ksh), IBM MQ 9.3.0.35**.
 
 **You have no access to the broker.** You cannot run `mqsilist`, read
 `/var/mqsi`, or query a queue. So the loop is: form a hypothesis, name the one

@@ -2,7 +2,7 @@
 
 Claude Code skills for IBM ACE integration work.
 
-Target runtime: **IBM ACE 12.0.12.0 on AIX 7.3 (ksh)**.
+Target runtime: **IBM ACE 12.0.12.26 on AIX 7.3 (ksh), IBM MQ 9.3.0.35**.
 
 Three skills covering the actual working cycle — review what exists, write what
 does not, diagnose what broke. They are deliberately connected: the review rules,
@@ -52,20 +52,34 @@ lookalikes.
 
 ## Install
 
-Project-scoped: clone this repo and Claude Code picks the skills up from
-`.claude/skills/` when you work inside it.
+### Claude Code — this project only
 
-To use them against any repo on your machine:
+Clone the repo. Claude Code picks the skills up from `.claude/skills/` whenever
+you work inside it. Nothing else to do.
+
+### Claude Code — everywhere
 
 ```sh
-mkdir -p ~/.claude/skills
-ln -s "$PWD/.claude/skills"/ace-* ~/.claude/skills/
+sh install.sh              # symlink; git pull keeps them current
+sh install.sh --copy       # copy instead, independent of this clone
+sh install.sh --remove     # uninstall
 ```
 
-**Link all three, not one.** `ace-build` and `ace-triage` reference files in
-`ace-code-review` by relative path (`../ace-code-review/...`) — the shared
-conventions file and the pre-scan script. Linking one skill in isolation breaks
-those references.
+Installs into `~/.claude/skills/` (override with `CLAUDE_SKILLS_DIR`). Start a
+new Claude Code session afterwards and run `/doctor` to confirm they loaded.
+
+**All three install together, by design.** `ace-build` and `ace-triage` reach
+into `ace-code-review` by relative path — for the shared conventions file and
+the pre-scan script. The installer refuses a partial install and warns if the
+references cannot resolve.
+
+### claude.ai web or desktop
+
+Not supported as-is. Skills there are uploaded one zip at a time and each is
+self-contained, so the `../ace-code-review/...` references break, and the
+pre-scan script has no ACE source to scan in that environment. Making it work
+means either merging the three into one skill or duplicating the shared files
+into each — say so and it can be restructured.
 
 ## Use
 
