@@ -73,13 +73,39 @@ into `ace-code-review` by relative path — for the shared conventions file and
 the pre-scan script. The installer refuses a partial install and warns if the
 references cannot resolve.
 
-### claude.ai web or desktop
+### claude.ai — Chat, Cowork, Desktop, M365 add-ins
 
-Not supported as-is. Skills there are uploaded one zip at a time and each is
-self-contained, so the `../ace-code-review/...` references break, and the
-pre-scan script has no ACE source to scan in that environment. Making it work
-means either merging the three into one skill or duplicating the shared files
-into each — say so and it can be restructured.
+One registry serves all of them. Build the ZIPs, then upload each one:
+
+```sh
+sh bundle.sh                          # writes dist/*.zip
+```
+
+Then at [claude.ai/customize/skills](https://claude.ai/customize/skills):
+**+** → **+ Create skill** → **Upload a skill**, one ZIP per skill. Code
+execution must be enabled in your Claude settings.
+
+`bundle.sh` exists because claude.ai takes one self-contained ZIP per skill,
+while the Claude Code install resolves shared files by relative path across
+sibling skills. The bundler copies those shared files into each ZIP and rewrites
+the paths, then fails the build if any `../ace-*` reference survives.
+
+**The copies are a snapshot.** After editing the canonical
+`ace-code-review/references/conventions.md`, re-run `bundle.sh` and re-upload,
+or the uploaded skills drift from the repo. `dist/` is gitignored for that
+reason — build it, do not commit it.
+
+### What actually works where
+
+| | Claude Code | Cowork | Chat |
+|---|---|---|---|
+| `ace-triage` | yes | yes | yes — it is knowledge, not tooling |
+| `ace-build` | yes | yes | yes, minus the self-check scan |
+| `ace-code-review` | yes | yes, on files it can reach | only on files you upload |
+
+`ace-triage` is the one that is fully portable: it never touches your source, it
+reads output you paste in. `ace-code-review` is the least portable, because the
+pre-scan needs ACE source files on a filesystem it can see.
 
 ## Use
 
