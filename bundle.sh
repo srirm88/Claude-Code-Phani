@@ -32,7 +32,7 @@ COPY_NOTE='<!-- BUNDLED COPY. The canonical file lives in the ace-code-review
      skill in the source repository. Edit it there and re-run bundle.sh;
      changes made inside this bundle are lost on the next build. -->'
 
-for s in ace-code-review ace-build ace-triage; do
+for s in ace-code-review ace-build ace-triage integration-review; do
     [ -d "$SRC/$s" ] || { echo "error: $SRC/$s missing" >&2; exit 1; }
     cp -R "$SRC/$s" "$STAGE/$s" || exit 1
 done
@@ -92,7 +92,7 @@ zipdir() {  # $1 = skill name
 }
 
 RC=0
-for s in ace-code-review ace-build ace-triage; do
+for s in ace-code-review ace-build ace-triage integration-review; do
     rm -f "$OUT/$s.zip"
     if zipdir "$s"; then
         echo "built  $OUT/$s.zip"

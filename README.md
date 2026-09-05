@@ -5,10 +5,13 @@ Claude Code skills for IBM ACE integration work.
 Development on **Windows** (ACE Toolkit). Runtime: **IBM ACE 12.0.12.26 on
 AIX 7.3 (ksh), IBM MQ 9.3.0.35**.
 
-Three skills covering the actual working cycle — review what exists, write what
-does not, diagnose what broke. They are deliberately connected: the review rules,
-the authoring patterns and the failure signatures are three views of the same
-list of things that go wrong in ACE.
+Four skills. Three cover the working cycle at artifact level — review what
+exists, write what does not, diagnose what broke — and are deliberately
+connected: the review rules, the authoring patterns and the failure signatures
+are three views of the same list of things that go wrong in ACE.
+
+The fourth works at solution level, across the seams between tiers, where the
+failures belong to nobody in particular.
 
 ## Skills
 
@@ -17,6 +20,7 @@ list of things that go wrong in ACE.
 | `ace-code-review` | "review this", "check before I promote", a PR touching ESQL | Two stages: a deterministic pre-scan, then a reading pass |
 | `ace-build` | "write an ESQL module", "create a flow", "how do I implement X" | Writes against templates; self-checks with the review scanner |
 | `ace-triage` | "why is this failing", "what does this BIP mean", "messages are backing out" | Root-cause discipline; produces the AIX commands to gather evidence |
+| `integration-review` | "review this project", "is this safe to go live", "review the gateway config" | Cross-tier seams: gateway → ACE → MQ, for any topology |
 
 ### `ace-code-review`
 
@@ -41,6 +45,23 @@ self-checks its own output by running the review scanner over it.
 It will not hand-write `.msgflow` XML by default — that is generated XML with
 internal identifiers, and a malformed flow fails at BAR build with an unhelpful
 error. It produces a node-and-property specification instead, unless you ask.
+
+### `integration-review`
+
+Solution-level, not artifact-level. It reviews what happens **between** NGINX,
+ACE and MQ, and it establishes which tiers a project actually uses before
+reviewing anything — a file-triggered batch does not get an API-gateway
+checklist.
+
+Built around five cross-tier questions: where the timeout budget breaks, what
+happens twice, where the transaction boundary sits, whether one transaction can
+be traced end to end, and what the caller sees when it goes wrong. Ships
+`scripts/nginx-prescan.sh` (18 rules, comment-aware, handles single-line blocks)
+and a promotion checklist covering all three configuration mechanisms — gateway
+conf, BAR overrides, MQ objects — since a promotion that moves two of the three
+is the usual go-live failure.
+
+Self-contained: it references the other skills by name, not by path.
 
 ### `ace-triage`
 
@@ -136,12 +157,14 @@ Ask in plain language — the skills trigger on intent, not a command:
 - "review the ESQL changes on this branch"
 - "write me a compute module that maps this order to the SAP format"
 - "why are messages piling up on ORDER.IN.BO?"
+- "review this project before go-live"
 
 Or run the pre-scan directly:
 
 ```sh
 sh .claude/skills/ace-code-review/scripts/ace-prescan.sh --changed
 sh .claude/skills/ace-code-review/scripts/ace-prescan.sh /path/to/application
+sh .claude/skills/integration-review/scripts/nginx-prescan.sh /etc/nginx
 ```
 
 Output is `SEVERITY|RULE|path:line|message`, sorted HIGH → MED → LOW.

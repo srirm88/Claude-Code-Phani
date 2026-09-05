@@ -7,15 +7,15 @@
 #   sh install.sh --copy     copy instead (independent of this clone)
 #   sh install.sh --remove   uninstall
 #
-# The three skills MUST be installed together: ace-build and ace-triage
-# reference ace-code-review by relative path for the shared conventions file
-# and the pre-scan script.
+# ace-build and ace-triage reference ace-code-review by relative path for the
+# shared conventions file and the pre-scan script, so they must be installed
+# together. integration-review is self-contained.
 
 set -u
 
 SRC=`cd "\`dirname "$0"\`/.claude/skills" 2>/dev/null && pwd`
 DEST=${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}
-SKILLS="ace-code-review ace-build ace-triage"
+SKILLS="ace-code-review ace-build ace-triage integration-review"
 MODE=${1:---link}
 
 if [ -z "$SRC" ] || [ ! -d "$SRC" ]; then
