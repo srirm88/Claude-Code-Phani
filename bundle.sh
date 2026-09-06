@@ -11,6 +11,7 @@
 #
 #   ace-build   <- conventions.md, windows-to-aix.md, ace-prescan.sh
 #   ace-triage  <- conventions.md, patterns.md, RootCauseException.esql
+#   integration-review <- nginx-prescan.sh
 #
 # Those copies are a SNAPSHOT. Edit the originals in the repo, then re-run this
 # and re-upload -- never edit inside a bundle.
@@ -32,7 +33,7 @@ COPY_NOTE='<!-- BUNDLED COPY. The canonical file lives in the ace-code-review
      skill in the source repository. Edit it there and re-run bundle.sh;
      changes made inside this bundle are lost on the next build. -->'
 
-for s in ace-code-review ace-build ace-triage integration-review; do
+for s in ace-code-review ace-build ace-triage integration-review nginx-review; do
     [ -d "$SRC/$s" ] || { echo "error: $SRC/$s missing" >&2; exit 1; }
     cp -R "$SRC/$s" "$STAGE/$s" || exit 1
 done
@@ -52,6 +53,10 @@ done
 cp "$REVIEW/scripts/ace-prescan.sh" "$STAGE/ace-build/scripts/ace-prescan.sh"
 chmod +x "$STAGE/ace-build/scripts/ace-prescan.sh"
 
+mkdir -p "$STAGE/integration-review/scripts"
+cp "$SRC/nginx-review/scripts/nginx-prescan.sh" "$STAGE/integration-review/scripts/nginx-prescan.sh"
+chmod +x "$STAGE/integration-review/scripts/nginx-prescan.sh"
+
 { printf '%s\n\n' "$COPY_NOTE"; cat "$SRC/ace-build/references/patterns.md"; } \
     > "$STAGE/ace-triage/references/patterns.md"
 cp "$SRC/ace-build/templates/RootCauseException.esql" \
@@ -67,6 +72,7 @@ rewrite "$STAGE/ace-build/SKILL.md"  '\.\./ace-code-review/references/convention
 rewrite "$STAGE/ace-build/SKILL.md"  '\.\./ace-code-review/scripts/ace-prescan\.sh'    'scripts/ace-prescan.sh'
 rewrite "$STAGE/ace-build/SKILL.md"  '\.\./ace-code-review/references/windows-to-aix\.md' 'references/windows-to-aix.md'
 rewrite "$STAGE/ace-triage/SKILL.md" '\.\./ace-build/references/patterns\.md'          'references/patterns.md'
+rewrite "$STAGE/integration-review/SKILL.md" '\.\./nginx-review/scripts/nginx-prescan\.sh' 'scripts/nginx-prescan.sh'
 rewrite "$STAGE/ace-triage/references/exception-list.md" \
         '\.\./ace-build/templates/RootCauseException\.esql' 'templates/RootCauseException.esql'
 
@@ -92,7 +98,7 @@ zipdir() {  # $1 = skill name
 }
 
 RC=0
-for s in ace-code-review ace-build ace-triage integration-review; do
+for s in ace-code-review ace-build ace-triage integration-review nginx-review; do
     rm -f "$OUT/$s.zip"
     if zipdir "$s"; then
         echo "built  $OUT/$s.zip"

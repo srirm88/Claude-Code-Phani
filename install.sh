@@ -9,13 +9,13 @@
 #
 # ace-build and ace-triage reference ace-code-review by relative path for the
 # shared conventions file and the pre-scan script, so they must be installed
-# together. integration-review is self-contained.
+# together. integration-review uses the nginx-review scanner, so those two go together too.
 
 set -u
 
 SRC=`cd "\`dirname "$0"\`/.claude/skills" 2>/dev/null && pwd`
 DEST=${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}
-SKILLS="ace-code-review ace-build ace-triage integration-review"
+SKILLS="ace-code-review ace-build ace-triage integration-review nginx-review"
 MODE=${1:---link}
 
 if [ -z "$SRC" ] || [ ! -d "$SRC" ]; then

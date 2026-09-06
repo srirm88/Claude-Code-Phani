@@ -137,6 +137,12 @@ bindings-mode connection wastes an outage.
 ## AIX
 
 ```ksh
+# POWER9 LPAR: is the partition itself starved? Check BEFORE blaming ACE.
+lparstat 2 5                             # %entc > 100 sustained = borrowing from the pool
+lparstat -i | grep -E 'Entitled|Online Virtual|Mode|Partition Name'
+smtctl                                   # SMT threads per core
+mpstat 2 3                               # per-logical-CPU distribution
+
 # the integration server processes
 ps -eo pid,ppid,pcpu,vsz,rss,etime,args | grep -i DataFlowEngine | grep -v grep
 
@@ -152,6 +158,13 @@ ulimit -a                                # as the ACE service user, not root
 # abends and core files
 ls -lt /var/mqsi/common/errors | head -20
 ```
+
+On a shared POWER9 LPAR, a DataFlowEngine that looks CPU-starved often is not:
+the partition is capped at its entitled capacity, or the shared pool is
+contended. Sustained `%entc` above 100 with high `%idle` inside the LPAR means
+the hypervisor is the constraint, and no amount of ACE tuning will help — the
+fix is entitlement or virtual processors, and that is a different team. Rule this
+out before recommending additional instances, which will make contention worse.
 
 `$MQSI_WORKPATH` defaults to `/var/mqsi`. Confirm it rather than assuming — a
 non-default workpath is common and sends people looking in the wrong place.

@@ -2,16 +2,19 @@
 
 Claude Code skills for IBM ACE integration work.
 
-Development on **Windows** (ACE Toolkit). Runtime: **IBM ACE 12.0.12.26 on
-AIX 7.3 (ksh), IBM MQ 9.3.0.35**.
+Development on **Windows** (ACE Toolkit).
 
-Four skills. Three cover the working cycle at artifact level — review what
+Runtime: **IBM ACE 12.0.12.26 and IBM MQ 9.3.0.35 on AIX 7.3 / POWER9**
+(internal zone), fronted by **NGINX on RHEL 9** in the **DMZ**.
+
+Five skills. Three cover the working cycle at artifact level — review what
 exists, write what does not, diagnose what broke — and are deliberately
 connected: the review rules, the authoring patterns and the failure signatures
 are three views of the same list of things that go wrong in ACE.
 
-The fourth works at solution level, across the seams between tiers, where the
-failures belong to nobody in particular.
+The other two work above artifact level: one across the seams between tiers,
+where the failures belong to nobody in particular, and one on the DMZ gateway
+itself.
 
 ## Skills
 
@@ -20,7 +23,8 @@ failures belong to nobody in particular.
 | `ace-code-review` | "review this", "check before I promote", a PR touching ESQL | Two stages: a deterministic pre-scan, then a reading pass |
 | `ace-build` | "write an ESQL module", "create a flow", "how do I implement X" | Writes against templates; self-checks with the review scanner |
 | `ace-triage` | "why is this failing", "what does this BIP mean", "messages are backing out" | Root-cause discipline; produces the AIX commands to gather evidence |
-| `integration-review` | "review this project", "is this safe to go live", "review the gateway config" | Cross-tier seams: gateway → ACE → MQ, for any topology |
+| `integration-review` | "review this project", "is this safe to go live" | Cross-tier seams: gateway → ACE → MQ, for any topology |
+| `nginx-review` | "set up this route", "audit nginx.conf", "it's returning 502" | The DMZ gateway: configure, review, or fix, on RHEL 9 |
 
 ### `ace-code-review`
 
@@ -62,6 +66,25 @@ conf, BAR overrides, MQ objects — since a promotion that moves two of the thre
 is the usual go-live failure.
 
 Self-contained: it references the other skills by name, not by path.
+
+### `nginx-review`
+
+Three modes, and it picks one before starting: **configure** (write or extend a
+route, from a known-good baseline), **review** (audit against 26 scan rules plus
+a reading pass), **fix** (diagnose before changing anything on a live gateway).
+
+Carries the platform detail the config file cannot show: SELinux
+(`httpd_can_network_connect` off is the classic 502 with `13: Permission
+denied`), RHEL 9's system-wide crypto policy overriding `ssl_protocols` and
+rejecting SHA-1 certificates, systemd `LimitNOFILE` silently capping
+`worker_connections`, and DMZ constraints — no ACME renewal, OCSP stapling that
+fails without egress, upstream hostnames resolved once at startup.
+
+Two scripts: `nginx-prescan.sh` (config, comment-aware) and
+`rhel9-gateway-check.sh` (host readiness — SELinux, firewalld, crypto policy,
+certificate expiry, upstream reachability across the zone boundary). The host
+check is **read-only**: it prints every remedy for a human to run, and changes
+nothing itself.
 
 ### `ace-triage`
 
@@ -158,13 +181,15 @@ Ask in plain language — the skills trigger on intent, not a command:
 - "write me a compute module that maps this order to the SAP format"
 - "why are messages piling up on ORDER.IN.BO?"
 - "review this project before go-live"
+- "the gateway is returning 502 on /v1/orders"
 
 Or run the pre-scan directly:
 
 ```sh
 sh .claude/skills/ace-code-review/scripts/ace-prescan.sh --changed
 sh .claude/skills/ace-code-review/scripts/ace-prescan.sh /path/to/application
-sh .claude/skills/integration-review/scripts/nginx-prescan.sh /etc/nginx
+sh .claude/skills/nginx-review/scripts/nginx-prescan.sh /etc/nginx
+sh .claude/skills/nginx-review/scripts/rhel9-gateway-check.sh
 ```
 
 Output is `SEVERITY|RULE|path:line|message`, sorted HIGH → MED → LOW.

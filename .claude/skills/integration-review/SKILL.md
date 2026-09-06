@@ -86,8 +86,12 @@ Only when a gateway is in play. Skip it for MQ-, file- or schedule-triggered
 projects.
 
 ```sh
-sh scripts/nginx-prescan.sh <path to nginx conf>
+sh ../nginx-review/scripts/nginx-prescan.sh <path to nginx conf>
 ```
+
+For gateway-only work — writing config, hardening, or fixing a 502 — use the
+`nginx-review` skill instead; it owns the RHEL 9 and DMZ platform detail. This
+skill keeps the cross-tier questions.
 
 Output is `SEVERITY|RULE|path:line|message`.
 
@@ -104,7 +108,8 @@ Read only the ones the topology calls for.
 | Area | Reference | Applies when |
 |---|---|---|
 | Timeout budget, retries, duplicate transactions | `references/timeouts-and-retries.md` | always |
-| Gateway: TLS, headers, limits, error mapping | `references/nginx-gateway.md` | a gateway fronts the flow |
+| Gateway seams: limits and errors across tiers | `references/nginx-gateway.md` | a gateway fronts the flow |
+| Gateway internals, RHEL 9, DMZ | the `nginx-review` skill | gateway config or platform work |
 | Transaction boundaries, idempotency, MQ capacity | `references/ace-mq-boundary.md` | any handoff between resources |
 | Correlation, logging, what to alert on | `references/observability.md` | always |
 

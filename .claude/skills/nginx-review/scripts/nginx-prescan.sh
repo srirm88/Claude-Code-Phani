@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # nginx-prescan.sh - deterministic candidate scan for NGINX API-gateway config
-# fronting IBM ACE.
+# fronting IBM ACE, on RHEL 9 in a DMZ.
 #
 # Emits:  SEVERITY|RULE|path:line|message
 #         SEVERITY|RULE|path|message        (file-level rules)
@@ -118,6 +118,24 @@ scan_missing MED NGX014 '\$upstream_response_time' \
 # --- backpressure ----------------------------------------------------------
 scan_missing MED NGX015 '(^|[;{])[[:space:]]*(limit_req|limit_conn)[[:space:]]' \
   'No rate or connection limiting - a client burst is passed straight through to ACE, where flow instances are a fixed pool.'
+
+# --- RHEL 9 / DMZ specifics ------------------------------------------------
+scan HIGH NGX019 'proxy_pass[[:space:]]+[^;]*\$[A-Za-z_]' \
+  'proxy_pass with a variable requires a resolver directive - without one NGINX fails the request at runtime, and an unrestricted variable target can turn the gateway into an open proxy.'
+scan_missing HIGH NGX020 'resolver[[:space:]]' \
+  'No resolver directive - upstream hostnames are resolved once at startup. In a DMZ with internal DNS, a backend IP change needs a reload before traffic recovers.'
+scan HIGH NGX021 'ssl_stapling[[:space:]]+on' \
+  'OCSP stapling needs outbound reachability to the CA responder. A DMZ usually has none, so stapling fails silently and adds handshake latency - confirm egress or turn it off.'
+scan_missing HIGH NGX022 'return[[:space:]]+(444|421)' \
+  'No catch-all server returning 444 for an unknown Host - the gateway answers scanners and host-header probes on every vhost it fronts.'
+scan MED  NGX023 '(^|[;{])[[:space:]]*(user[[:space:]]+root|access_log[[:space:]]+off)' \
+  'Running as root, or access logging disabled - both are audit findings on a DMZ host.'
+scan_missing MED NGX024 'worker_rlimit_nofile[[:space:]]' \
+  'No worker_rlimit_nofile - on RHEL 9 the systemd unit LimitNOFILE caps what worker_connections can actually use, and the shortfall shows up as dropped connections under load.'
+scan MED  NGX025 '(^|[;{])[[:space:]]*autoindex[[:space:]]+on' \
+  'Directory listing enabled on an internet-facing gateway.'
+scan_missing MED NGX026 'ssl_session_cache[[:space:]]+shared' \
+  'No shared SSL session cache - every connection pays a full handshake, which is the dominant cost on a TLS-terminating gateway.'
 
 # --- config hygiene --------------------------------------------------------
 scan HIGH NGX016 '(password|passwd|secret|api_key|apikey|token|credential)[^;]*[=[:space:]]"?[A-Za-z0-9/+_-]{6,}' \
