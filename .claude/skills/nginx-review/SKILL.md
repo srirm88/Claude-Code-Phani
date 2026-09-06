@@ -14,6 +14,36 @@ it is the only component that knows who the caller really is, everything behind
 it trusts what it says, and every hop from DMZ to internal tier is an explicit
 firewall rule that someone has to have opened.
 
+## Scope rule — asymmetric, and not negotiable
+
+**NGINX in scope means ACE and MQ are in scope, automatically.** The gateway
+never stands alone. Its three most important settings are only correct
+*relative* to what sits behind them, so a gateway change made without those
+numbers is a guess:
+
+| Gateway setting | Correct only relative to |
+|---|---|
+| `proxy_read_timeout` | the ACE flow's total budget, including every downstream call it makes |
+| `proxy_next_upstream` | whether the operation is idempotent — if not, a retry is a duplicate MQ put |
+| `client_max_body_size` | the ACE parser limit **and** MQ `MAXMSGL` on the queue and the queue manager |
+
+So before finishing any configure, review or fix, establish:
+
+1. The ACE flow's timeout budget and its downstream `requestTimeout` values.
+2. Whether the route is idempotent, and what carries the idempotency key.
+3. `MAXMSGL` on every queue in the path, and on the queue manager.
+4. Which ACE integration servers and ports, and whether the flows are actually
+   running — not just whether the port answers.
+5. Whether ACE reads `X-Request-ID` and carries it onto the MQMD.
+
+Ask for what you do not have. A gateway review that never mentions the flow
+budget or `MAXMSGL` has not been done.
+
+The reverse does **not** hold: work scoped to ACE or MQ alone does not pull in
+the gateway. See the scope rule in those skills.
+
+---
+
 Three modes. Decide which one the request is, and say so in one line before
 starting — they have different outputs and mixing them produces a document that
 does neither job.

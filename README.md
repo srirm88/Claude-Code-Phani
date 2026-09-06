@@ -95,6 +95,22 @@ the first — the most common triage mistake), the AIX/ACE/MQ command playbook, 
 a catalogue of recurring failure signatures with the evidence that separates
 lookalikes.
 
+## Scope rule
+
+The skills carry an asymmetric coupling rule, so it holds in every session
+rather than being restated each time:
+
+- **Say NGINX → ACE and MQ come with it.** The gateway never stands alone.
+  `proxy_read_timeout` is only correct relative to the ACE flow budget,
+  `proxy_next_upstream` only relative to whether the route is idempotent, and
+  `client_max_body_size` only relative to the ACE parser limit and MQ
+  `MAXMSGL`. A gateway review that never mentions those has not been done.
+- **Say ACE or MQ → NGINX stays out**, unless you name it. No gateway findings,
+  no requests for `nginx.conf`, no speculation about the DMZ tier.
+
+`nginx-review` states what it must pull from the ACE and MQ side; the three ACE
+skills state that they must not widen.
+
 ## Install
 
 ### Claude Code — this project only

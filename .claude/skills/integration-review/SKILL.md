@@ -18,6 +18,16 @@ tier. They live in the gaps, where each team assumes the other handled it.
 reviewing anything, and skip the rest — do not force a batch file interface
 through an API-gateway checklist.
 
+## Scope rule
+
+This skill is cross-tier by definition, but the same asymmetry governs what you
+pull in. A request naming the **gateway** always carries ACE and MQ with it —
+the gateway's timeouts, retries and limits are meaningless without the flow
+budget, the idempotency answer and `MAXMSGL`. A request scoped to **ACE or MQ
+alone** does not pull in the gateway unless the user names it.
+
+For gateway-only work, use the `nginx-review` skill instead.
+
 ## Workflow
 
 ### 1. Establish the topology, then draw the transaction path

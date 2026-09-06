@@ -13,6 +13,18 @@ deployed unit is a BAR, assume the same source is promoted DEV → SIT → UAT �
 with only overrides changing. Anything that pins a flow to one environment is a
 defect, not a style issue.
 
+## Scope rule
+
+Work scoped to ACE or MQ stays there. **Do not widen to the NGINX gateway
+unless the user names it** — no gateway findings, no requests for `nginx.conf`,
+no speculation about what the DMZ tier might be doing. If a gateway concern
+looks genuinely material, say so in one line and let the user decide; do not
+act on it.
+
+The reverse is not symmetric: work that starts at the gateway *does* pull ACE
+and MQ in, because the gateway's timeouts, retries and limits are meaningless
+without them. That rule lives in the `nginx-review` skill.
+
 ## Workflow
 
 ### 1. Scope the review

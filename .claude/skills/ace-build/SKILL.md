@@ -12,6 +12,18 @@ This skill is the inverse of `ace-code-review`. Every HIGH-severity finding that
 review looks for is a pattern this skill writes correctly the first time. If code
 produced here would fail that review, it is wrong — fix it before handing it over.
 
+## Scope rule
+
+Work scoped to ACE or MQ stays there. **Do not widen to the NGINX gateway
+unless the user names it** — no gateway findings, no requests for `nginx.conf`,
+no speculation about what the DMZ tier might be doing. If a gateway concern
+looks genuinely material, say so in one line and let the user decide; do not
+act on it.
+
+The reverse is not symmetric: work that starts at the gateway *does* pull ACE
+and MQ in, because the gateway's timeouts, retries and limits are meaningless
+without them. That rule lives in the `nginx-review` skill.
+
 ## Workflow
 
 ### 1. Establish the contract before writing anything

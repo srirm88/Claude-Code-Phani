@@ -12,6 +12,18 @@ Target: **IBM ACE 12.0.12.26 on AIX 7.3 (ksh), IBM MQ 9.3.0.35**.
 command that would confirm or kill it, ask the user to run it, read what comes
 back. That constraint is a feature — it forces evidence before action.
 
+## Scope rule
+
+Work scoped to ACE or MQ stays there. **Do not widen to the NGINX gateway
+unless the user names it** — no gateway findings, no requests for `nginx.conf`,
+no speculation about what the DMZ tier might be doing. If a gateway concern
+looks genuinely material, say so in one line and let the user decide; do not
+act on it.
+
+The reverse is not symmetric: work that starts at the gateway *does* pull ACE
+and MQ in, because the gateway's timeouts, retries and limits are meaningless
+without them. That rule lives in the `nginx-review` skill.
+
 ## Workflow
 
 ### 1. Get the failure straight before theorising
