@@ -228,7 +228,7 @@ function checkWorkflow(wf) {
   const creds = new Map();
   for (const n of wf.nodes) for (const [type, c] of Object.entries(n.credentials || {})) {
     if (!c.name) problems.push(`node "${n.name}" has ${type} credential without a name`);
-    creds.set(type, c.name);
+    creds.set(type + ' "' + c.name + '"', (creds.get(type + ' "' + c.name + '"') || 0) + 1);
   }
   const synced = JSON.stringify(syncedWorkflow(structuredClone(wf))) === JSON.stringify(wf);
   if (!synced) problems.push('prompts/schemas/validate.js differ from what is embedded; run `node run.mjs sync-workflow`');
@@ -260,7 +260,7 @@ async function main() {
   if (cmd === 'check-workflow') {
     const { problems, creds } = checkWorkflow(readJson(WORKFLOW));
     console.log('credentials referenced by name:');
-    for (const [t, n] of creds) console.log(`  ${t.padEnd(18)} -> "${n}"`);
+    for (const [k, n] of creds) console.log(`  ${k}  (${n} node${n > 1 ? 's' : ''})`);
     if (problems.length) { console.log('\nproblems:'); problems.forEach((p) => console.log('  - ' + p)); process.exit(1); }
     console.log('\nworkflow OK');
     return;

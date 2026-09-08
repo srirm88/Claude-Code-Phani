@@ -25,8 +25,8 @@
       "The last scene fades to black over its final 20 seconds."
     ]
   },
-  "audio_source": "undecided",
-  "visual_source": "undecided",
+  "audio_source": "music_generator: one instrumental track for the full duration from a text-to-music model (ElevenLabs Eleven Music), generated from audio_brief.generation_prompt; no stems, no per-scene cues, so structure_by_scene is guidance the generator may only loosely follow",
+  "visual_source": "generated_stills: one 16:9 still per scene from a text-to-image model, built from visual_style.generation_prompt_prefix + scene.visual_description; animated in the render template with push, drift, parallax, focus and exposure ramps and overlay particle layers only",
   "recent_videos": [
     { "published": "2026-09-04", "format_family": "interior-space", "theme": "A cabin study during a mountain snowstorm, fire crackle, low cello", "palette": ["amber", "charcoal", "pine"], "mood": "sheltered" },
     { "published": "2026-09-02", "format_family": "night-sky", "theme": "Slow star drift over a high desert, sparse synth pads", "palette": ["indigo", "sand", "silver"], "mood": "vast" },

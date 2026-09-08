@@ -11,7 +11,11 @@ Manual Run ─────────┴─► Pipeline Config ─► Prompts �
    ─► Build Metadata Request ─► Claude: Metadata ─► Parse Metadata
    ─► Assemble Review Package ─► Slack: Request Approval (#yt-approvals)
         ├─ rejected / timed out ─► Record Rejection ─► Slack notice
-        └─ approved ─► Produce Assets (placeholder) ─► Build Render Request
+        └─ approved ─► Generate assets?
+              ├─ placeholder ─► Placeholder Assets ─────────────────────────┐
+              └─ generate ─┬─► Build Image Prompts ─► OpenAI image (per scene) ─► S3 ─► Collect ─┐
+                           └─► Build Music Request ─► ElevenLabs music ─► S3 ─► Music URL ───────┴─► Merge ─► Assemble Assets
+                                                                                                        └─► Build Render Request
               ├─ render_mode = stub ──────► Record Stub ─► Slack notice (payload only)
               └─ render_mode = creatomate ─► Creatomate: Start Render ─► Wait (webhook)
                     ─► Get Render ─► Download ─► YouTube: Upload (PRIVATE)
@@ -25,7 +29,7 @@ flipping to public is a manual act in YouTube Studio.
 
 | Path | What |
 |---|---|
-| `n8n/ambient-pipeline.workflow.json` | Importable workflow. Credentials referenced by name only. |
+| `n8n/ambient-pipeline.workflow.json` | Importable workflow. Credentials referenced by name only: `Anthropic API`, `Slack Bot (yt-approvals)`, `OpenAI API`, `ElevenLabs API`, `Asset Storage (S3)`, `Creatomate API`, `YouTube (channel)`. |
 | `prompts/concept.system.md` | Claude system prompt: brief → video concept. Versioned in its header comment. |
 | `prompts/metadata.system.md` | Claude system prompt: concept → title, description, tags, chapters, disclosure. |
 | `prompts/schemas/*.schema.json` | JSON schemas enforced through the API's structured output (`output_config.format`). |
@@ -35,20 +39,22 @@ flipping to public is a manual act in YouTube Studio.
 
 ## Decisions still open (the workflow is parameterised, not opinionated, on these)
 
-These were left undecided by the channel owner. The pipeline runs with placeholders so the
-concept and metadata stages can be exercised now, but **the render stage is a stub until they are settled**.
+Three of the four are now decided and wired. Hosting is still open. `asset_mode` and `render_mode` in
+`Pipeline Config` let you run the whole flow for free (`placeholder` + `stub`) until the accounts exist.
 
 | Decision | Where it lives | Placeholder today | What changes when decided |
 |---|---|---|---|
-| Audio source (Suno/Udio API, licensed library, own compositions) | `Pipeline Config.audio_source`, `Produce Assets (placeholder)` node | `undecided` | Replace the placeholder node with the fetch/generate call. `concept.audio_brief.generation_prompt` is already written to feed a generator or brief a composer. |
-| Visual source (AI stills with subtle motion vs licensed loops) | `Pipeline Config.visual_source`, same node | `undecided` | Same node. Scenes carry `visual_description`, `motion`, `palette` and a per-video `generation_prompt_prefix`. |
+| Audio source | `Pipeline Config.audio_source`, `Build Music Request` → `ElevenLabs: Compose Music` | **Decided: music generator.** ElevenLabs Eleven Music, one instrumental track for the full duration. | Provider swap = one HTTP node. See **Why not Suno/Udio** below. |
+| Visual source | `Pipeline Config.visual_source`, `Build Image Prompts` → `OpenAI: Generate Scene Image` | **Decided: generated stills with template motion.** One still per scene, animated in the Creatomate template. | Provider swap = one HTTP node. |
+| AI disclosure | `Pipeline Config.ai_disclosure_policy` | **Decided:** every description states the visuals and music are generated; the platform flag is set only when the visuals could pass for real footage. | The metadata stage applies this per video with a written reason. |
 | Format spec (length, scene count, spoken intro) | `Pipeline Config.format_spec` and `harness/fixtures/brief.example.json` | **Pilot:** 5–10 min range, 3–6 scenes, no intro, scenes ≥ 60 s, 1080p25, −16 LUFS, no title card | Update both places, bump the prompt version, re-run the harness. The concept prompt treats `format_spec` as binding; give it either `duration_minutes` (exact) or `duration_minutes_min`/`_max` (a range the model picks inside). |
 | n8n hosting (Cloud vs self-hosted) | Not in the workflow | – | See **Hosting** below. The Slack gate needs public HTTPS either way; the download/upload stage almost certainly needs self-hosted. |
 
 Things to weigh before deciding, because they interact:
 
-- **Audio is the biggest Content ID and policy risk.** Licensed library tracks that thousands of other channels use are exactly what "templated sameness" detection and Content ID matches punish. Generated music per video avoids the match risk but check the generator's commercial and YouTube-monetisation terms. Own compositions are safest and slowest.
-- **AI stills with motion vs licensed loops changes the render.** Stills need an image-generation call per scene (6–10 per video) plus a template that animates them; loops need a search and licence-tracking step. Both need the Creatomate template to be built around them, so the template cannot be finalised before this decision.
+- **Why not Suno or Udio.** Neither has an official public API; the third-party wrappers scrape a consumer product and break or breach terms without notice. Suno is also mid-transition after its Warner settlement, with current models slated for deprecation and a German court ruling against it in 2026. ElevenLabs Eleven Music has a documented API, instrumental-only generation, and commercial clearance on paid plans. That is the difference between a pipeline and a hobby.
+- **YouTube's line on AI music.** Since July 2025, fully AI-generated, unmodified, audio-only uploads are ineligible for monetisation. These videos are not audio-only, the music is one element of an original composition with per-video visuals and structure, and every upload discloses generation. Keep it that way: never publish the music track on its own, and never reuse a track across videos.
+- **Two limits to verify on the first live asset run.** ElevenLabs' API reference allows up to 600,000 ms per prompt-based request while the product overview says five minutes; `music_max_ms` is set to 600,000 and the `Build Music Request` node fails loudly if the piece is longer. If the API refuses anything over five minutes, the fix is two generations with a crossfade in the template, and I will add it then. Image generation returns 1536×1024 (3:2); the template crops to 16:9, which the push-in needs anyway.
 - **Format spec drives cost.** Creatomate bills per output minute; a 45–60 minute piece at 4–5 per week is a meaningful monthly line item. Get a quote for the launch duration before locking it.
 - **The 5–10 minute pilot format is deliberately not the launch format.** Sleep and focus viewers use a video as a session, and watch time per view is what this niche is rewarded on; short pieces lose that even with better retention curves. The pilot range exists to get through the audio, visual, template and hosting decisions cheaply. Move `format_spec` to the launch duration before anything goes public, and keep the pilot uploads private.
 - **Spoken intro** forces a voice decision (synthetic voice = mandatory AI disclosure) and adds a TTS step. Instrumental-only is simpler and what the placeholders assume.
@@ -158,7 +164,7 @@ if your template differs):
 
 | Element | Type | Set from |
 |---|---|---|
-| `Audio` | audio | `assets.audio_url` |
+| `Audio` | audio | `assets.audio_url`; `audio_fade_out` set to 20 s to match the visual fade |
 | `Title-Card` | text | `metadata.title` |
 | `Scene-N` (N = 1..scene_count_max) | composition | `.duration` = scene seconds; unused scenes get duration 0 (verify this collapses them in your template) |
 | `Scene-N-Image` | image or video | `assets.scene_image_urls[N-1]` (add slow zoom/pan inside the composition) |
@@ -168,22 +174,65 @@ The render request passes `webhook_url = $execution.resumeUrl`, so the Wait node
 Creatomate finishes; the node also times out after `render_timeout_hours` and re-checks status, so a
 missed webhook is not fatal. Output is `mp4` (`Pipeline Config.creatomate_output_format`).
 
-Until the audio and visual sources are decided, the `Produce Assets (placeholder)` node feeds
-`placeholder_audio_url` and `placeholder_image_url` from config into every scene. Point those at any
-public MP3 and JPG to smoke-test the render and upload path.
+With `asset_mode = placeholder`, the `Placeholder Assets` node feeds `placeholder_audio_url` and
+`placeholder_image_url` from config into every scene. Point those at any public MP3 and JPG to
+smoke-test the render and upload path without spending generation credits.
 
-### 5. Import the workflow
+### 5. Image generation (OpenAI Images API)
+
+1. Create an API key at <https://platform.openai.com/api-keys>.
+2. In n8n: **Credentials → New → OpenAI**, name **`OpenAI API`**.
+3. `Pipeline Config`: `image_model` (default `gpt-image-1`), `image_size` (`1536x1024`), `image_quality` (`high`).
+
+The `OpenAI: Generate Scene Image` node runs once per scene, one request every 1.5 s, three retries.
+Cost at `high` quality is roughly $0.15–0.20 per image, so under $1.50 per pilot video. Drop to
+`medium` while iterating on prompts. To change provider, replace the URL and body of that one node;
+`Image to Binary` expects `data[0].b64_json`, adjust `sourceProperty` if the new provider differs.
+
+### 6. Music generation (ElevenLabs Eleven Music)
+
+1. Paid ElevenLabs plan (commercial rights for music require a paid tier; check the music terms for your
+   plan before the first public upload). Create an API key under **Profile → API keys**.
+2. In n8n: **Credentials → New → Header Auth**, name **`ElevenLabs API`**, header name `xi-api-key`,
+   value the key.
+3. `Pipeline Config`: `music_model_id` (`music_v2`), `music_output_format` (`mp3_44100_128`),
+   `music_max_ms` (600000).
+
+`ElevenLabs: Compose Music` sends `audio_brief.generation_prompt` with `force_instrumental: true` and
+the exact piece length; the response body is the MP3. Generation credits are billed per track minute.
+
+### 7. Asset storage (any S3-compatible bucket)
+
+Creatomate fetches assets by URL, and both generators return bytes, so the pipeline needs one bucket.
+Cloudflare R2 is the cheapest fit (no egress fees, free tier covers a pilot); AWS S3, Backblaze B2
+or MinIO work the same way.
+
+1. Create a bucket (for example `ambient-assets`) and enable **public read** at bucket level:
+   R2 → bucket → Settings → Public access (r2.dev subdomain or a custom domain); S3 → a bucket policy
+   granting `s3:GetObject` on `arn:aws:s3:::ambient-assets/*`. No per-object ACL is sent.
+2. Create S3 API credentials for the bucket (R2: **Manage R2 API Tokens → Object Read & Write**).
+3. In n8n: **Credentials → New → S3**, name **`Asset Storage (S3)`**. R2 endpoint is
+   `https://<account-id>.r2.cloudflarestorage.com`, region `auto`, force path style on. AWS: leave the
+   endpoint empty and set the region.
+4. `Pipeline Config`: `asset_bucket`, `asset_public_base_url` (the public origin, no trailing slash),
+   `asset_key_prefix` (`runs`). Objects land at `runs/<run_id>/scene-01.jpg …` and `runs/<run_id>/music.mp3`.
+
+Set a lifecycle rule to expire objects after 30–60 days; once a video is uploaded the assets are only
+useful for re-renders.
+
+### 8. Import the workflow
 
 1. n8n → **Workflows → Import from file** → `n8n/ambient-pipeline.workflow.json`.
 2. Open each node that shows a credential warning and pick the credential of the same name
    (the JSON carries names, not ids; n8n binds them on first selection).
 3. Edit **Pipeline Config**: channel description, `slack_channel`, `format_spec`, and leave
-   `render_mode = stub` for the first runs.
+   `asset_mode = placeholder` and `render_mode = stub` for the first runs.
 4. Run **Manual Run**. You should get a Slack message within a minute or two. Click **Reject** and
    confirm the rejection notice arrives. Run again and click **Approve**; in stub mode a notice with
    the render payload appears and nothing else happens.
-5. Switch `render_mode` to `creatomate` only after the template exists and a placeholder render has
-   been downloaded successfully.
+5. Switch `asset_mode` to `generate` once the OpenAI, ElevenLabs and bucket credentials exist; the stub
+   notice in Slack will then show real asset URLs. Switch `render_mode` to `creatomate` only after the
+   template exists and a placeholder render has been downloaded successfully.
 6. Enable the **Weekday Schedule** trigger (06:00 Mon–Fri server time) once 5–10 outputs have been
    reviewed, per the launch plan.
 
