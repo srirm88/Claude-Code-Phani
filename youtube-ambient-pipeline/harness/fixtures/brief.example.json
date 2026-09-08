@@ -13,6 +13,13 @@
     "scene_count_max": 6,
     "min_scene_seconds": 60,
     "spoken_intro": false,
+    "delivery": {
+      "resolution": "1920x1080",
+      "aspect_ratio": "16:9",
+      "fps": 25,
+      "audio_loudness_lufs_integrated": -16,
+      "title_card": "none"
+    },
     "hard_rules": [
       "No on-screen text except an optional title card in the first 10 seconds.",
       "The last scene fades to black over its final 20 seconds."
