@@ -19,3 +19,9 @@
 
 *.zip   binary
 *.bar   binary
+
+# Ambient pipeline: prompt text is sent to an API and embedded byte-for-byte in the workflow JSON.
+# A CRLF checkout would change the bytes (and the prompt cache key), so pin these to LF.
+youtube-ambient-pipeline/prompts/**  text eol=lf
+youtube-ambient-pipeline/harness/**  text eol=lf
+youtube-ambient-pipeline/n8n/**      text eol=lf

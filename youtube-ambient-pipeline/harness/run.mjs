@@ -25,7 +25,7 @@ const EFFORT = process.env.PIPELINE_EFFORT || 'high';
 const MAX_TOKENS = { concept: 12000, metadata: 6000 };
 
 // ---------- shared validation (same file the n8n Code nodes carry) ----------
-const validateSrc = fs.readFileSync(path.join(here, 'lib', 'validate.js'), 'utf8');
+const validateSrc = fs.readFileSync(path.join(here, 'lib', 'validate.js'), 'utf8').replace(/\r\n/g, '\n');
 const V = new Function(validateSrc + '\n; return { extractJsonText, parseJsonStrict, validateConcept, validateMetadata, fmtTimestamp };')();
 
 // ---------- helpers ----------
@@ -35,7 +35,8 @@ function arg(name, fallback) {
 }
 const flag = (name) => process.argv.includes('--' + name);
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
-const readText = (p) => fs.readFileSync(p, 'utf8');
+// CRLF checkouts (Windows autocrlf) must not change the bytes sent to the API or embedded in the workflow.
+const readText = (p) => fs.readFileSync(p, 'utf8').replace(/\r\n/g, '\n');
 
 function promptVersion(md) {
   const m = md.match(/version:\s*([0-9.]+)/);
