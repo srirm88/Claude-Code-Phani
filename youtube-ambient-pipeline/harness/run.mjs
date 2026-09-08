@@ -3,7 +3,9 @@
 //
 //   node run.mjs concept  [--brief fixtures/brief.example.json] [--dry-run] [--out out/]
 //   node run.mjs metadata --concept out/<run>/concept.json [--settings fixtures/channel-settings.example.json]
-//   node run.mjs all      [--brief ...] [--dry-run]
+//   node run.mjs all      [--brief ...] [--dry-run] [--no-history] [--reset-history]
+//                         Successive runs feed each other's concept into recent_videos via out/history.json,
+//                         the same way the n8n workflow feeds its own publish history.
 //   node run.mjs sync-workflow    # paste prompts, schemas and validate.js into ../n8n/ambient-pipeline.workflow.json
 //   node run.mjs check-workflow   # verify the workflow JSON is in sync and structurally sane
 //
@@ -105,8 +107,28 @@ function usageLine(msg) {
 }
 
 // ---------- commands ----------
+// out/history.json mirrors the workflow's static-data history so repeated harness runs exercise the
+// variety rules the way n8n does. --no-history ignores it; --reset-history clears it first.
+const HISTORY = path.join(here, 'out', 'history.json');
+function loadHistory() {
+  if (flag('reset-history')) { try { fs.unlinkSync(HISTORY); } catch {} }
+  if (flag('no-history')) return [];
+  try { return readJson(HISTORY); } catch { return []; }
+}
+function appendHistory(entry) {
+  if (flag('no-history')) return;
+  const h = loadHistory();
+  h.push(entry);
+  fs.mkdirSync(path.dirname(HISTORY), { recursive: true });
+  fs.writeFileSync(HISTORY, JSON.stringify(h.slice(-60), null, 2));
+}
+const historyToRecent = (h) => h.map((e) => ({ published: e.date, status: e.status, format_family: e.format_family, theme: e.theme, palette: e.palette, mood: e.mood, title: e.title }));
+
 async function runConcept(dir) {
   const brief = readJson(arg('brief', path.join(here, 'fixtures', 'brief.example.json')));
+  const history = loadHistory();
+  brief.recent_videos = [...(brief.recent_videos || []), ...historyToRecent(history)].slice(-8);
+  console.log(`recent_videos: ${brief.recent_videos.length} (${history.length} from prior harness runs)`);
   const body = buildRequest('concept', brief);
   fs.writeFileSync(path.join(dir, 'concept.request.json'), JSON.stringify(body, null, 2));
   if (flag('dry-run')) {
@@ -130,6 +152,8 @@ async function runMetadata(dir, conceptIn) {
   const concept = conceptIn || readJson(arg('concept'));
   if (!concept) throw new Error('metadata needs --concept <file> or a preceding concept run');
   const settings = readJson(arg('settings', path.join(here, 'fixtures', 'channel-settings.example.json')));
+  const history = loadHistory();
+  settings.recent_titles = [...(settings.recent_titles || []), ...history.map((e) => e.title).filter(Boolean)].slice(-8);
   const body = buildRequest('metadata', { concept, channel_settings: settings });
   fs.writeFileSync(path.join(dir, 'metadata.request.json'), JSON.stringify(body, null, 2));
   if (flag('dry-run')) {
@@ -148,6 +172,12 @@ async function runMetadata(dir, conceptIn) {
   console.log(`  title (${meta.title.length}): ${meta.title}`);
   console.log(`  tags (${meta.tags.join(',').length} chars): ${meta.tags.join(', ')}`);
   console.log(`  ai_disclosure: ${meta.ai_disclosure.required} - ${meta.ai_disclosure.reason}`);
+  appendHistory({
+    date: new Date().toISOString().slice(0, 10), status: 'harness', run: path.basename(dir),
+    format_family: concept.format_family, theme: concept.theme,
+    palette: concept.visual_style && concept.visual_style.global_palette, mood: concept.audio_brief && concept.audio_brief.mood,
+    title: meta.title,
+  });
   return meta;
 }
 

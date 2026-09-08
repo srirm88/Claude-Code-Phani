@@ -218,6 +218,12 @@ node run.mjs all                 # both, chained
 PIPELINE_MODEL=claude-sonnet-5 PIPELINE_EFFORT=medium node run.mjs all   # cheaper iteration
 ```
 
+Successive live runs feed each other: each run appends its concept and final title to
+`harness/out/history.json`, and the next run merges that into `recent_videos` and `recent_titles`,
+exactly as the workflow does with its own publish history. So three runs in a row should give three
+different format families and three differently shaped titles; if they do not, the variety rules
+in the prompts need work. `--no-history` ignores the file, `--reset-history` clears it.
+
 Every live run prints token usage (including cache reads, so you can see the system-prompt cache
 working on the second call) and a PASS/FAIL validation block using the same rules as the workflow's
 Parse nodes. Change a prompt, run the harness, read the concept, adjust; only then sync:
