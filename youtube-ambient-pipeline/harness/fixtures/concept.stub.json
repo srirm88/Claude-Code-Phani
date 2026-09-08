@@ -1,0 +1,44 @@
+{
+  "format_family": "journey",
+  "theme": "A slow canal boat drifting through a fog-bound lowland at first light, lock by lock, until the sun clears the mist.",
+  "working_title": "Fog Canal at Dawn | 45 min Slow Drift for Focus",
+  "alternate_titles": ["Canal Boat Through the Morning Fog | 45 min Ambient", "First Light on the Lowland Canal | 45 min Focus Ambience"],
+  "duration_minutes": 45,
+  "spoken_intro": { "enabled": false, "script": "", "voice_direction": "" },
+  "scenes": [
+    { "index": 1, "name": "Mooring in fog", "duration_seconds": 300, "visual_description": "A narrow canal boat tied at a stone quay, seen from the towpath at water level. Dense white fog, the far bank invisible, a single lantern on the bow glowing warm. Reeds in the foreground, water like grey glass.", "motion": "Fog drifts left to right very slowly; lantern flickers; faint ripples from a drop.", "palette": ["#d9d6cf", "#8a8f8a", "#e8b56a", "#3b3f3a"], "transition_out": "slow dissolve as the rope slips from the bollard" },
+    { "index": 2, "name": "Casting off", "duration_seconds": 360, "visual_description": "View from the stern looking forward along the boat roof, fog thinning slightly to show pollarded willows on both banks. Wake spreading behind in a soft V.", "motion": "Slow forward drift; willows pass at walking pace; wake ripples.", "palette": ["#cfd3cc", "#6f7f6a", "#e0b26b", "#2f3330"], "transition_out": "match cut on the water surface" },
+    { "index": 3, "name": "The first lock", "duration_seconds": 330, "visual_description": "Inside a brick lock chamber, wet walls dark with moss, gates ahead closed, water rising. Fog lit from above, no people visible.", "motion": "Water level rises across the scene; drips fall from the gate timbers.", "palette": ["#7a5b45", "#4d6b4a", "#c9c6bd", "#2a2b28"], "transition_out": "gates swing open and the frame brightens" },
+    { "index": 4, "name": "Open water", "duration_seconds": 360, "visual_description": "A wide reach of canal with the fog lifting into bands, a heron standing in the shallows, a distant windmill silhouette softly visible.", "motion": "Fog bands rise; heron shifts weight once; boat drifts.", "palette": ["#e6e2d6", "#9fb0a3", "#f0c27b", "#5a6058"], "transition_out": "slow dissolve" },
+    { "index": 5, "name": "Under the bridge", "duration_seconds": 300, "visual_description": "Passing beneath a low brick arch, reflections of rippling light on the underside of the bridge, the far opening bright.", "motion": "Caustic light patterns move on the brick; the bright opening grows.", "palette": ["#3a2f2a", "#a08b73", "#f4d9a6", "#7c8b8a"], "transition_out": "emerging into light, exposure ramps up" },
+    { "index": 6, "name": "Sun through mist", "duration_seconds": 390, "visual_description": "Low sun breaking through the last of the mist over flat fields beside the canal, long shadows from a line of poplars, dew on grass in the foreground.", "motion": "Sun glow intensifies slowly; mist thins; dew sparkles.", "palette": ["#f6d59a", "#c9d3b4", "#6a7d5c", "#e9eef0"], "transition_out": "slow dissolve" },
+    { "index": 7, "name": "The village reach", "duration_seconds": 330, "visual_description": "Canal-side cottages with slate roofs and closed shutters, smoke from one chimney, a rowing boat tied to a post, morning light warm and clear.", "motion": "Chimney smoke drifts; boat drifts past at the same slow pace.", "palette": ["#c8a27a", "#5e6a72", "#e8dcc4", "#8fa07c"], "transition_out": "slow dissolve" },
+    { "index": 8, "name": "Mooring in sun", "duration_seconds": 330, "visual_description": "The boat tied at a quiet quay in full morning sun, a kettle on the stern, ripples settling. The frame holds, then fades to black over the last 30 seconds.", "motion": "Ripples settle; very slight lens breathing; fade to black.", "palette": ["#f2e4c8", "#a7b8a3", "#cf9a5b", "#000000"], "transition_out": "end" }
+  ],
+  "audio_brief": {
+    "mood": "unhurried, damp, gently brightening",
+    "tempo_bpm": 0,
+    "tonal_centre": "F Lydian drone",
+    "instrumentation": ["bowed upright bass drone", "felt piano", "glass harmonica-style pads", "field texture: distant water, rope creak"],
+    "dynamics_over_time": "Very soft for the first 10 minutes, a slow rise through the lock and open water, a warm plateau from the sun scene, tapering to the drone alone for the last two minutes.",
+    "structure_by_scene": [
+      { "scene_index": 1, "change": "drone and water texture only" },
+      { "scene_index": 2, "change": "felt piano enters, sparse" },
+      { "scene_index": 4, "change": "pads enter under the piano" },
+      { "scene_index": 6, "change": "piano fuller, brief upper-register motif" },
+      { "scene_index": 8, "change": "everything but the drone leaves; fade" }
+    ],
+    "generation_prompt": "Slow ambient piece in F Lydian, no drums, bowed bass drone with soft felt piano and glassy pads, gradual brightening over 45 minutes, gentle water and rope textures, no melody hooks, suitable for focus.",
+    "loop_safe": false
+  },
+  "visual_style": {
+    "medium": "painterly photoreal with soft film grain",
+    "global_palette": ["#d9d6cf", "#6f7f6a", "#e8b56a", "#2f3330"],
+    "camera_language": "Locked-off or drifting at walking pace, water-level or stern height, no handheld, no zooms.",
+    "negative_prompt": "text, watermark, logo, people, faces, boats with brand names, modern signage, cars, blur artefacts",
+    "generation_prompt_prefix": "Painterly photoreal lowland canal at dawn, soft fog, muted greens and warm lantern amber, fine film grain, cinematic 16:9, no people, no text --"
+  },
+  "variation_rationale": "Recent videos were an interior cabin, a night sky, and a rain study. This is a journey format with forward motion through connected locations, a cool grey-green palette instead of amber/indigo/glass-green, and a drone-based audio structure rather than piano-led or synth pads.",
+  "compliance_checklist": { "no_real_people": true, "no_brands_or_trademarks": true, "no_copyrighted_subjects": true, "audio_is_original_or_licensed": true, "no_health_claims": true, "adult_audience": true, "notes": "Windmill and cottages are generic, not a named landmark." },
+  "assumptions": ["audio_source undecided: the generation_prompt works as a brief to a composer or as a prompt to a music generator.", "visual_source undecided: scenes are written as stills-with-motion; a licensed loop library would need matching footage per scene."]
+}

@@ -236,3 +236,9 @@ Read these before trusting a clean report or a generated artifact:
 - **Command flags vary by ACE level and server model.** The skills are told to
   confirm with `-h` rather than trust a flag from memory. Verify the playbook
   against your installation once.
+
+## Other projects in this repo
+
+| Path | What |
+|---|---|
+| `youtube-ambient-pipeline/` | n8n + Claude pipeline for a faceless ambient YouTube channel: concept → metadata → Slack approval → render → private upload. Own README inside. |

@@ -1,0 +1,97 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_family", "theme", "working_title", "alternate_titles", "duration_minutes",
+    "spoken_intro", "scenes", "audio_brief", "visual_style", "variation_rationale",
+    "compliance_checklist", "assumptions"
+  ],
+  "properties": {
+    "format_family": { "type": "string", "description": "One of the named format families, or a new one you name." },
+    "theme": { "type": "string", "description": "One sentence: the world and mood of this video." },
+    "working_title": { "type": "string" },
+    "alternate_titles": { "type": "array", "items": { "type": "string" } },
+    "duration_minutes": { "type": "integer", "description": "Target total duration. Must equal the sum of scene durations divided by 60, rounded." },
+    "spoken_intro": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "script", "voice_direction"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "script": { "type": "string", "description": "Full script when enabled, otherwise empty string." },
+        "voice_direction": { "type": "string", "description": "Pace, tone, gender-neutral if unspecified; empty when disabled." }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["index", "name", "duration_seconds", "visual_description", "motion", "palette", "transition_out"],
+        "properties": {
+          "index": { "type": "integer", "description": "1-based order." },
+          "name": { "type": "string", "description": "Short label, used as the chapter name." },
+          "duration_seconds": { "type": "integer" },
+          "visual_description": { "type": "string", "description": "What is in frame, in renderable detail. No real people, brands, or copyrighted subjects." },
+          "motion": { "type": "string", "description": "What moves and how slowly. For stills-with-motion, name the parallax, drift, or particle effect." },
+          "palette": { "type": "array", "items": { "type": "string" }, "description": "3 to 5 colour names or hex values." },
+          "transition_out": { "type": "string", "description": "How this scene hands over to the next; 'end' for the last scene." }
+        }
+      }
+    },
+    "audio_brief": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mood", "tempo_bpm", "tonal_centre", "instrumentation", "dynamics_over_time", "structure_by_scene", "generation_prompt", "loop_safe"],
+      "properties": {
+        "mood": { "type": "string" },
+        "tempo_bpm": { "type": "integer", "description": "0 for free time." },
+        "tonal_centre": { "type": "string", "description": "Key or mode, e.g. 'D Dorian', 'A minor', 'drone on C'." },
+        "instrumentation": { "type": "array", "items": { "type": "string" } },
+        "dynamics_over_time": { "type": "string", "description": "How intensity moves across the full duration." },
+        "structure_by_scene": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["scene_index", "change"],
+            "properties": {
+              "scene_index": { "type": "integer" },
+              "change": { "type": "string", "description": "What enters, leaves, or shifts at this scene." }
+            }
+          }
+        },
+        "generation_prompt": { "type": "string", "description": "A single prompt suitable for a music generation service or a brief to a composer. Style words only; no artist, track, or album references." },
+        "loop_safe": { "type": "boolean", "description": "True if the piece is designed to loop seamlessly." }
+      }
+    },
+    "visual_style": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["medium", "global_palette", "camera_language", "negative_prompt", "generation_prompt_prefix"],
+      "properties": {
+        "medium": { "type": "string", "description": "e.g. painterly, photoreal-stylised, 2D flat, film grain." },
+        "global_palette": { "type": "array", "items": { "type": "string" } },
+        "camera_language": { "type": "string" },
+        "negative_prompt": { "type": "string", "description": "What must not appear: text, watermarks, people, logos, and anything scene-specific." },
+        "generation_prompt_prefix": { "type": "string", "description": "Prefix applied to every scene's image prompt so the set looks like one piece." }
+      }
+    },
+    "variation_rationale": { "type": "string", "description": "Concretely how this differs from recent_videos and what you avoided repeating." },
+    "compliance_checklist": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["no_real_people", "no_brands_or_trademarks", "no_copyrighted_subjects", "audio_is_original_or_licensed", "no_health_claims", "adult_audience", "notes"],
+      "properties": {
+        "no_real_people": { "type": "boolean" },
+        "no_brands_or_trademarks": { "type": "boolean" },
+        "no_copyrighted_subjects": { "type": "boolean" },
+        "audio_is_original_or_licensed": { "type": "boolean" },
+        "no_health_claims": { "type": "boolean" },
+        "adult_audience": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" }, "description": "Every guess you made because the brief was silent or undecided." }
+  }
+}

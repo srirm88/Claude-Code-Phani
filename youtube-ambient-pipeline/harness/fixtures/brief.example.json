@@ -1,0 +1,29 @@
+{
+  "channel": {
+    "name": "Still Hours",
+    "positioning": "Long-form ambient pieces for adults who want to sleep, focus, or study without interruptions. No talking heads, no ads mid-piece, no loops that give themselves away.",
+    "audience": "Adults 25-55, mostly listening on a phone or TV in the background, many with headphones.",
+    "tone": "Quiet, unhurried, sincere. Never mystical, never clinical."
+  },
+  "format_spec": {
+    "_note": "UNDECIDED by the channel owner. These values are placeholders so the harness runs. Change them once the format is agreed and bump the prompt version.",
+    "duration_minutes": 45,
+    "scene_count_min": 6,
+    "scene_count_max": 10,
+    "min_scene_seconds": 180,
+    "spoken_intro": false,
+    "hard_rules": [
+      "No on-screen text except an optional title card in the first 10 seconds.",
+      "The last scene fades to black over its final 30 seconds."
+    ]
+  },
+  "audio_source": "undecided",
+  "visual_source": "undecided",
+  "recent_videos": [
+    { "published": "2026-09-04", "format_family": "interior-space", "theme": "A cabin study during a mountain snowstorm, fire crackle, low cello", "palette": ["amber", "charcoal", "pine"], "mood": "sheltered" },
+    { "published": "2026-09-02", "format_family": "night-sky", "theme": "Slow star drift over a high desert, sparse synth pads", "palette": ["indigo", "sand", "silver"], "mood": "vast" },
+    { "published": "2026-08-31", "format_family": "weather-study", "theme": "Rain on a greenhouse roof, piano and rain only", "palette": ["glass green", "grey", "white"], "mood": "damp calm" }
+  ],
+  "today": "2026-09-08",
+  "season_hint": "early autumn in the northern hemisphere"
+}

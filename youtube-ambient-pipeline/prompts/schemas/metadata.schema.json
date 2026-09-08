@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "description", "tags", "category_id", "default_language", "made_for_kids", "chapters", "ai_disclosure", "thumbnail_text", "review_notes"],
+  "properties": {
+    "title": { "type": "string", "description": "At most 100 characters." },
+    "description": { "type": "string", "description": "At most 5000 characters. Contains the chapters block verbatim." },
+    "tags": { "type": "array", "items": { "type": "string" }, "description": "8 to 20 lowercase tags; total length with commas under 480 characters." },
+    "category_id": { "type": "string", "description": "YouTube category id as a string, normally '10'." },
+    "default_language": { "type": "string", "description": "BCP-47 code, e.g. 'en'." },
+    "made_for_kids": { "type": "boolean", "description": "Always false for this channel." },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["start_seconds", "timestamp", "name"],
+        "properties": {
+          "start_seconds": { "type": "integer" },
+          "timestamp": { "type": "string", "description": "M:SS or H:MM:SS, as written in the description." },
+          "name": { "type": "string" }
+        }
+      }
+    },
+    "ai_disclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "reason"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "reason": { "type": "string" }
+      }
+    },
+    "thumbnail_text": { "type": "string", "description": "At most four words, or empty." },
+    "review_notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

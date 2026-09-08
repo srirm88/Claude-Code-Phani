@@ -1,0 +1,1412 @@
+{
+  "name": "Ambient YouTube Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "e6fd31d3-5910-43a1-a06f-1af8d682d563",
+      "name": "Weekday Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        200
+      ],
+      "notes": "Mon-Fri 06:00 server time = up to 5 videos/week. Disable and use Manual Run while testing.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {},
+      "id": "1d717de5-f067-42c6-8a96-d891d11be39f",
+      "name": "Manual Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e9df21eb-50b5-4e0f-b982-b3269db290d1",
+              "name": "channel",
+              "value": "{\"name\":\"Still Hours\",\"positioning\":\"Long-form ambient pieces for adults who want to sleep, focus, or study without interruptions.\",\"audience\":\"Adults 25-55, listening in the background on phone or TV, many with headphones.\",\"tone\":\"Quiet, unhurried, sincere. Never mystical, never clinical.\"}",
+              "type": "string"
+            },
+            {
+              "id": "93632235-1520-474c-88f5-705ab5afa384",
+              "name": "format_spec",
+              "value": "{\"_note\":\"UNDECIDED - placeholder values. Agree the format, then update here and in harness/fixtures/brief.example.json.\",\"duration_minutes\":45,\"scene_count_min\":6,\"scene_count_max\":10,\"min_scene_seconds\":180,\"spoken_intro\":false,\"hard_rules\":[\"No on-screen text except an optional title card in the first 10 seconds.\",\"The last scene fades to black over its final 30 seconds.\"]}",
+              "type": "string"
+            },
+            {
+              "id": "c3de341b-a058-4b45-80f2-86cfeddba6ad",
+              "name": "audio_source",
+              "value": "undecided",
+              "type": "string"
+            },
+            {
+              "id": "3e47a7f5-f11c-4633-a5fe-03f1ac00e7dd",
+              "name": "visual_source",
+              "value": "undecided",
+              "type": "string"
+            },
+            {
+              "id": "e555b9f6-3d4b-4529-820e-74b77030af25",
+              "name": "render_mode",
+              "value": "stub",
+              "type": "string"
+            },
+            {
+              "id": "e6a376cf-010c-4d5e-8e87-458304ec09f0",
+              "name": "creatomate_template_id",
+              "value": "REPLACE_WITH_CREATOMATE_TEMPLATE_ID",
+              "type": "string"
+            },
+            {
+              "id": "f6bc3c40-b99c-430e-b230-5b6c11d70019",
+              "name": "creatomate_output_format",
+              "value": "mp4",
+              "type": "string"
+            },
+            {
+              "id": "80d90708-9a97-4c9f-accc-14a97af3b1c7",
+              "name": "placeholder_audio_url",
+              "value": "https://REPLACE.example.com/placeholder-audio.mp3",
+              "type": "string"
+            },
+            {
+              "id": "3d61b24b-3bb0-4365-8a6c-9ae0a6e9611e",
+              "name": "placeholder_image_url",
+              "value": "https://REPLACE.example.com/placeholder-scene.jpg",
+              "type": "string"
+            },
+            {
+              "id": "19facebe-8e1e-4a46-86c9-3642c0fe575e",
+              "name": "slack_channel",
+              "value": "#yt-approvals",
+              "type": "string"
+            },
+            {
+              "id": "daa2177f-83ab-4df6-8da3-8bbc89860cba",
+              "name": "approval_timeout_hours",
+              "value": 12,
+              "type": "number"
+            },
+            {
+              "id": "423493a3-c605-4deb-9681-ea4b502873a7",
+              "name": "render_timeout_hours",
+              "value": 4,
+              "type": "number"
+            },
+            {
+              "id": "2b50022a-79d8-4ccc-be84-125fbe142e4d",
+              "name": "youtube_category_id",
+              "value": "10",
+              "type": "string"
+            },
+            {
+              "id": "a3b97125-d2ff-46c2-8b18-7daefd26e777",
+              "name": "youtube_region_code",
+              "value": "US",
+              "type": "string"
+            },
+            {
+              "id": "b9d179b4-d917-4858-8ee4-923b9390b8d0",
+              "name": "default_language",
+              "value": "en",
+              "type": "string"
+            },
+            {
+              "id": "685b92bd-3867-4988-afde-da84f38d8ec9",
+              "name": "ai_disclosure_policy",
+              "value": "Disclose whenever visuals or voice are AI-generated, even if stylised. The channel prefers over-disclosure.",
+              "type": "string"
+            },
+            {
+              "id": "8e585227-d8f1-4191-8dd8-d9dbd41dcb7d",
+              "name": "anthropic_base_url",
+              "value": "https://api.anthropic.com",
+              "type": "string"
+            },
+            {
+              "id": "b0bbc8e1-6423-4f3c-92d0-0c9774ed5106",
+              "name": "anthropic_model",
+              "value": "claude-opus-5",
+              "type": "string"
+            },
+            {
+              "id": "a922bf11-882a-407f-a3b1-41b5b6e5e006",
+              "name": "anthropic_effort",
+              "value": "high",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      },
+      "id": "0501bccc-f0bf-4136-8039-9ab7637120d3",
+      "name": "Pipeline Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        300
+      ],
+      "notes": "All per-channel settings live here. Nothing else in the workflow hardcodes a value.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9bc2778d-f47d-4015-b8bd-160f787e2f47",
+              "name": "prompt_versions",
+              "value": "concept 1.0.0 / metadata 1.0.0",
+              "type": "string"
+            },
+            {
+              "id": "1efb5836-643a-405f-b42c-d434a1406408",
+              "name": "concept_system",
+              "value": "<!-- prompt: concept | version: 1.0.0 | 2026-09-08 -->\nYou are the creative lead for a faceless YouTube channel that publishes long-form ambient audio-visual pieces for adults: sleep, deep focus, study sessions, meditation, unwinding. Nothing is on camera. Every video is an original composition of visuals and sound, not a re-skin of the last one.\n\nYou receive a JSON brief and return one fully specified video concept as JSON that matches the schema attached to this request. The concept is a production spec: a composer or music generator, a visual artist or image generator, and a video renderer each work from it without asking follow-up questions.\n\n## What the brief gives you\n\n- `channel`: name, positioning, audience, tone.\n- `format_spec`: target duration in minutes, scene count range, whether a spoken intro is allowed, and any hard rules the channel owner has set. Treat `format_spec` as binding. If a field is missing, choose something sensible for the stated audience and say so in `assumptions`.\n- `audio_source` and `visual_source`: how audio and visuals will actually be produced (for example generated music, licensed library, own composition; generated stills with motion, licensed loops). Write the audio and visual briefs in the vocabulary that source can act on. If either is `undecided`, write the brief so it works for any of the options and note that in `assumptions`.\n- `recent_videos`: the last several published concepts (format family, theme, palette, mood). Use these to avoid repetition.\n- `today` and `season_hint`: for seasonal relevance where it helps, never as an obligation.\n\n## What a good concept looks like\n\n**Variety is the point.** The channel is judged under YouTube's inauthentic-content rules, which penalise mass-produced, templated, near-identical uploads. Pick a format family and a treatment that differ from the recent videos in at least two of: format family, visual world, palette, audio structure, pacing. Explain the difference in `variation_rationale` in concrete terms, naming what you avoided repeating.\n\n**Format families** (choose one, or propose a new one and name it):\n`single-scene-slow-drift`, `journey` (a sequence of connected locations), `seasonal-cycle`, `abstract-generative`, `interior-space` (a room, a cabin, a library), `weather-study`, `night-sky`, `underwater`, `micro-world` (macro detail), `city-at-rest`, `sound-first` (visual is minimal, audio carries the structure).\n\n**Scenes.** Give each scene a duration in seconds, a visual description a stranger could render, a motion description (what moves, how slowly), a palette, and a transition into the next scene. Scene durations must add up to the target duration. Long-form ambient viewers stay for stillness: fewer, longer scenes beat many short ones. No scene shorter than 90 seconds unless `format_spec` says otherwise.\n\n**Audio.** Describe mood, tempo, key or modal centre, instrumentation, dynamics over time, and structure aligned to the scenes (which scene introduces or removes an element). The audio must be original or licensed; never reference an existing artist, track, album, or a recognisable melody as something to imitate. Style words are fine (\"slow modal piano over sustained strings\"); \"sounds like Ólafur Arnalds\" is not.\n\n**Spoken intro.** Only if `format_spec.spoken_intro` is true. Then write the full script, under 60 seconds spoken, calm, second person, no medical claims, no promises about outcomes.\n\n**Title direction.** Give a working title and two alternates. Descriptive, honest, no clickbait, no ALL CAPS, no emoji. The metadata stage will finalise it.\n\n## Hard rules\n\n- No real, named people, living or dead. No celebrities, no historical figures depicted.\n- No trademarked characters, logos, brands, franchises, or recognisable copyrighted artworks and buildings used as the subject.\n- No claims that the video treats, cures, or diagnoses anything. \"For sleep\" is fine; \"cures insomnia\" is not.\n- No content aimed at children. The audience is adults.\n- Nothing that requires text on screen except an optional title card.\n- Everything you specify must be producible from the given `audio_source` and `visual_source`.\n\n## Output\n\nReturn only the JSON object described by the schema. Fill every field. Put anything you had to guess in `assumptions` so the reviewer can correct it before anything renders.\n",
+              "type": "string"
+            },
+            {
+              "id": "de57288c-a48e-4287-8e53-ec69fe8c5ed6",
+              "name": "concept_schema",
+              "value": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"format_family\",\"theme\",\"working_title\",\"alternate_titles\",\"duration_minutes\",\"spoken_intro\",\"scenes\",\"audio_brief\",\"visual_style\",\"variation_rationale\",\"compliance_checklist\",\"assumptions\"],\"properties\":{\"format_family\":{\"type\":\"string\",\"description\":\"One of the named format families, or a new one you name.\"},\"theme\":{\"type\":\"string\",\"description\":\"One sentence: the world and mood of this video.\"},\"working_title\":{\"type\":\"string\"},\"alternate_titles\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"duration_minutes\":{\"type\":\"integer\",\"description\":\"Target total duration. Must equal the sum of scene durations divided by 60, rounded.\"},\"spoken_intro\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"enabled\",\"script\",\"voice_direction\"],\"properties\":{\"enabled\":{\"type\":\"boolean\"},\"script\":{\"type\":\"string\",\"description\":\"Full script when enabled, otherwise empty string.\"},\"voice_direction\":{\"type\":\"string\",\"description\":\"Pace, tone, gender-neutral if unspecified; empty when disabled.\"}}},\"scenes\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"index\",\"name\",\"duration_seconds\",\"visual_description\",\"motion\",\"palette\",\"transition_out\"],\"properties\":{\"index\":{\"type\":\"integer\",\"description\":\"1-based order.\"},\"name\":{\"type\":\"string\",\"description\":\"Short label, used as the chapter name.\"},\"duration_seconds\":{\"type\":\"integer\"},\"visual_description\":{\"type\":\"string\",\"description\":\"What is in frame, in renderable detail. No real people, brands, or copyrighted subjects.\"},\"motion\":{\"type\":\"string\",\"description\":\"What moves and how slowly. For stills-with-motion, name the parallax, drift, or particle effect.\"},\"palette\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"3 to 5 colour names or hex values.\"},\"transition_out\":{\"type\":\"string\",\"description\":\"How this scene hands over to the next; 'end' for the last scene.\"}}}},\"audio_brief\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"mood\",\"tempo_bpm\",\"tonal_centre\",\"instrumentation\",\"dynamics_over_time\",\"structure_by_scene\",\"generation_prompt\",\"loop_safe\"],\"properties\":{\"mood\":{\"type\":\"string\"},\"tempo_bpm\":{\"type\":\"integer\",\"description\":\"0 for free time.\"},\"tonal_centre\":{\"type\":\"string\",\"description\":\"Key or mode, e.g. 'D Dorian', 'A minor', 'drone on C'.\"},\"instrumentation\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"dynamics_over_time\":{\"type\":\"string\",\"description\":\"How intensity moves across the full duration.\"},\"structure_by_scene\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"scene_index\",\"change\"],\"properties\":{\"scene_index\":{\"type\":\"integer\"},\"change\":{\"type\":\"string\",\"description\":\"What enters, leaves, or shifts at this scene.\"}}}},\"generation_prompt\":{\"type\":\"string\",\"description\":\"A single prompt suitable for a music generation service or a brief to a composer. Style words only; no artist, track, or album references.\"},\"loop_safe\":{\"type\":\"boolean\",\"description\":\"True if the piece is designed to loop seamlessly.\"}}},\"visual_style\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"medium\",\"global_palette\",\"camera_language\",\"negative_prompt\",\"generation_prompt_prefix\"],\"properties\":{\"medium\":{\"type\":\"string\",\"description\":\"e.g. painterly, photoreal-stylised, 2D flat, film grain.\"},\"global_palette\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"camera_language\":{\"type\":\"string\"},\"negative_prompt\":{\"type\":\"string\",\"description\":\"What must not appear: text, watermarks, people, logos, and anything scene-specific.\"},\"generation_prompt_prefix\":{\"type\":\"string\",\"description\":\"Prefix applied to every scene's image prompt so the set looks like one piece.\"}}},\"variation_rationale\":{\"type\":\"string\",\"description\":\"Concretely how this differs from recent_videos and what you avoided repeating.\"},\"compliance_checklist\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"no_real_people\",\"no_brands_or_trademarks\",\"no_copyrighted_subjects\",\"audio_is_original_or_licensed\",\"no_health_claims\",\"adult_audience\",\"notes\"],\"properties\":{\"no_real_people\":{\"type\":\"boolean\"},\"no_brands_or_trademarks\":{\"type\":\"boolean\"},\"no_copyrighted_subjects\":{\"type\":\"boolean\"},\"audio_is_original_or_licensed\":{\"type\":\"boolean\"},\"no_health_claims\":{\"type\":\"boolean\"},\"adult_audience\":{\"type\":\"boolean\"},\"notes\":{\"type\":\"string\"}}},\"assumptions\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"Every guess you made because the brief was silent or undecided.\"}}}",
+              "type": "string"
+            },
+            {
+              "id": "63d23190-f306-4314-8493-fd9c46f61d93",
+              "name": "metadata_system",
+              "value": "<!-- prompt: metadata | version: 1.0.0 | 2026-09-08 -->\nYou write YouTube upload metadata for a faceless ambient channel (sleep, focus, study, meditation; adult audience). You receive the approved video concept as JSON plus channel settings, and you return one JSON object matching the attached schema.\n\nThe metadata is uploaded as-is after a human glance. Write it to be correct on the first pass.\n\n## Title\n\n- At most 100 characters. Aim for 50 to 70.\n- Lead with what the viewer is searching for (the use: sleep, focus, study, rain, night, and so on), then the distinguishing detail of this specific video, then the duration if it fits naturally (\"45 min\", \"1 Hour\").\n- Plain descriptive language. No ALL CAPS words, no emoji, no brackets stuffed with keywords, no \"#1\", no \"you won't believe\".\n- Do not reuse a title pattern from `recent_titles`; vary the structure, not just the nouns.\n\n## Description\n\n- At most 5000 characters. Aim for 600 to 1200.\n- First two lines carry the hook and the use case; they are what shows before \"more\".\n- Include a chapters block: one line per scene as `M:SS Scene name` (or `H:MM:SS` when over an hour). The first chapter is `0:00`. Timestamps come from the cumulative scene durations in the concept; compute them exactly. At least three chapters, each at least 10 seconds long, in ascending order.\n- One short paragraph on how the piece was made, honest about generated elements when `ai_disclosure.required` is true (for example \"Visuals were generated and animated from original prompts; the music is an original composition\").\n- Close with a plain line inviting comments on what settings they used it for. No calls to subscribe in every sentence, no link farms, no hashtags beyond three at most.\n- Never claim health outcomes. Never mention other artists, tracks, or channels.\n\n## Tags\n\n- 8 to 20 tags. Total characters across all tags, including separating commas, must stay under 480.\n- Mix: use-case terms, the format family, sensory descriptors, duration. Lowercase, no hashtags, no duplicates, no brand names.\n\n## Other fields\n\n- `category_id`: \"10\" (Music) unless the concept is clearly non-musical ambience such as pure rain, in which case \"22\" (People & Blogs) is the neutral fallback.\n- `default_language`: BCP-47, normally \"en\".\n- `made_for_kids`: always false.\n- `ai_disclosure`: set `required` to true when any of the following is generated by AI in a way a viewer could mistake for real footage or real people: realistic scenes of real-looking places or events, synthetic voice, realistic sound recordings. Abstract or clearly stylised generated visuals and instrumental generated music do not by themselves require the disclosure, but the channel may still choose to disclose; explain your reasoning in `reason` so the reviewer can override.\n- `thumbnail_text`: at most four words for an optional overlay, or an empty string if the image should stand alone.\n- `review_notes`: anything the human reviewer should check before publishing (a claim you softened, a title you were unsure about, a chapter that is very short).\n\n## Output\n\nReturn only the JSON object described by the schema.\n",
+              "type": "string"
+            },
+            {
+              "id": "84d5bbc1-00b0-4578-bb07-ee44e4a31ff1",
+              "name": "metadata_schema",
+              "value": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"title\",\"description\",\"tags\",\"category_id\",\"default_language\",\"made_for_kids\",\"chapters\",\"ai_disclosure\",\"thumbnail_text\",\"review_notes\"],\"properties\":{\"title\":{\"type\":\"string\",\"description\":\"At most 100 characters.\"},\"description\":{\"type\":\"string\",\"description\":\"At most 5000 characters. Contains the chapters block verbatim.\"},\"tags\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"8 to 20 lowercase tags; total length with commas under 480 characters.\"},\"category_id\":{\"type\":\"string\",\"description\":\"YouTube category id as a string, normally '10'.\"},\"default_language\":{\"type\":\"string\",\"description\":\"BCP-47 code, e.g. 'en'.\"},\"made_for_kids\":{\"type\":\"boolean\",\"description\":\"Always false for this channel.\"},\"chapters\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"start_seconds\",\"timestamp\",\"name\"],\"properties\":{\"start_seconds\":{\"type\":\"integer\"},\"timestamp\":{\"type\":\"string\",\"description\":\"M:SS or H:MM:SS, as written in the description.\"},\"name\":{\"type\":\"string\"}}}},\"ai_disclosure\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"required\",\"reason\"],\"properties\":{\"required\":{\"type\":\"boolean\"},\"reason\":{\"type\":\"string\"}}},\"thumbnail_text\":{\"type\":\"string\",\"description\":\"At most four words, or empty.\"},\"review_notes\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "a5e4261a-ca21-477d-a697-5f419ceddd5a",
+      "name": "Prompts",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        500,
+        300
+      ],
+      "notes": "Filled from prompts/*.md and prompts/schemas/*.json by `node harness/run.mjs sync-workflow`. Edit the files, not this node.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Reads the channel's own publish history (workflow static data) so the concept prompt can avoid repeating itself.\nconst raw = $('Pipeline Config').first().json;\nconst config = { ...raw, channel: JSON.parse(raw.channel), format_spec: JSON.parse(raw.format_spec) };\nconst store = $getWorkflowStaticData('global');\nconst history = Array.isArray(store.history) ? store.history : [];\nconst recent = history.slice(-8).map((h) => ({ published: h.date, status: h.status, format_family: h.format_family, theme: h.theme, palette: h.palette, mood: h.mood, title: h.title }));\nconst now = new Date();\nconst m = now.getUTCMonth();\nconst season = m <= 1 || m === 11 ? 'winter' : m <= 4 ? 'spring' : m <= 7 ? 'summer' : 'autumn';\nreturn [{ json: {\n  run_id: now.toISOString().slice(0, 10) + '-' + $execution.id,\n  today: now.toISOString().slice(0, 10),\n  season_hint: season + ' in the northern hemisphere',\n  config,\n  recent_videos: recent,\n} }];"
+      },
+      "id": "8b611df6-304e-4e37-9d1d-a9e078712a15",
+      "name": "Load Recent Videos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Same request shape as harness/run.mjs buildRequest('concept'). Structured output via output_config.format.\nconst item = $input.first().json;\nconst p = $('Prompts').first().json;\nconst cfg = item.config;\nconst brief = {\n  channel: cfg.channel,\n  format_spec: cfg.format_spec,\n  audio_source: cfg.audio_source,\n  visual_source: cfg.visual_source,\n  recent_videos: item.recent_videos,\n  today: item.today,\n  season_hint: item.season_hint,\n};\nconst body = {\n  model: cfg.anthropic_model,\n  max_tokens: 12000,\n  system: [{ type: 'text', text: p.concept_system, cache_control: { type: 'ephemeral' } }],\n  messages: [{ role: 'user', content: JSON.stringify(brief, null, 2) }],\n  output_config: { effort: cfg.anthropic_effort, format: { type: 'json_schema', schema: JSON.parse(p.concept_schema) } },\n};\nreturn [{ json: { ...item, brief, body } }];"
+      },
+      "id": "21c49dd3-9eb0-43cd-9566-82ff78fc7fc6",
+      "name": "Build Concept Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        980,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Pipeline Config').first().json.anthropic_base_url }}/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "id": "22dd8169-4a30-4919-96cc-381b45418836",
+      "name": "Claude: Concept",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1220,
+        300
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": "__select_on_import__",
+          "name": "Anthropic API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 10000
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---- shared validation (synced from harness/lib/validate.js; do not edit here) ----\n// Shared validation for Claude outputs. This file has NO imports and NO exports on purpose:\n// the harness loads it with `new Function`, and `run.mjs sync-workflow` pastes it verbatim\n// into the \"Parse Concept\" and \"Parse Metadata\" Code nodes of the n8n workflow between the\n// `// ---- shared validation` markers. Keep it plain ES2020.\n\nfunction extractJsonText(apiResponse) {\n  if (!apiResponse || typeof apiResponse !== 'object') throw new Error('Empty API response');\n  if (apiResponse.stop_reason === 'refusal') {\n    const cat = apiResponse.stop_details && apiResponse.stop_details.category;\n    throw new Error('Claude refused the request' + (cat ? ' (category: ' + cat + ')' : ''));\n  }\n  if (apiResponse.stop_reason === 'max_tokens') {\n    throw new Error('Output truncated at max_tokens; raise max_tokens in the request builder');\n  }\n  const blocks = Array.isArray(apiResponse.content) ? apiResponse.content : [];\n  const text = blocks.filter((b) => b && b.type === 'text').map((b) => b.text).join('');\n  if (!text.trim()) throw new Error('No text block in API response (stop_reason=' + apiResponse.stop_reason + ')');\n  return text;\n}\n\nfunction parseJsonStrict(text, label) {\n  try {\n    return JSON.parse(text);\n  } catch (e) {\n    throw new Error(label + ': output is not valid JSON: ' + e.message + '\\n' + text.slice(0, 400));\n  }\n}\n\nfunction fmtTimestamp(totalSeconds) {\n  const h = Math.floor(totalSeconds / 3600);\n  const m = Math.floor((totalSeconds % 3600) / 60);\n  const s = totalSeconds % 60;\n  const mm = h > 0 ? String(m).padStart(2, '0') : String(m);\n  return (h > 0 ? h + ':' : '') + mm + ':' + String(s).padStart(2, '0');\n}\n\n// Returns { ok, errors: [], warnings: [] }. Errors block the run; warnings go to the reviewer.\nfunction validateConcept(concept, formatSpec) {\n  const errors = [];\n  const warnings = [];\n  const spec = formatSpec || {};\n  const scenes = Array.isArray(concept.scenes) ? concept.scenes : [];\n\n  if (scenes.length === 0) errors.push('no scenes');\n  const total = scenes.reduce((a, s) => a + (Number(s.duration_seconds) || 0), 0);\n  const targetMin = Number(spec.duration_minutes) || Number(concept.duration_minutes) || 0;\n  if (targetMin > 0) {\n    const drift = Math.abs(total - targetMin * 60) / (targetMin * 60);\n    if (drift > 0.05) errors.push('scene durations sum to ' + total + 's, target ' + targetMin * 60 + 's (' + Math.round(drift * 100) + '% off)');\n  }\n  if (Math.round(total / 60) !== Number(concept.duration_minutes)) {\n    warnings.push('duration_minutes (' + concept.duration_minutes + ') does not match scene total (' + Math.round(total / 60) + ' min)');\n  }\n  const minScene = Number(spec.min_scene_seconds) || 90;\n  scenes.forEach((s, i) => {\n    if (Number(s.index) !== i + 1) errors.push('scene ' + (i + 1) + ' has index ' + s.index);\n    if (!(Number(s.duration_seconds) >= minScene)) errors.push('scene ' + (i + 1) + ' is shorter than ' + minScene + 's');\n    if (!s.visual_description || s.visual_description.length < 40) errors.push('scene ' + (i + 1) + ' visual_description too thin');\n    if (!Array.isArray(s.palette) || s.palette.length < 3) warnings.push('scene ' + (i + 1) + ' palette has fewer than 3 colours');\n  });\n  if (spec.scene_count_min && scenes.length < spec.scene_count_min) errors.push('fewer scenes than format_spec.scene_count_min');\n  if (spec.scene_count_max && scenes.length > spec.scene_count_max) errors.push('more scenes than format_spec.scene_count_max');\n\n  const intro = concept.spoken_intro || {};\n  if (spec.spoken_intro === false && intro.enabled) errors.push('spoken intro produced but format_spec forbids it');\n  if (intro.enabled && (!intro.script || intro.script.split(/\\s+/).length > 170)) errors.push('spoken intro script missing or longer than ~60s spoken');\n\n  const cc = concept.compliance_checklist || {};\n  ['no_real_people', 'no_brands_or_trademarks', 'no_copyrighted_subjects', 'audio_is_original_or_licensed', 'no_health_claims', 'adult_audience'].forEach((k) => {\n    if (cc[k] !== true) errors.push('compliance_checklist.' + k + ' is not true');\n  });\n  const banned = /(cure|cures|treat|treats|heal|heals|therapy for|clinically|guaranteed)/i;\n  const scan = JSON.stringify([concept.working_title, concept.alternate_titles, concept.theme, intro.script]);\n  if (banned.test(scan)) warnings.push('possible health-claim wording in titles/intro: review');\n  if (!concept.variation_rationale || concept.variation_rationale.length < 60) warnings.push('variation_rationale is thin; check against recent videos');\n\n  return { ok: errors.length === 0, errors: errors, warnings: warnings, total_seconds: total };\n}\n\nfunction validateMetadata(meta, concept) {\n  const errors = [];\n  const warnings = [];\n  const title = String(meta.title || '');\n  if (!title.trim()) errors.push('empty title');\n  if (title.length > 100) errors.push('title longer than 100 chars (' + title.length + ')');\n  if (/[A-Z]{5,}/.test(title)) warnings.push('title contains an ALL-CAPS run');\n  if (/[\\u{1F300}-\\u{1FAFF}]/u.test(title)) errors.push('title contains emoji');\n\n  const desc = String(meta.description || '');\n  if (desc.length > 5000) errors.push('description longer than 5000 chars');\n  if (desc.length < 200) warnings.push('description is short (' + desc.length + ' chars)');\n  if (/[<>]/.test(desc)) errors.push('description contains < or > which YouTube rejects');\n\n  const tags = Array.isArray(meta.tags) ? meta.tags.map((t) => String(t).trim()).filter(Boolean) : [];\n  if (tags.length < 8) warnings.push('fewer than 8 tags');\n  if (tags.length > 20) warnings.push('more than 20 tags');\n  const joined = tags.join(',');\n  if (joined.length > 480) errors.push('tags total ' + joined.length + ' chars; YouTube limit is 500 including separators');\n  if (tags.some((t) => t.length > 100)) errors.push('a single tag exceeds 100 chars');\n  const lower = new Set(tags.map((t) => t.toLowerCase()));\n  if (lower.size !== tags.length) warnings.push('duplicate tags');\n\n  if (meta.made_for_kids !== false) errors.push('made_for_kids must be false');\n  if (!/^\\d+$/.test(String(meta.category_id))) errors.push('category_id must be a numeric string');\n\n  // Chapters must match the concept's scene timeline exactly.\n  const scenes = concept && Array.isArray(concept.scenes) ? concept.scenes : [];\n  const chapters = Array.isArray(meta.chapters) ? meta.chapters : [];\n  if (chapters.length < 3) errors.push('fewer than 3 chapters');\n  let cursor = 0;\n  scenes.forEach((s, i) => {\n    const ch = chapters[i];\n    if (!ch) { errors.push('missing chapter for scene ' + (i + 1)); cursor += Number(s.duration_seconds) || 0; return; }\n    if (Number(ch.start_seconds) !== cursor) errors.push('chapter ' + (i + 1) + ' starts at ' + ch.start_seconds + 's, scene timeline says ' + cursor + 's');\n    const expected = fmtTimestamp(cursor);\n    if (ch.timestamp !== expected) errors.push('chapter ' + (i + 1) + ' timestamp \"' + ch.timestamp + '\" should be \"' + expected + '\"');\n    if (!desc.includes(ch.timestamp + ' ')) errors.push('chapter timestamp ' + ch.timestamp + ' not present in description');\n    cursor += Number(s.duration_seconds) || 0;\n  });\n  if (chapters.length > scenes.length) warnings.push('more chapters than scenes');\n  if (!desc.startsWith('0:00') && !desc.includes('\\n0:00 ')) errors.push('description must contain a \"0:00\" chapter line');\n\n  const banned = /(cure|cures|treat|treats|heal|heals|clinically|guaranteed)/i;\n  if (banned.test(title) || banned.test(desc)) warnings.push('possible health-claim wording; review');\n  const hashtags = (desc.match(/#\\w+/g) || []).length;\n  if (hashtags > 3) warnings.push(hashtags + ' hashtags in description; keep to 3');\n  if (String(meta.thumbnail_text || '').split(/\\s+/).filter(Boolean).length > 4) warnings.push('thumbnail_text longer than 4 words');\n\n  return { ok: errors.length === 0, errors: errors, warnings: warnings };\n}\n// ---- end shared validation ----\n\nconst api = $input.first().json;\nconst ctx = $('Build Concept Request').first().json;\nconst concept = parseJsonStrict(extractJsonText(api), 'concept');\nconst v = validateConcept(concept, ctx.config.format_spec);\nif (!v.ok) throw new Error('Concept failed validation:\\n- ' + v.errors.join('\\n- '));\nreturn [{ json: {\n  run_id: ctx.run_id, today: ctx.today, config: ctx.config, recent_videos: ctx.recent_videos,\n  concept, concept_warnings: v.warnings, total_seconds: v.total_seconds,\n  usage: { concept: api.usage, model: api.model },\n} }];"
+      },
+      "id": "584f3b02-88ee-4f20-a6d0-15b1a235aa08",
+      "name": "Parse Concept",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst p = $('Prompts').first().json;\nconst cfg = item.config;\nconst payload = {\n  concept: item.concept,\n  channel_settings: {\n    recent_titles: (item.recent_videos || []).map((r) => r.title).filter(Boolean),\n    default_language: cfg.default_language,\n    ai_disclosure_policy: cfg.ai_disclosure_policy,\n    audio_source: cfg.audio_source,\n    visual_source: cfg.visual_source,\n  },\n};\nconst body = {\n  model: cfg.anthropic_model,\n  max_tokens: 6000,\n  system: [{ type: 'text', text: p.metadata_system, cache_control: { type: 'ephemeral' } }],\n  messages: [{ role: 'user', content: JSON.stringify(payload, null, 2) }],\n  output_config: { effort: cfg.anthropic_effort, format: { type: 'json_schema', schema: JSON.parse(p.metadata_schema) } },\n};\nreturn [{ json: { ...item, body } }];"
+      },
+      "id": "459b4a56-e55a-4086-b7d9-64df26cfa3d9",
+      "name": "Build Metadata Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Pipeline Config').first().json.anthropic_base_url }}/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "id": "e3247d51-f57b-45c5-b9bb-ff9dcf663b4e",
+      "name": "Claude: Metadata",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1940,
+        300
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": "__select_on_import__",
+          "name": "Anthropic API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 10000
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---- shared validation (synced from harness/lib/validate.js; do not edit here) ----\n// Shared validation for Claude outputs. This file has NO imports and NO exports on purpose:\n// the harness loads it with `new Function`, and `run.mjs sync-workflow` pastes it verbatim\n// into the \"Parse Concept\" and \"Parse Metadata\" Code nodes of the n8n workflow between the\n// `// ---- shared validation` markers. Keep it plain ES2020.\n\nfunction extractJsonText(apiResponse) {\n  if (!apiResponse || typeof apiResponse !== 'object') throw new Error('Empty API response');\n  if (apiResponse.stop_reason === 'refusal') {\n    const cat = apiResponse.stop_details && apiResponse.stop_details.category;\n    throw new Error('Claude refused the request' + (cat ? ' (category: ' + cat + ')' : ''));\n  }\n  if (apiResponse.stop_reason === 'max_tokens') {\n    throw new Error('Output truncated at max_tokens; raise max_tokens in the request builder');\n  }\n  const blocks = Array.isArray(apiResponse.content) ? apiResponse.content : [];\n  const text = blocks.filter((b) => b && b.type === 'text').map((b) => b.text).join('');\n  if (!text.trim()) throw new Error('No text block in API response (stop_reason=' + apiResponse.stop_reason + ')');\n  return text;\n}\n\nfunction parseJsonStrict(text, label) {\n  try {\n    return JSON.parse(text);\n  } catch (e) {\n    throw new Error(label + ': output is not valid JSON: ' + e.message + '\\n' + text.slice(0, 400));\n  }\n}\n\nfunction fmtTimestamp(totalSeconds) {\n  const h = Math.floor(totalSeconds / 3600);\n  const m = Math.floor((totalSeconds % 3600) / 60);\n  const s = totalSeconds % 60;\n  const mm = h > 0 ? String(m).padStart(2, '0') : String(m);\n  return (h > 0 ? h + ':' : '') + mm + ':' + String(s).padStart(2, '0');\n}\n\n// Returns { ok, errors: [], warnings: [] }. Errors block the run; warnings go to the reviewer.\nfunction validateConcept(concept, formatSpec) {\n  const errors = [];\n  const warnings = [];\n  const spec = formatSpec || {};\n  const scenes = Array.isArray(concept.scenes) ? concept.scenes : [];\n\n  if (scenes.length === 0) errors.push('no scenes');\n  const total = scenes.reduce((a, s) => a + (Number(s.duration_seconds) || 0), 0);\n  const targetMin = Number(spec.duration_minutes) || Number(concept.duration_minutes) || 0;\n  if (targetMin > 0) {\n    const drift = Math.abs(total - targetMin * 60) / (targetMin * 60);\n    if (drift > 0.05) errors.push('scene durations sum to ' + total + 's, target ' + targetMin * 60 + 's (' + Math.round(drift * 100) + '% off)');\n  }\n  if (Math.round(total / 60) !== Number(concept.duration_minutes)) {\n    warnings.push('duration_minutes (' + concept.duration_minutes + ') does not match scene total (' + Math.round(total / 60) + ' min)');\n  }\n  const minScene = Number(spec.min_scene_seconds) || 90;\n  scenes.forEach((s, i) => {\n    if (Number(s.index) !== i + 1) errors.push('scene ' + (i + 1) + ' has index ' + s.index);\n    if (!(Number(s.duration_seconds) >= minScene)) errors.push('scene ' + (i + 1) + ' is shorter than ' + minScene + 's');\n    if (!s.visual_description || s.visual_description.length < 40) errors.push('scene ' + (i + 1) + ' visual_description too thin');\n    if (!Array.isArray(s.palette) || s.palette.length < 3) warnings.push('scene ' + (i + 1) + ' palette has fewer than 3 colours');\n  });\n  if (spec.scene_count_min && scenes.length < spec.scene_count_min) errors.push('fewer scenes than format_spec.scene_count_min');\n  if (spec.scene_count_max && scenes.length > spec.scene_count_max) errors.push('more scenes than format_spec.scene_count_max');\n\n  const intro = concept.spoken_intro || {};\n  if (spec.spoken_intro === false && intro.enabled) errors.push('spoken intro produced but format_spec forbids it');\n  if (intro.enabled && (!intro.script || intro.script.split(/\\s+/).length > 170)) errors.push('spoken intro script missing or longer than ~60s spoken');\n\n  const cc = concept.compliance_checklist || {};\n  ['no_real_people', 'no_brands_or_trademarks', 'no_copyrighted_subjects', 'audio_is_original_or_licensed', 'no_health_claims', 'adult_audience'].forEach((k) => {\n    if (cc[k] !== true) errors.push('compliance_checklist.' + k + ' is not true');\n  });\n  const banned = /(cure|cures|treat|treats|heal|heals|therapy for|clinically|guaranteed)/i;\n  const scan = JSON.stringify([concept.working_title, concept.alternate_titles, concept.theme, intro.script]);\n  if (banned.test(scan)) warnings.push('possible health-claim wording in titles/intro: review');\n  if (!concept.variation_rationale || concept.variation_rationale.length < 60) warnings.push('variation_rationale is thin; check against recent videos');\n\n  return { ok: errors.length === 0, errors: errors, warnings: warnings, total_seconds: total };\n}\n\nfunction validateMetadata(meta, concept) {\n  const errors = [];\n  const warnings = [];\n  const title = String(meta.title || '');\n  if (!title.trim()) errors.push('empty title');\n  if (title.length > 100) errors.push('title longer than 100 chars (' + title.length + ')');\n  if (/[A-Z]{5,}/.test(title)) warnings.push('title contains an ALL-CAPS run');\n  if (/[\\u{1F300}-\\u{1FAFF}]/u.test(title)) errors.push('title contains emoji');\n\n  const desc = String(meta.description || '');\n  if (desc.length > 5000) errors.push('description longer than 5000 chars');\n  if (desc.length < 200) warnings.push('description is short (' + desc.length + ' chars)');\n  if (/[<>]/.test(desc)) errors.push('description contains < or > which YouTube rejects');\n\n  const tags = Array.isArray(meta.tags) ? meta.tags.map((t) => String(t).trim()).filter(Boolean) : [];\n  if (tags.length < 8) warnings.push('fewer than 8 tags');\n  if (tags.length > 20) warnings.push('more than 20 tags');\n  const joined = tags.join(',');\n  if (joined.length > 480) errors.push('tags total ' + joined.length + ' chars; YouTube limit is 500 including separators');\n  if (tags.some((t) => t.length > 100)) errors.push('a single tag exceeds 100 chars');\n  const lower = new Set(tags.map((t) => t.toLowerCase()));\n  if (lower.size !== tags.length) warnings.push('duplicate tags');\n\n  if (meta.made_for_kids !== false) errors.push('made_for_kids must be false');\n  if (!/^\\d+$/.test(String(meta.category_id))) errors.push('category_id must be a numeric string');\n\n  // Chapters must match the concept's scene timeline exactly.\n  const scenes = concept && Array.isArray(concept.scenes) ? concept.scenes : [];\n  const chapters = Array.isArray(meta.chapters) ? meta.chapters : [];\n  if (chapters.length < 3) errors.push('fewer than 3 chapters');\n  let cursor = 0;\n  scenes.forEach((s, i) => {\n    const ch = chapters[i];\n    if (!ch) { errors.push('missing chapter for scene ' + (i + 1)); cursor += Number(s.duration_seconds) || 0; return; }\n    if (Number(ch.start_seconds) !== cursor) errors.push('chapter ' + (i + 1) + ' starts at ' + ch.start_seconds + 's, scene timeline says ' + cursor + 's');\n    const expected = fmtTimestamp(cursor);\n    if (ch.timestamp !== expected) errors.push('chapter ' + (i + 1) + ' timestamp \"' + ch.timestamp + '\" should be \"' + expected + '\"');\n    if (!desc.includes(ch.timestamp + ' ')) errors.push('chapter timestamp ' + ch.timestamp + ' not present in description');\n    cursor += Number(s.duration_seconds) || 0;\n  });\n  if (chapters.length > scenes.length) warnings.push('more chapters than scenes');\n  if (!desc.startsWith('0:00') && !desc.includes('\\n0:00 ')) errors.push('description must contain a \"0:00\" chapter line');\n\n  const banned = /(cure|cures|treat|treats|heal|heals|clinically|guaranteed)/i;\n  if (banned.test(title) || banned.test(desc)) warnings.push('possible health-claim wording; review');\n  const hashtags = (desc.match(/#\\w+/g) || []).length;\n  if (hashtags > 3) warnings.push(hashtags + ' hashtags in description; keep to 3');\n  if (String(meta.thumbnail_text || '').split(/\\s+/).filter(Boolean).length > 4) warnings.push('thumbnail_text longer than 4 words');\n\n  return { ok: errors.length === 0, errors: errors, warnings: warnings };\n}\n// ---- end shared validation ----\n\nconst api = $input.first().json;\nconst ctx = $('Build Metadata Request').first().json;\nconst metadata = parseJsonStrict(extractJsonText(api), 'metadata');\nconst v = validateMetadata(metadata, ctx.concept);\nif (!v.ok) throw new Error('Metadata failed validation:\\n- ' + v.errors.join('\\n- '));\nconst { body, ...rest } = ctx;\nrest.usage = { ...rest.usage, metadata: api.usage };\nreturn [{ json: { ...rest, metadata, metadata_warnings: v.warnings } }];"
+      },
+      "id": "b175db75-2e33-4773-a40d-2a83463907af",
+      "name": "Parse Metadata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2180,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Builds the Slack review text. Slack section blocks cap at 3000 chars, so this stays compact.\nconst pkg = $input.first().json;\nconst c = pkg.concept, m = pkg.metadata, cfg = pkg.config;\nconst mmss = (s) => { const h = Math.floor(s / 3600), mi = Math.floor((s % 3600) / 60), se = s % 60; return (h ? h + ':' : '') + (h ? String(mi).padStart(2, '0') : mi) + ':' + String(se).padStart(2, '0'); };\nlet t = 0;\nconst scenes = c.scenes.map((s) => { const line = mmss(t) + ' ' + s.name + ' (' + Math.round(s.duration_seconds / 60) + ' min)'; t += s.duration_seconds; return line; });\nconst warnings = [...(pkg.concept_warnings || []), ...(pkg.metadata_warnings || []), ...(m.review_notes || [])];\nconst cut = (s, n) => (s && s.length > n ? s.slice(0, n - 1) + '\\u2026' : s || '');\nconst lines = [\n  '*Concept for review* \\u2014 run `' + pkg.run_id + '` \\u00b7 render mode: *' + cfg.render_mode + '*',\n  '*Title:* ' + m.title,\n  '*Format:* ' + c.format_family + ' \\u00b7 ' + c.duration_minutes + ' min \\u00b7 ' + c.scenes.length + ' scenes \\u00b7 spoken intro: ' + (c.spoken_intro.enabled ? 'yes' : 'no'),\n  '*Theme:* ' + cut(c.theme, 300),\n  '*Why it differs from recent uploads:* ' + cut(c.variation_rationale, 400),\n  '*Scenes:*\\n' + scenes.join('\\n'),\n  '*Audio:* ' + cut(c.audio_brief.mood + ' \\u00b7 ' + c.audio_brief.tonal_centre + ' \\u00b7 ' + c.audio_brief.instrumentation.join(', '), 300),\n  '*Tags:* ' + cut(m.tags.join(', '), 300),\n  '*AI disclosure:* ' + (m.ai_disclosure.required ? 'REQUIRED' : 'not required') + ' \\u2014 ' + cut(m.ai_disclosure.reason, 200),\n  c.assumptions && c.assumptions.length ? '*Assumptions made:*\\n\\u2022 ' + c.assumptions.map((a) => cut(a, 160)).join('\\n\\u2022 ') : '',\n  warnings.length ? '*Check before approving:*\\n\\u2022 ' + warnings.map((w) => cut(w, 160)).join('\\n\\u2022 ') : '',\n  cfg.render_mode === 'creatomate' ? '_Approve = render on Creatomate, then upload to YouTube as PRIVATE._' : '_Approve = record the concept and post the render payload here. Nothing renders or uploads in stub mode._',\n].filter(Boolean);\nlet review_message = lines.join('\\n\\n');\nif (review_message.length > 2900) review_message = review_message.slice(0, 2890) + '\\n\\u2026';\nreturn [{ json: { ...pkg, review_message } }];"
+      },
+      "id": "8a7f08e7-7b08-4b4e-9036-d050c8c32eba",
+      "name": "Assemble Review Package",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendAndWait",
+        "authentication": "accessToken",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Pipeline Config').first().json.slack_channel }}"
+        },
+        "message": "={{ $json.review_message }}",
+        "responseType": "approval",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Approve",
+            "disapproveLabel": "Reject"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "limitType": "afterTimeInterval",
+              "resumeAmount": "={{ $('Pipeline Config').first().json.approval_timeout_hours }}",
+              "resumeUnit": "hours"
+            }
+          }
+        }
+      },
+      "id": "b2cefecc-3f33-48bc-9124-dd597a8149ad",
+      "name": "Slack: Request Approval",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        2660,
+        300
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "__select_on_import__",
+          "name": "Slack Bot (yt-approvals)"
+        }
+      },
+      "webhookId": "969ce1d1-18a7-4aeb-83d4-324d1877f4e1",
+      "notes": "Mandatory human gate. Output is {data:{approved}}; on timeout the input passes through unchanged and counts as NOT approved.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e00b7a55-4daf-4655-a283-29549ad14550",
+              "leftValue": "={{ !!($json.data && $json.data.approved === true) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d718bcea-471b-440e-b71a-c96ab8ed113e",
+      "name": "Approved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function appendHistory(entry) {\n  const store = $getWorkflowStaticData('global');\n  store.history = Array.isArray(store.history) ? store.history : [];\n  store.history.push(entry);\n  if (store.history.length > 60) store.history = store.history.slice(-60);\n}\nconst pkg = $('Assemble Review Package').first().json;\nconst resp = $input.first().json;\nconst status = resp.data && resp.data.approved === false ? 'rejected' : 'timed_out';\nappendHistory({ date: pkg.today, run_id: pkg.run_id, status, format_family: pkg.concept.format_family, theme: pkg.concept.theme, palette: pkg.concept.visual_style.global_palette, mood: pkg.concept.audio_brief.mood, title: pkg.metadata.title });\nconst notice = status === 'rejected'\n  ? ':no_entry: Concept `' + pkg.run_id + '` rejected. Nothing rendered or uploaded.'\n  : ':hourglass: Concept `' + pkg.run_id + '` timed out waiting for approval and was discarded. Nothing rendered or uploaded.';\nreturn [{ json: { run_id: pkg.run_id, status, notice } }];"
+      },
+      "id": "3498d813-ce95-45ea-8d4d-b0684c5fe5d5",
+      "name": "Record Rejection",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3140,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "authentication": "accessToken",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Pipeline Config').first().json.slack_channel }}"
+        },
+        "messageType": "text",
+        "text": "={{ $json.notice }}",
+        "otherOptions": {}
+      },
+      "id": "6aaab29b-0db5-47d7-8fba-131809f0f3dc",
+      "name": "Slack: Rejected Notice",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        3380,
+        480
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "__select_on_import__",
+          "name": "Slack Bot (yt-approvals)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// The Slack node replaces the item with {data:{approved,...}}; pull the package back from the node before it.\nconst pkg = $('Assemble Review Package').first().json;\nconst approval = $input.first().json.data || {};\nreturn [{ json: { ...pkg, approval } }];"
+      },
+      "id": "0b0aa3f6-d912-40bb-80ff-abbdbd1ab28e",
+      "name": "Restore Package",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3140,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// PLACEHOLDER. This is where audio and visuals get produced once those sources are decided:\n//   audio_source  = generated (Suno/Udio API call with concept.audio_brief.generation_prompt) | licensed (pick from library by mood/tempo) | own (fetch from a bucket by run_id)\n//   visual_source = ai_stills (one image per scene from visual_style.generation_prompt_prefix + scene.visual_description, then subtle motion in the template) | licensed_loops (search by scene keywords)\n// Until then it returns placeholder URLs from Pipeline Config so the Creatomate template can be smoke-tested end to end.\nconst pkg = $input.first().json;\nconst cfg = pkg.config;\nconst assets = {\n  audio_url: cfg.placeholder_audio_url,\n  audio_provenance: cfg.audio_source,\n  scene_image_urls: pkg.concept.scenes.map(() => cfg.placeholder_image_url),\n  visual_provenance: cfg.visual_source,\n};\nreturn [{ json: { ...pkg, assets } }];"
+      },
+      "id": "8556823a-7f71-4a63-a5c1-ff76576c96d7",
+      "name": "Produce Assets (placeholder)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3380,
+        200
+      ],
+      "notes": "Stub. Replace with the real audio/visual sourcing nodes once those decisions are made.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Maps the concept onto Creatomate template element names. Adjust the keys to match your template:\n// expected elements: Audio, Title-Card, and per scene Scene-N (composition), Scene-N-Image, Scene-N-Label.\nconst pkg = $input.first().json;\nconst cfg = pkg.config;\nconst mods = {\n  'Audio.source': pkg.assets.audio_url,\n  'Title-Card.text': pkg.metadata.title,\n};\npkg.concept.scenes.forEach((s, i) => {\n  const n = i + 1;\n  mods['Scene-' + n + '.duration'] = s.duration_seconds;\n  mods['Scene-' + n + '-Image.source'] = pkg.assets.scene_image_urls[i];\n  mods['Scene-' + n + '-Label.text'] = s.name;\n});\n// Scenes the template has but this concept does not use: collapse them. Verify this against your template;\n// the safer alternative is a template whose scene count equals format_spec.scene_count_min = scene_count_max.\nfor (let n = pkg.concept.scenes.length + 1; n <= (cfg.format_spec.scene_count_max || 10); n++) {\n  mods['Scene-' + n + '.duration'] = 0;\n}\nconst render_request = {\n  template_id: cfg.creatomate_template_id,\n  output_format: cfg.creatomate_output_format,\n  modifications: mods,\n  metadata: JSON.stringify({ run_id: pkg.run_id }),\n};\nreturn [{ json: { ...pkg, render_request } }];"
+      },
+      "id": "8de68452-25d9-4de6-9dd0-b3f6f5cd1f14",
+      "name": "Build Render Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3620,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "78adb3b8-b70d-4aca-84a3-63657c4ec3cb",
+              "leftValue": "={{ $json.config.render_mode === 'creatomate' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6c8c5626-5419-46cc-80ee-3911b1a315c6",
+      "name": "Render mode is Creatomate?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3860,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function appendHistory(entry) {\n  const store = $getWorkflowStaticData('global');\n  store.history = Array.isArray(store.history) ? store.history : [];\n  store.history.push(entry);\n  if (store.history.length > 60) store.history = store.history.slice(-60);\n}\nconst pkg = $input.first().json;\nappendHistory({ date: pkg.today, run_id: pkg.run_id, status: 'stubbed', format_family: pkg.concept.format_family, theme: pkg.concept.theme, palette: pkg.concept.visual_style.global_palette, mood: pkg.concept.audio_brief.mood, title: pkg.metadata.title });\nconst notice = ':white_check_mark: Concept `' + pkg.run_id + '` approved in *stub* render mode. Nothing was rendered or uploaded.\\n\\n*Render request that would go to Creatomate:*\\n```' + JSON.stringify(pkg.render_request, null, 2).slice(0, 2500) + '```';\nreturn [{ json: { run_id: pkg.run_id, notice } }];"
+      },
+      "id": "ad98e756-2d66-459d-8029-34de21d052aa",
+      "name": "Record Stub",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4100,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "authentication": "accessToken",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Pipeline Config').first().json.slack_channel }}"
+        },
+        "messageType": "text",
+        "text": "={{ $json.notice }}",
+        "otherOptions": {}
+      },
+      "id": "1d117216-e0ff-4048-acbf-6e6c84b2c17a",
+      "name": "Slack: Stub Notice",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        4340,
+        420
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "__select_on_import__",
+          "name": "Slack Bot (yt-approvals)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.creatomate.com/v2/renders",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ ...$json.render_request, webhook_url: $execution.resumeUrl }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "46bf776b-0a4d-4679-9245-b71794fe1508",
+      "name": "Creatomate: Start Render",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4100,
+        100
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "__select_on_import__",
+          "name": "Creatomate API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "notes": "Header credential: Authorization = Bearer <Creatomate API key>. Creatomate calls back $execution.resumeUrl when the render finishes.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Creatomate returns one render object per template output; we use the first.\nconst r = $input.first().json;\nif (!r || !r.id) throw new Error('Creatomate did not return a render id: ' + JSON.stringify(r).slice(0, 300));\nconst pkg = $('Build Render Request').first().json;\nreturn [{ json: { ...pkg, render: { id: r.id, status: r.status } } }];"
+      },
+      "id": "7f6f7c65-3ebd-4f75-accb-0a77df31bb82",
+      "name": "Parse Render Start",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4340,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "httpMethod": "POST",
+        "limitWaitTime": true,
+        "limitType": "afterTimeInterval",
+        "resumeAmount": "={{ $('Pipeline Config').first().json.render_timeout_hours }}",
+        "resumeUnit": "hours",
+        "options": {}
+      },
+      "id": "543e1cd6-a6ed-4435-8b4c-640169ddbd6e",
+      "name": "Wait for Render",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4580,
+        100
+      ],
+      "webhookId": "58390c1d-d264-4129-b027-0878f686123d",
+      "notes": "Resumes on the Creatomate webhook or after the timeout; either way the next node fetches the authoritative status.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://api.creatomate.com/v2/renders/' + $('Parse Render Start').first().json.render.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "2c2ea932-f112-4e07-849c-6d21b184bbd6",
+      "name": "Creatomate: Get Render",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4820,
+        100
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "__select_on_import__",
+          "name": "Creatomate API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e647d1eb-8dd8-4615-be02-b68f105d8a02",
+              "leftValue": "={{ $json.status === 'succeeded' && !!$json.url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f55aa980-2d40-4bc0-80eb-3e6276313fb0",
+      "name": "Render succeeded?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5060,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "authentication": "accessToken",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Pipeline Config').first().json.slack_channel }}"
+        },
+        "messageType": "text",
+        "text": "={{ ':x: Render for run `' + $('Parse Render Start').first().json.run_id + '` did not succeed. Status: ' + $json.status + ($json.error_message ? ' \\u2014 ' + $json.error_message : '') + '. Nothing uploaded. Render id ' + $('Parse Render Start').first().json.render.id }}",
+        "otherOptions": {}
+      },
+      "id": "8372f60a-67b4-4dd3-a380-aa53266aa5d6",
+      "name": "Slack: Render Failed",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        5300,
+        300
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "__select_on_import__",
+          "name": "Slack Bot (yt-approvals)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          },
+          "timeout": 1800000
+        }
+      },
+      "id": "02417d6e-4414-48dd-bc47-9b21b9f00489",
+      "name": "Download Render",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5300,
+        100
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "notes": "A 30-60 min 1080p MP4 is 1-3 GB. Needs N8N_DEFAULT_BINARY_DATA_MODE=filesystem on self-hosted; n8n Cloud memory limits will not cope. See README.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('Parse Render Start').first().json.metadata.title }}",
+        "regionCode": "={{ $('Parse Render Start').first().json.config.youtube_region_code }}",
+        "categoryId": "={{ $('Parse Render Start').first().json.metadata.category_id || $('Parse Render Start').first().json.config.youtube_category_id }}",
+        "binaryProperty": "data",
+        "options": {
+          "description": "={{ $('Parse Render Start').first().json.metadata.description }}",
+          "tags": "={{ $('Parse Render Start').first().json.metadata.tags.join(',') }}",
+          "privacyStatus": "private",
+          "selfDeclaredMadeForKids": false,
+          "notifySubscribers": false,
+          "defaultLanguage": "={{ $('Parse Render Start').first().json.metadata.default_language }}"
+        }
+      },
+      "id": "87c7b409-de23-4609-9e60-8dd094ae4dab",
+      "name": "YouTube: Upload (Private)",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        5540,
+        100
+      ],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "__select_on_import__",
+          "name": "YouTube (channel)"
+        }
+      },
+      "notes": "Always PRIVATE. Flip to public by hand in YouTube Studio after review. Unverified API projects are locked to private by YouTube anyway (README).",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "function appendHistory(entry) {\n  const store = $getWorkflowStaticData('global');\n  store.history = Array.isArray(store.history) ? store.history : [];\n  store.history.push(entry);\n  if (store.history.length > 60) store.history = store.history.slice(-60);\n}\nconst up = $input.first().json;\nconst pkg = $('Parse Render Start').first().json;\nconst video_id = up.id;\nif (!video_id) throw new Error('YouTube upload returned no video id: ' + JSON.stringify(up).slice(0, 300));\nappendHistory({ date: pkg.today, run_id: pkg.run_id, status: 'published_private', video_id, format_family: pkg.concept.format_family, theme: pkg.concept.theme, palette: pkg.concept.visual_style.global_palette, mood: pkg.concept.audio_brief.mood, title: pkg.metadata.title });\nconst disclosure = pkg.metadata.ai_disclosure.required;\nconst notice = ':lock: Uploaded as PRIVATE for run `' + pkg.run_id + '`\\n*' + pkg.metadata.title + '*\\nhttps://studio.youtube.com/video/' + video_id + '/edit\\nAI disclosure flag: ' + (disclosure ? 'set via API' : 'not set (' + pkg.metadata.ai_disclosure.reason + ')') + '\\nReview in Studio, then set to Public by hand.';\nreturn [{ json: { video_id, disclosure_required: disclosure, notice } }];"
+      },
+      "id": "901d63c4-af04-4f44-85d0-c353dbca53bf",
+      "name": "Record Publish",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5780,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c7d70da7-cc17-4f4c-8e1b-e7bd106ba8d9",
+              "leftValue": "={{ $json.disclosure_required === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "be288b0a-674c-4da6-b425-c4b434d3eef2",
+      "name": "AI disclosure needed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6020,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://www.googleapis.com/youtube/v3/videos?part=status",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "youTubeOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ id: $json.video_id, status: { privacyStatus: \"private\", containsSyntheticMedia: true, selfDeclaredMadeForKids: false, embeddable: true, publicStatsViewable: true, license: \"youtube\" } }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "f7d96935-c70e-4f49-815b-0d7ebbf64ebc",
+      "name": "YouTube: Flag Synthetic Media",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6260,
+        0
+      ],
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "__select_on_import__",
+          "name": "YouTube (channel)"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "notes": "videos.update with part=status overwrites every mutable status field, so all of them are sent explicitly. Costs 50 quota units.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "authentication": "accessToken",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Pipeline Config').first().json.slack_channel }}"
+        },
+        "messageType": "text",
+        "text": "={{ $('Record Publish').first().json.notice }}",
+        "otherOptions": {}
+      },
+      "id": "9248f901-3af1-46fc-866b-21857257640d",
+      "name": "Slack: Uploaded (Private)",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        6500,
+        100
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "__select_on_import__",
+          "name": "Slack Bot (yt-approvals)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Ambient pipeline\nConcept → metadata → **Slack approval** → render (Creatomate or stub) → YouTube upload as PRIVATE.\n\nSettings: *Pipeline Config*. Prompts: synced from `prompts/` by `harness/run.mjs sync-workflow`.\n\nCredentials (by name): Anthropic API · Slack Bot (yt-approvals) · Creatomate API · YouTube (channel).",
+        "width": 700,
+        "height": 220
+      },
+      "id": "899a1011-52b9-46c5-8850-c5388a09409f",
+      "name": "Note 35",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Claude calls\nHTTP Request nodes, not the native Anthropic node: the native node has no structured-output option and always sends temperature/top_p/top_k, which Opus 5 rejects with a 400.",
+        "width": 480,
+        "height": 160
+      },
+      "id": "94ceaf57-2751-4ca7-a800-4352b2e7d743",
+      "name": "Note 36",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        980,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Human gate\nNothing renders or uploads without an Approve click in #yt-approvals. Timeout = discarded.",
+        "width": 420,
+        "height": 120
+      },
+      "id": "3ec75c06-0624-469c-851a-df95686c3761",
+      "name": "Note 37",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2660,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Render stage\n`render_mode` in Pipeline Config: **stub** posts the render payload to Slack and stops; **creatomate** renders, waits for the webhook, downloads, uploads.",
+        "width": 700,
+        "height": 160
+      },
+      "id": "c2b0cfd2-f3bf-47fb-8076-1e9e562017de",
+      "name": "Note 38",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        -160
+      ]
+    }
+  ],
+  "connections": {
+    "Weekday Schedule": {
+      "main": [
+        [
+          {
+            "node": "Pipeline Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Run": {
+      "main": [
+        [
+          {
+            "node": "Pipeline Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pipeline Config": {
+      "main": [
+        [
+          {
+            "node": "Prompts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompts": {
+      "main": [
+        [
+          {
+            "node": "Load Recent Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Recent Videos": {
+      "main": [
+        [
+          {
+            "node": "Build Concept Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Concept Request": {
+      "main": [
+        [
+          {
+            "node": "Claude: Concept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude: Concept": {
+      "main": [
+        [
+          {
+            "node": "Parse Concept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Concept": {
+      "main": [
+        [
+          {
+            "node": "Build Metadata Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Metadata Request": {
+      "main": [
+        [
+          {
+            "node": "Claude: Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude: Metadata": {
+      "main": [
+        [
+          {
+            "node": "Parse Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Metadata": {
+      "main": [
+        [
+          {
+            "node": "Assemble Review Package",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assemble Review Package": {
+      "main": [
+        [
+          {
+            "node": "Slack: Request Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack: Request Approval": {
+      "main": [
+        [
+          {
+            "node": "Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved?": {
+      "main": [
+        [
+          {
+            "node": "Restore Package",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Record Rejection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Rejection": {
+      "main": [
+        [
+          {
+            "node": "Slack: Rejected Notice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Package": {
+      "main": [
+        [
+          {
+            "node": "Produce Assets (placeholder)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Produce Assets (placeholder)": {
+      "main": [
+        [
+          {
+            "node": "Build Render Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Render Request": {
+      "main": [
+        [
+          {
+            "node": "Render mode is Creatomate?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Render mode is Creatomate?": {
+      "main": [
+        [
+          {
+            "node": "Creatomate: Start Render",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Record Stub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Stub": {
+      "main": [
+        [
+          {
+            "node": "Slack: Stub Notice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Creatomate: Start Render": {
+      "main": [
+        [
+          {
+            "node": "Parse Render Start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Render Start": {
+      "main": [
+        [
+          {
+            "node": "Wait for Render",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Render": {
+      "main": [
+        [
+          {
+            "node": "Creatomate: Get Render",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Creatomate: Get Render": {
+      "main": [
+        [
+          {
+            "node": "Render succeeded?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Render succeeded?": {
+      "main": [
+        [
+          {
+            "node": "Download Render",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Slack: Render Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Render": {
+      "main": [
+        [
+          {
+            "node": "YouTube: Upload (Private)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube: Upload (Private)": {
+      "main": [
+        [
+          {
+            "node": "Record Publish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Publish": {
+      "main": [
+        [
+          {
+            "node": "AI disclosure needed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI disclosure needed?": {
+      "main": [
+        [
+          {
+            "node": "YouTube: Flag Synthetic Media",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Slack: Uploaded (Private)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube: Flag Synthetic Media": {
+      "main": [
+        [
+          {
+            "node": "Slack: Uploaded (Private)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
