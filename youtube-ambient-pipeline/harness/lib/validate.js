@@ -34,6 +34,9 @@ function fmtTimestamp(totalSeconds) {
   return (h > 0 ? h + ':' : '') + mm + ':' + String(s).padStart(2, '0');
 }
 
+// Word-bounded so "retreat", "healthy" and "wholesome" do not trip it.
+var HEALTH_CLAIM = /\b(cure|cures|cured|treat|treats|treatment|heal|heals|healing|therapy|therapeutic|clinically|guaranteed|insomnia cure|anxiety relief)\b/i;
+
 // Returns { ok, errors: [], warnings: [] }. Errors block the run; warnings go to the reviewer.
 function validateConcept(concept, formatSpec) {
   const errors = [];
@@ -76,9 +79,9 @@ function validateConcept(concept, formatSpec) {
   ['no_real_people', 'no_brands_or_trademarks', 'no_copyrighted_subjects', 'audio_is_original_or_licensed', 'no_health_claims', 'adult_audience'].forEach((k) => {
     if (cc[k] !== true) errors.push('compliance_checklist.' + k + ' is not true');
   });
-  const banned = /(cure|cures|treat|treats|heal|heals|therapy for|clinically|guaranteed)/i;
   const scan = JSON.stringify([concept.working_title, concept.alternate_titles, concept.theme, intro.script]);
-  if (banned.test(scan)) warnings.push('possible health-claim wording in titles/intro: review');
+  const hit = scan.match(HEALTH_CLAIM);
+  if (hit) warnings.push('possible health-claim wording in titles/intro ("' + hit[0] + '"): review');
   if (!concept.variation_rationale || concept.variation_rationale.length < 60) warnings.push('variation_rationale is thin; check against recent videos');
 
   return { ok: errors.length === 0, errors: errors, warnings: warnings, total_seconds: total };
@@ -127,8 +130,8 @@ function validateMetadata(meta, concept) {
   if (chapters.length > scenes.length) warnings.push('more chapters than scenes');
   if (!desc.startsWith('0:00') && !desc.includes('\n0:00 ')) errors.push('description must contain a "0:00" chapter line');
 
-  const banned = /(cure|cures|treat|treats|heal|heals|clinically|guaranteed)/i;
-  if (banned.test(title) || banned.test(desc)) warnings.push('possible health-claim wording; review');
+  const hit = title.match(HEALTH_CLAIM) || desc.match(HEALTH_CLAIM);
+  if (hit) warnings.push('possible health-claim wording ("' + hit[0] + '"); review');
   const hashtags = (desc.match(/#\w+/g) || []).length;
   if (hashtags > 3) warnings.push(hashtags + ' hashtags in description; keep to 3');
   if (String(meta.thumbnail_text || '').split(/\s+/).filter(Boolean).length > 4) warnings.push('thumbnail_text longer than 4 words');
