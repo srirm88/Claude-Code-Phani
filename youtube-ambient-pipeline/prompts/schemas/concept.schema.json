@@ -11,7 +11,7 @@
     "theme": { "type": "string", "description": "One sentence: the world and mood of this video." },
     "working_title": { "type": "string" },
     "alternate_titles": { "type": "array", "items": { "type": "string" } },
-    "duration_minutes": { "type": "integer", "description": "Target total duration. Must equal the sum of scene durations divided by 60, rounded." },
+    "duration_minutes": { "type": "integer", "description": "Chosen total duration in minutes, inside format_spec. Must equal the sum of scene durations divided by 60, rounded." },
     "spoken_intro": {
       "type": "object",
       "additionalProperties": false,

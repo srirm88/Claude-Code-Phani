@@ -6,15 +6,16 @@
     "tone": "Quiet, unhurried, sincere. Never mystical, never clinical."
   },
   "format_spec": {
-    "_note": "UNDECIDED by the channel owner. These values are placeholders so the harness runs. Change them once the format is agreed and bump the prompt version.",
-    "duration_minutes": 45,
-    "scene_count_min": 6,
-    "scene_count_max": 10,
-    "min_scene_seconds": 180,
+    "_note": "PILOT format: 5-10 minute pieces while audio/visual sources and the template are settled. The channel's launch format (long-form) is a later config change; do not publish pilots publicly.",
+    "duration_minutes_min": 5,
+    "duration_minutes_max": 10,
+    "scene_count_min": 3,
+    "scene_count_max": 6,
+    "min_scene_seconds": 60,
     "spoken_intro": false,
     "hard_rules": [
       "No on-screen text except an optional title card in the first 10 seconds.",
-      "The last scene fades to black over its final 30 seconds."
+      "The last scene fades to black over its final 20 seconds."
     ]
   },
   "audio_source": "undecided",

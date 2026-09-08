@@ -42,14 +42,15 @@ concept and metadata stages can be exercised now, but **the render stage is a st
 |---|---|---|---|
 | Audio source (Suno/Udio API, licensed library, own compositions) | `Pipeline Config.audio_source`, `Produce Assets (placeholder)` node | `undecided` | Replace the placeholder node with the fetch/generate call. `concept.audio_brief.generation_prompt` is already written to feed a generator or brief a composer. |
 | Visual source (AI stills with subtle motion vs licensed loops) | `Pipeline Config.visual_source`, same node | `undecided` | Same node. Scenes carry `visual_description`, `motion`, `palette` and a per-video `generation_prompt_prefix`. |
-| Format spec (length, scene count, spoken intro) | `Pipeline Config.format_spec` and `harness/fixtures/brief.example.json` | 45 min, 6–10 scenes, no intro, scenes ≥ 3 min | Update both places, bump the prompt version, re-run the harness. The concept prompt treats `format_spec` as binding. |
+| Format spec (length, scene count, spoken intro) | `Pipeline Config.format_spec` and `harness/fixtures/brief.example.json` | **Pilot:** 5–10 min range, 3–6 scenes, no intro, scenes ≥ 60 s | Update both places, bump the prompt version, re-run the harness. The concept prompt treats `format_spec` as binding; give it either `duration_minutes` (exact) or `duration_minutes_min`/`_max` (a range the model picks inside). |
 | n8n hosting (Cloud vs self-hosted) | Not in the workflow | – | See **Hosting** below. The Slack gate needs public HTTPS either way; the download/upload stage almost certainly needs self-hosted. |
 
 Things to weigh before deciding, because they interact:
 
 - **Audio is the biggest Content ID and policy risk.** Licensed library tracks that thousands of other channels use are exactly what "templated sameness" detection and Content ID matches punish. Generated music per video avoids the match risk but check the generator's commercial and YouTube-monetisation terms. Own compositions are safest and slowest.
 - **AI stills with motion vs licensed loops changes the render.** Stills need an image-generation call per scene (6–10 per video) plus a template that animates them; loops need a search and licence-tracking step. Both need the Creatomate template to be built around them, so the template cannot be finalised before this decision.
-- **Format spec drives cost.** A 45-minute render on Creatomate is billed per output minute; a 60-minute piece at 4–5 per week is a meaningful monthly line item. Get a quote for your target duration before locking it.
+- **Format spec drives cost.** Creatomate bills per output minute; a 45–60 minute piece at 4–5 per week is a meaningful monthly line item. Get a quote for the launch duration before locking it.
+- **The 5–10 minute pilot format is deliberately not the launch format.** Sleep and focus viewers use a video as a session, and watch time per view is what this niche is rewarded on; short pieces lose that even with better retention curves. The pilot range exists to get through the audio, visual, template and hosting decisions cheaply. Move `format_spec` to the launch duration before anything goes public, and keep the pilot uploads private.
 - **Spoken intro** forces a voice decision (synthetic voice = mandatory AI disclosure) and adds a TTS step. Instrumental-only is simpler and what the placeholders assume.
 
 ## Setup
@@ -196,7 +197,7 @@ model can avoid repeating itself. Static data persists across runs on both Cloud
 |---|---|---|
 | Slack approval callbacks | Works out of the box (public HTTPS). | Needs a public HTTPS origin and `WEBHOOK_URL` set. |
 | Creatomate webhook to `$execution.resumeUrl` | Works. | Same public-origin requirement. |
-| Downloading a 1–3 GB MP4 and streaming it to YouTube | **Likely to fail**: binary data is held in memory and Cloud plans cap execution memory. | Set `N8N_DEFAULT_BINARY_DATA_MODE=filesystem` and give the container disk; the YouTube node streams from the binary in chunks. |
+| Downloading the MP4 and streaming it to YouTube | Pilot 5–10 min (roughly 100–400 MB): probably fine. Launch 30–60 min (1–3 GB): **likely to fail**, binary data is held in memory and Cloud plans cap execution memory. | Set `N8N_DEFAULT_BINARY_DATA_MODE=filesystem` and give the container disk; the YouTube node streams from the binary in chunks. |
 | Waiting executions (hours for approval and render) | Fine. | Fine; make sure `EXECUTIONS_DATA_SAVE_ON_PROGRESS` / `saveExecutionProgress` is on (it is set in the workflow). |
 
 If you want to stay on Cloud, the pragmatic split is: keep concept, metadata and the Slack gate in

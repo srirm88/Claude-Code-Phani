@@ -43,10 +43,17 @@ function validateConcept(concept, formatSpec) {
 
   if (scenes.length === 0) errors.push('no scenes');
   const total = scenes.reduce((a, s) => a + (Number(s.duration_seconds) || 0), 0);
-  const targetMin = Number(spec.duration_minutes) || Number(concept.duration_minutes) || 0;
-  if (targetMin > 0) {
-    const drift = Math.abs(total - targetMin * 60) / (targetMin * 60);
-    if (drift > 0.05) errors.push('scene durations sum to ' + total + 's, target ' + targetMin * 60 + 's (' + Math.round(drift * 100) + '% off)');
+  const rangeMin = Number(spec.duration_minutes_min) || 0;
+  const rangeMax = Number(spec.duration_minutes_max) || 0;
+  if (rangeMin > 0 && rangeMax > 0) {
+    // format_spec gives a range: the model picks the length, the total must land inside it.
+    if (total < rangeMin * 60 || total > rangeMax * 60) errors.push('scene durations sum to ' + total + 's, outside the ' + rangeMin + '-' + rangeMax + ' min range');
+  } else {
+    const targetMin = Number(spec.duration_minutes) || Number(concept.duration_minutes) || 0;
+    if (targetMin > 0) {
+      const drift = Math.abs(total - targetMin * 60) / (targetMin * 60);
+      if (drift > 0.05) errors.push('scene durations sum to ' + total + 's, target ' + targetMin * 60 + 's (' + Math.round(drift * 100) + '% off)');
+    }
   }
   if (Math.round(total / 60) !== Number(concept.duration_minutes)) {
     warnings.push('duration_minutes (' + concept.duration_minutes + ') does not match scene total (' + Math.round(total / 60) + ' min)');
