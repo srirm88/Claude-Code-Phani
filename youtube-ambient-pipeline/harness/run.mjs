@@ -62,8 +62,22 @@ function buildRequest(kind, userPayload) {
   };
 }
 
+function preflightKey() {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return; // the SDK may still find an `ant auth login` profile or ANTHROPIC_AUTH_TOKEN
+  const masked = key.slice(0, 10) + '...' + key.slice(-4) + ' (' + key.length + ' chars)';
+  console.log('Using ANTHROPIC_API_KEY ' + masked);
+  const problems = [];
+  if (/^["']|["']$/.test(key)) problems.push('starts or ends with a quote: on Windows use  set ANTHROPIC_API_KEY=sk-ant-...  with no quotes');
+  if (/\s/.test(key)) problems.push('contains whitespace: check for a trailing space or a line break in the copied key');
+  if (!key.startsWith('sk-ant-')) problems.push('does not start with sk-ant-: keys come from console.anthropic.com > API Keys, not from claude.ai');
+  if (key.length < 60) problems.push('looks truncated');
+  for (const p of problems) console.log('  key problem: ' + p);
+}
+
 async function callClaude(body) {
   const { default: Anthropic } = await import('@anthropic-ai/sdk');
+  preflightKey();
   const client = new Anthropic();
   // Streaming so a slow concept generation never trips the HTTP timeout.
   const stream = client.messages.stream(body);
@@ -224,4 +238,8 @@ async function main() {
   process.exit(cmd ? 1 : 0);
 }
 
-main().catch((e) => { console.error('\n' + (e.stack || e.message)); process.exit(1); });
+main().catch((e) => {
+  console.error('\n' + (e.status ? 'API error ' + e.status + ': ' + e.message : e.stack || e.message));
+  if (e.status === 401) console.error('401 means the key was rejected. Check the "Using ANTHROPIC_API_KEY" line above and the notes next to it.');
+  process.exitCode = 1; // not process.exit(): that trips a libuv assertion on Windows while the SDK's sockets close
+});
