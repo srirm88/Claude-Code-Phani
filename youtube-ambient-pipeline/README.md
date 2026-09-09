@@ -29,6 +29,7 @@ flipping to public is a manual act in YouTube Studio.
 
 | Path | What |
 |---|---|
+| `n8n/creatomate-renderscript.example.json` | One generated Creatomate RenderScript, for reference or for pasting into their editor. |
 | `n8n/ambient-pipeline.workflow.json` | Importable workflow. Credentials referenced by name only: `Anthropic API`, `Slack Bot (yt-approvals)`, `OpenAI API`, `ElevenLabs API`, `Asset Storage (S3)`, `Creatomate API`, `YouTube (channel)`. |
 | `prompts/concept.system.md` | Claude system prompt: brief → video concept. Versioned in its header comment. |
 | `prompts/metadata.system.md` | Claude system prompt: concept → title, description, tags, chapters, disclosure. |
@@ -157,22 +158,31 @@ the decision and reason in Slack before approving.
 1. Create an API key under **Project settings → API Integration**.
 2. In n8n: **Credentials → New → Header Auth**. Name **`Creatomate API`**, header name
    `Authorization`, value `Bearer <api key>`.
-3. Build a template and paste its ID into `Pipeline Config.creatomate_template_id`.
 
-The `Build Render Request` node expects these element names in the template (rename in the node
-if your template differs):
+That is all. With `creatomate_mode = source` (the default) there is **no template to build**: the
+`Build Render Request` node writes the complete RenderScript for each video and posts it as
+`source`. Per video it produces:
 
-| Element | Type | Set from |
-|---|---|---|
-| `Audio` | audio | `assets.audio_url`; `audio_fade_out` set to 20 s to match the visual fade |
-| `Title-Card` | text | `metadata.title` |
-| `Scene-N` (N = 1..scene_count_max) | composition | `.duration` = scene seconds; unused scenes get duration 0 (verify this collapses them in your template) |
-| `Scene-N-Image` | image or video | `assets.scene_image_urls[N-1]` (add slow zoom/pan inside the composition) |
-| `Scene-N-Label` | text | scene name (optional; delete if you want no on-screen text) |
+| Element | What it does |
+|---|---|
+| `Scene-N` (composition, one per concept scene) | Exact scene duration; 3 s cross-fade in from the previous scene. |
+| `Scene-N-Image` | The generated still, `fit: cover`, with a linear `pan` over the whole scene: 100→106 % push-in on odd scenes, 106→100 % pull-back on even scenes, plus a 1.5 % lateral drift. |
+| `Scene-N-Label` | Scene name, hidden (`visible: false`) unless you want captions. |
+| `Fade-Out` | Full-frame black shape, opacity 0→100 % over the last 20 s, matching the format rule. |
+| `Title-Card` | Title text for the first 8 s, hidden unless `delivery.title_card` is not `none`. |
+| `Audio` | The music track for the full output length with a 20 s `audio_fade_out`. |
+
+`n8n/creatomate-renderscript.example.json` is one generated example (the dry-run concept), useful to
+paste into Creatomate's editor if you want to see or tweak the look by hand. Frame rate and
+resolution come from `format_spec.delivery`.
+
+If you would rather design in the editor, set `creatomate_mode = template`, build a template with
+the element names above (up to `scene_count_max` scenes) and put its ID in `creatomate_template_id`;
+the node then sends `modifications` instead, hiding unused scenes.
 
 The render request passes `webhook_url = $execution.resumeUrl`, so the Wait node resumes the moment
 Creatomate finishes; the node also times out after `render_timeout_hours` and re-checks status, so a
-missed webhook is not fatal. Output is `mp4` (`Pipeline Config.creatomate_output_format`).
+missed webhook is not fatal.
 
 With `asset_mode = placeholder`, the `Placeholder Assets` node feeds `placeholder_audio_url` and
 `placeholder_image_url` from config into every scene. Point those at any public MP3 and JPG to
