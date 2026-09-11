@@ -12,7 +12,7 @@
           ]
         }
       },
-      "id": "286a8dbe-7edb-40db-8c6d-700c5869ae7a",
+      "id": "e47e212a-10bd-4b6e-9f4b-e5fcc16a586a",
       "name": "Weekday Schedule",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -25,7 +25,7 @@
     },
     {
       "parameters": {},
-      "id": "8ca5a6bf-6c25-4d06-a5d4-2a5c81e6e174",
+      "id": "27ed88b0-d7c6-423e-9f90-4ffd0e0455ef",
       "name": "Manual Run",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -39,181 +39,181 @@
         "assignments": {
           "assignments": [
             {
-              "id": "438b2b4b-7401-4651-a390-d8ec81502425",
+              "id": "4e475bf4-2217-45a6-a336-579c663dd7e7",
               "name": "channel",
               "value": "{\"name\":\"Still Hours\",\"positioning\":\"Long-form ambient pieces for adults who want to sleep, focus, or study without interruptions.\",\"audience\":\"Adults 25-55, listening in the background on phone or TV, many with headphones.\",\"tone\":\"Quiet, unhurried, sincere. Never mystical, never clinical.\"}",
               "type": "string"
             },
             {
-              "id": "d7d7a2a8-3d24-4f78-abaf-05eb1a15f68f",
+              "id": "23286e76-59cf-4d4b-922f-dbc5c5571498",
               "name": "format_spec",
               "value": "{\"_note\":\"PILOT format: 5-10 minute pieces while sources and template are settled. Switch to the launch (long-form) duration here and in harness/fixtures/brief.example.json, then bump the prompt version. Do not publish pilots publicly.\",\"duration_minutes_min\":5,\"duration_minutes_max\":10,\"scene_count_min\":3,\"scene_count_max\":6,\"min_scene_seconds\":60,\"spoken_intro\":false,\"delivery\":{\"resolution\":\"1920x1080\",\"aspect_ratio\":\"16:9\",\"fps\":25,\"audio_loudness_lufs_integrated\":-16,\"title_card\":\"none\"},\"hard_rules\":[\"No on-screen text except an optional title card in the first 10 seconds.\",\"The last scene fades to black over its final 20 seconds.\"]}",
               "type": "string"
             },
             {
-              "id": "ddafb34d-fd95-44b9-85c6-e7ac3f77aa2b",
+              "id": "e012e122-66af-4c91-9501-994193696b45",
               "name": "audio_source",
               "value": "music_generator: one instrumental track for the full duration from a text-to-music model (ElevenLabs Eleven Music), generated from audio_brief.generation_prompt; no stems, no per-scene cues, so structure_by_scene is guidance the generator may only loosely follow",
               "type": "string"
             },
             {
-              "id": "bccc0819-c25a-42f2-9a90-3802b6df982b",
+              "id": "5d782b5a-d3dd-40ab-a0cc-802efda96cf1",
               "name": "visual_source",
               "value": "generated_stills: one 16:9 still per scene from a text-to-image model, built from visual_style.generation_prompt_prefix + scene.visual_description; animated in the render template with push, drift, parallax, focus and exposure ramps and overlay particle layers only",
               "type": "string"
             },
             {
-              "id": "795c170b-c1a7-4cdb-8cdb-d7c99f4cd372",
+              "id": "43e75cec-4594-4504-aabc-93c903a3070a",
               "name": "asset_mode",
               "value": "placeholder",
               "type": "string"
             },
             {
-              "id": "7ec2c860-e258-4800-84c1-26221a054ec2",
+              "id": "85012c29-d5c2-4d8d-b58b-394cb7ede1be",
               "name": "render_mode",
               "value": "stub",
               "type": "string"
             },
             {
-              "id": "70d1d1b6-9389-4c28-9938-9e2879816d38",
+              "id": "a5c5cea5-c085-46b1-b193-e7398923b1de",
               "name": "asset_bucket",
               "value": "REPLACE_WITH_BUCKET_NAME",
               "type": "string"
             },
             {
-              "id": "b77ed76c-7fe3-431f-9435-23536cf7eebb",
+              "id": "cf4f211f-55d8-46c1-91c8-5bb6464d1768",
               "name": "asset_public_base_url",
               "value": "https://REPLACE.example.com",
               "type": "string"
             },
             {
-              "id": "1a244b27-fca7-4b57-9144-b63d239aed0f",
+              "id": "da23b9fb-0f74-44b5-846d-4a931ccce0d5",
               "name": "asset_key_prefix",
               "value": "runs",
               "type": "string"
             },
             {
-              "id": "a7bc086a-57ef-4792-b7e7-e1a3495f930e",
+              "id": "aed730f5-cb15-4046-95f0-9a6303959976",
               "name": "image_model",
               "value": "gpt-image-1",
               "type": "string"
             },
             {
-              "id": "56d1f5ab-31de-48ee-b699-036253e99d18",
+              "id": "e88cd65b-c8af-4580-a5e6-8a835aae60ba",
               "name": "image_size",
               "value": "1536x1024",
               "type": "string"
             },
             {
-              "id": "b40dc899-789d-460d-aef8-2b7fe6cfea2a",
+              "id": "5193058e-a74a-4de9-9cb1-23e715726a97",
               "name": "image_quality",
               "value": "high",
               "type": "string"
             },
             {
-              "id": "acbad9a8-466b-4702-82db-8dca62aec08c",
+              "id": "d77a6cff-7eee-44e4-b154-a7e7b6b33194",
               "name": "music_model_id",
               "value": "music_v2",
               "type": "string"
             },
             {
-              "id": "d122dfaf-ec04-4be1-8577-d2aeeb221b25",
+              "id": "d60ce628-a947-4084-8abd-3ca625e2f903",
               "name": "music_output_format",
               "value": "mp3_44100_128",
               "type": "string"
             },
             {
-              "id": "f69a5d60-74bc-4d39-97e9-db31e8d58b66",
+              "id": "3ff4c789-5a9c-44c1-a756-392222cd38cb",
               "name": "music_max_ms",
               "value": 600000,
               "type": "number"
             },
             {
-              "id": "f52458ce-2213-4cfa-87c9-33e2686fcf27",
+              "id": "6d311bed-4994-4bdd-b11a-b60179c34f7b",
               "name": "creatomate_mode",
               "value": "source",
               "type": "string"
             },
             {
-              "id": "69e30cdb-84f9-497b-b75e-ceea32acbf6a",
+              "id": "c2a87e33-8527-4f24-b9fa-cf7cd0c81b28",
               "name": "creatomate_template_id",
               "value": "ONLY_NEEDED_IN_TEMPLATE_MODE",
               "type": "string"
             },
             {
-              "id": "4ddca171-e3ec-4c75-aae7-8f7e0749b76b",
+              "id": "0d3ce139-a055-4fee-bde0-e300c859d9e6",
               "name": "creatomate_output_format",
               "value": "mp4",
               "type": "string"
             },
             {
-              "id": "408c222d-dcc3-4164-bafa-8f4e75bf6d11",
+              "id": "6aafcf35-d55d-4aaf-9ff6-524e7bd7cbb9",
               "name": "placeholder_audio_url",
               "value": "https://REPLACE.example.com/placeholder-audio.mp3",
               "type": "string"
             },
             {
-              "id": "d7a3eece-f13a-46f7-ba74-0bc3ed83f834",
+              "id": "65d1658e-b8b1-4d34-ae2d-1d7045f0146d",
               "name": "placeholder_image_url",
               "value": "https://REPLACE.example.com/placeholder-scene.jpg",
               "type": "string"
             },
             {
-              "id": "43f45472-7ce4-4257-b66a-c29096cf6fe5",
+              "id": "1ce9a4e7-22c4-45eb-9d20-0c8c861d9002",
               "name": "slack_channel",
               "value": "#yt-approvals",
               "type": "string"
             },
             {
-              "id": "bd40a1f7-6f38-41ac-a936-023c60ee5e3a",
+              "id": "f44fda93-4d8f-4698-9e96-beaa2198f379",
               "name": "approval_timeout_hours",
               "value": 12,
               "type": "number"
             },
             {
-              "id": "03841150-cbaf-4d3f-905b-2aa41e5081f0",
+              "id": "29cdccf1-23be-4c4d-8956-f04ff7f3bf32",
               "name": "render_timeout_hours",
               "value": 4,
               "type": "number"
             },
             {
-              "id": "abea16de-16e4-4c73-aa33-3ad76147760d",
+              "id": "4a188f0a-0b4c-4d8b-9678-193c6bbecbb5",
               "name": "youtube_category_id",
               "value": "10",
               "type": "string"
             },
             {
-              "id": "c6bc2a8f-2b68-4b54-902c-1bd851cbbc52",
+              "id": "2487da8b-2188-404a-ae21-720233c8e327",
               "name": "youtube_region_code",
               "value": "US",
               "type": "string"
             },
             {
-              "id": "e5d220a3-aa24-4c06-a3de-b9b428c2247c",
+              "id": "ed61e43d-d9e5-429c-a189-27edc04d4642",
               "name": "default_language",
               "value": "en",
               "type": "string"
             },
             {
-              "id": "a7c47608-01c4-429c-96a7-ed3eacdb9f3d",
+              "id": "430f4926-cfdd-4b7b-9864-a4bff508d857",
               "name": "ai_disclosure_policy",
               "value": "Every description states plainly that the visuals and music are AI-generated. Set the platform altered-or-synthetic-content flag only when the visuals could be mistaken for real footage of real places or events; abstract or clearly stylised visuals do not get the flag.",
               "type": "string"
             },
             {
-              "id": "ec653a59-0c06-4eb7-8367-1f1090acb47f",
+              "id": "e7738bcc-f548-425d-81e7-7fd0234b8300",
               "name": "anthropic_base_url",
               "value": "https://api.anthropic.com",
               "type": "string"
             },
             {
-              "id": "0963e8c0-5853-440b-b59b-3643c134fb8d",
+              "id": "2c3465c8-e82a-436b-a4c1-cb51ffa5f5b6",
               "name": "anthropic_model",
               "value": "claude-opus-5",
               "type": "string"
             },
             {
-              "id": "de0eea3b-6841-4070-9133-846118cd6b11",
+              "id": "d0148786-eeae-432c-a1b2-e7dff3313a08",
               "name": "anthropic_effort",
               "value": "high",
               "type": "string"
@@ -223,7 +223,7 @@
         "includeOtherFields": false,
         "options": {}
       },
-      "id": "a014cb4d-e2e3-4b5a-975d-9e0ce97ad544",
+      "id": "465d158a-8623-4047-8cc5-15f9ee2cc04a",
       "name": "Pipeline Config",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
@@ -239,31 +239,31 @@
         "assignments": {
           "assignments": [
             {
-              "id": "6c124126-bf0a-43a3-a6a4-c24adc696f8d",
+              "id": "3629f819-5102-4ccd-b8f1-5003d19eec1a",
               "name": "prompt_versions",
               "value": "concept 1.3.1 / metadata 1.2.0",
               "type": "string"
             },
             {
-              "id": "54a15a28-68da-41b3-bf74-c43043214650",
+              "id": "7c93379f-1034-4377-a2be-1a9ec4e08b14",
               "name": "concept_system",
               "value": "<!-- prompt: concept | version: 1.3.1 | 2026-09-08 -->\nYou are the creative lead for a faceless YouTube channel that publishes ambient audio-visual pieces for adults: sleep, deep focus, study sessions, meditation, unwinding. Nothing is on camera. Every video is an original composition of visuals and sound, not a re-skin of the last one.\n\nYou receive a JSON brief and return one fully specified video concept as JSON that matches the schema attached to this request. The concept is a production spec: a composer or music generator, a visual artist or image generator, and a video renderer each work from it without asking follow-up questions.\n\n## What the brief gives you\n\n- `channel`: name, positioning, audience, tone.\n- `format_spec`: the duration as either an exact `duration_minutes` or a `duration_minutes_min` to `duration_minutes_max` range (you choose the length inside the range and the scene durations must add up to it), the scene count range, the minimum scene length, whether a spoken intro is allowed, a `delivery` block (resolution, aspect ratio, frame rate, integrated loudness target, title card policy) and any hard rules the channel owner has set. Do not restate or second-guess `delivery` values in `assumptions`; they are decided. Treat `format_spec` as binding. If a field is missing, choose something sensible for the stated audience and say so in `assumptions`.\n- `audio_source` and `visual_source`: how audio and visuals will actually be produced (for example generated music, licensed library, own composition; generated stills with motion, licensed loops). Write the audio and visual briefs in the vocabulary that source can act on. If either is `undecided`, write the brief so it works for any of the options and note that in `assumptions`.\n- `recent_videos`: the last several published concepts (format family, theme, palette, mood). Use these to avoid repetition.\n- `today` and `season_hint`: for seasonal relevance where it helps, never as an obligation.\n\n## What a good concept looks like\n\n**Variety is the point.** The channel is judged under YouTube's inauthentic-content rules, which penalise mass-produced, templated, near-identical uploads. Two hard rules and one soft one:\n\n- Never use the format family of any of the last four entries in `recent_videos`. With eleven families and the option to invent one, there is always room.\n- Never reuse the visual world of any of the last six (a subject, setting or scale that appears there is off the table: if a macro piece is in the list, no macro; if a canal, no canals or rivers).\n- Beyond that, differ from the most recent entry in at least two of: palette, audio structure, pacing.\n\nThe `season_hint` is context, not a brief. If any of the last three entries already leans on the current season, ignore the hint entirely. Seasonal pieces should be the minority of the channel.\n\nExplain the difference in `variation_rationale` in concrete terms, naming what you avoided repeating.\n\n**Format families** (choose one, or propose a new one and name it):\n`single-scene-slow-drift`, `journey` (a sequence of connected locations), `seasonal-cycle`, `abstract-generative`, `interior-space` (a room, a cabin, a library), `weather-study`, `night-sky`, `underwater`, `micro-world` (macro detail), `city-at-rest`, `sound-first` (visual is minimal, audio carries the structure).\n\n**Scenes.** Give each scene a duration in seconds, a visual description a stranger could render, a motion description (what moves, how slowly), a palette, and a transition into the next scene. Palette entries are hex values only (`#B4623A`); put colour names in the visual description if you want them.\n\n**Motion must be deliverable by the visual source.** When `visual_source` is generated or licensed stills, or is `undecided`, each scene is one still image plus a motion layer, so limit motion to what a template can do to a still: slow push or pull, lateral drift, parallax between separated layers, a focus or blur ramp, an exposure or colour-temperature ramp, and overlaid particle, dust, fog, rain or light-leak layers. Do not describe objects changing shape, rotating, sliding, nodding, dripping or growing; a still cannot do that and the render will silently drop it. Describe object-level animation only when `visual_source` is video footage or video generation. Scene durations must add up to the chosen duration and sit inside `format_spec`. Ambient viewers stay for stillness: fewer, longer scenes beat many short ones, whatever the total length. No scene shorter than `format_spec.min_scene_seconds` (90 seconds if it is not given).\n\n**Audio.** Describe mood, tempo, key or modal centre, instrumentation, dynamics over time, and structure aligned to the scenes (which scene introduces or removes an element). The audio must be original or licensed; never reference an existing artist, track, album, or a recognisable melody as something to imitate. Style words are fine (\"slow modal piano over sustained strings\"); \"sounds like Ólafur Arnalds\" is not.\n\n**Spoken intro.** Only if `format_spec.spoken_intro` is true. Then write the full script, under 60 seconds spoken, calm, second person, no medical claims, no promises about outcomes.\n\n**Title direction.** Give a working title and two alternates. Descriptive, honest, no clickbait, no ALL CAPS, no emoji. The metadata stage will finalise it.\n\n## Hard rules\n\n- No real, named people, living or dead. No celebrities, no historical figures depicted.\n- No trademarked characters, logos, brands, franchises, or recognisable copyrighted artworks and buildings used as the subject.\n- No claims that the video treats, cures, or diagnoses anything. \"For sleep\" is fine; \"cures insomnia\" is not.\n- No content aimed at children. The audience is adults.\n- Nothing that requires text on screen except an optional title card.\n- Everything you specify must be producible from the given `audio_source` and `visual_source`.\n\n## Output\n\nReturn only the JSON object described by the schema. Fill every field. Put anything you had to guess in `assumptions` so the reviewer can correct it before anything renders.\n",
               "type": "string"
             },
             {
-              "id": "569e9301-57d9-434c-ba06-7ed534c12111",
+              "id": "c1582259-c12f-401a-9b84-5fdc2462a186",
               "name": "concept_schema",
               "value": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"format_family\",\"theme\",\"working_title\",\"alternate_titles\",\"duration_minutes\",\"spoken_intro\",\"scenes\",\"audio_brief\",\"visual_style\",\"variation_rationale\",\"compliance_checklist\",\"assumptions\"],\"properties\":{\"format_family\":{\"type\":\"string\",\"description\":\"One of the named format families, or a new one you name.\"},\"theme\":{\"type\":\"string\",\"description\":\"One sentence: the world and mood of this video.\"},\"working_title\":{\"type\":\"string\"},\"alternate_titles\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"duration_minutes\":{\"type\":\"integer\",\"description\":\"Chosen total duration in minutes, inside format_spec. Must equal the sum of scene durations divided by 60, rounded.\"},\"spoken_intro\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"enabled\",\"script\",\"voice_direction\"],\"properties\":{\"enabled\":{\"type\":\"boolean\"},\"script\":{\"type\":\"string\",\"description\":\"Full script when enabled, otherwise empty string.\"},\"voice_direction\":{\"type\":\"string\",\"description\":\"Pace, tone, gender-neutral if unspecified; empty when disabled.\"}}},\"scenes\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"index\",\"name\",\"duration_seconds\",\"visual_description\",\"motion\",\"palette\",\"transition_out\"],\"properties\":{\"index\":{\"type\":\"integer\",\"description\":\"1-based order.\"},\"name\":{\"type\":\"string\",\"description\":\"Short label, used as the chapter name.\"},\"duration_seconds\":{\"type\":\"integer\"},\"visual_description\":{\"type\":\"string\",\"description\":\"What is in frame, in renderable detail. No real people, brands, or copyrighted subjects.\"},\"motion\":{\"type\":\"string\",\"description\":\"What moves and how slowly. For stills-with-motion, name the parallax, drift, or particle effect.\"},\"palette\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"3 to 5 colour names or hex values.\"},\"transition_out\":{\"type\":\"string\",\"description\":\"How this scene hands over to the next; 'end' for the last scene.\"}}}},\"audio_brief\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"mood\",\"tempo_bpm\",\"tonal_centre\",\"instrumentation\",\"dynamics_over_time\",\"structure_by_scene\",\"generation_prompt\",\"loop_safe\"],\"properties\":{\"mood\":{\"type\":\"string\"},\"tempo_bpm\":{\"type\":\"integer\",\"description\":\"0 for free time.\"},\"tonal_centre\":{\"type\":\"string\",\"description\":\"Key or mode, e.g. 'D Dorian', 'A minor', 'drone on C'.\"},\"instrumentation\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"dynamics_over_time\":{\"type\":\"string\",\"description\":\"How intensity moves across the full duration.\"},\"structure_by_scene\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"scene_index\",\"change\"],\"properties\":{\"scene_index\":{\"type\":\"integer\"},\"change\":{\"type\":\"string\",\"description\":\"What enters, leaves, or shifts at this scene.\"}}}},\"generation_prompt\":{\"type\":\"string\",\"description\":\"A single prompt suitable for a music generation service or a brief to a composer. Style words only; no artist, track, or album references.\"},\"loop_safe\":{\"type\":\"boolean\",\"description\":\"True if the piece is designed to loop seamlessly.\"}}},\"visual_style\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"medium\",\"global_palette\",\"camera_language\",\"negative_prompt\",\"generation_prompt_prefix\"],\"properties\":{\"medium\":{\"type\":\"string\",\"description\":\"e.g. painterly, photoreal-stylised, 2D flat, film grain.\"},\"global_palette\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"camera_language\":{\"type\":\"string\"},\"negative_prompt\":{\"type\":\"string\",\"description\":\"What must not appear: text, watermarks, people, logos, and anything scene-specific.\"},\"generation_prompt_prefix\":{\"type\":\"string\",\"description\":\"Prefix applied to every scene's image prompt so the set looks like one piece.\"}}},\"variation_rationale\":{\"type\":\"string\",\"description\":\"Concretely how this differs from recent_videos and what you avoided repeating.\"},\"compliance_checklist\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"no_real_people\",\"no_brands_or_trademarks\",\"no_copyrighted_subjects\",\"audio_is_original_or_licensed\",\"no_health_claims\",\"adult_audience\",\"notes\"],\"properties\":{\"no_real_people\":{\"type\":\"boolean\"},\"no_brands_or_trademarks\":{\"type\":\"boolean\"},\"no_copyrighted_subjects\":{\"type\":\"boolean\"},\"audio_is_original_or_licensed\":{\"type\":\"boolean\"},\"no_health_claims\":{\"type\":\"boolean\"},\"adult_audience\":{\"type\":\"boolean\"},\"notes\":{\"type\":\"string\"}}},\"assumptions\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"Every guess you made because the brief was silent or undecided.\"}}}",
               "type": "string"
             },
             {
-              "id": "32bfd6b3-209b-4b4d-9197-16b27923e168",
+              "id": "bcf9ca87-dc0e-4d29-8b0e-0abfe0747b7e",
               "name": "metadata_system",
               "value": "<!-- prompt: metadata | version: 1.2.0 | 2026-09-08 -->\nYou write YouTube upload metadata for a faceless ambient channel (sleep, focus, study, meditation; adult audience). You receive the approved video concept as JSON plus channel settings, and you return one JSON object matching the attached schema.\n\nThe metadata is uploaded as-is after a human glance. Write it to be correct on the first pass.\n\n## Title\n\n- At most 100 characters. Aim for 50 to 70.\n- Lead with what the viewer is searching for (the use: sleep, focus, study, rain, night, and so on), then the distinguishing detail of this specific video, then the duration if it fits naturally (\"8 min\", \"45 min\", \"1 Hour\"). Use the concept's actual `duration_minutes`.\n- Plain descriptive language. No ALL CAPS words, no emoji, no brackets stuffed with keywords, no \"#1\", no \"you won't believe\".\n- Do not reuse a title pattern from `recent_titles`; vary the structure, not just the nouns. The title must not begin with the same first two words as any recent title, and must not repeat a recent title's separator layout (for example \"X: Y, N Minutes\" three times in a row). Rotate between leading with the subject, leading with the use, and leading with the sound.\n\n## Description\n\n- At most 5000 characters. Aim for 600 to 1200.\n- First two lines carry the hook and the use case; they are what shows before \"more\".\n- Include a chapters block: one line per scene as `M:SS Scene name` (or `H:MM:SS` when over an hour). The first chapter is `0:00`. Timestamps come from the cumulative scene durations in the concept; compute them exactly. At least three chapters, each at least 10 seconds long, in ascending order.\n- One short paragraph on how the piece was made, honest about generated elements when `ai_disclosure.required` is true (for example \"Visuals were generated and animated from original prompts; the music is an original composition\").\n- Close with a plain line inviting comments on what settings they used it for. No calls to subscribe in every sentence, no link farms, no hashtags beyond three at most.\n- Never claim health outcomes. Never mention other artists, tracks, or channels.\n\n## Tags\n\n- 8 to 20 tags. Total characters across all tags, including separating commas, must stay under 480.\n- Mix: use-case terms, the format family, sensory descriptors, duration. Lowercase, no hashtags, no duplicates, no brand names.\n\n## Other fields\n\n- `category_id`: \"10\" (Music) unless the concept is clearly non-musical ambience such as pure rain, in which case \"22\" (People & Blogs) is the neutral fallback.\n- `default_language`: BCP-47, normally \"en\".\n- `made_for_kids`: always false.\n- `ai_disclosure`: set `required` to true when any of the following is generated by AI in a way a viewer could mistake for real footage or real people: realistic scenes of real-looking places or events, synthetic voice, realistic sound recordings. Abstract or clearly stylised generated visuals and instrumental generated music do not by themselves require the disclosure, but the channel may still choose to disclose; explain your reasoning in `reason` so the reviewer can override.\n- `thumbnail_text`: at most four words for an optional overlay, or an empty string if the image should stand alone.\n- `review_notes`: anything the human reviewer should check before publishing (a claim you softened, a title you were unsure about, a chapter that is very short).\n\n## Output\n\nReturn only the JSON object described by the schema.\n",
               "type": "string"
             },
             {
-              "id": "2f487832-e1df-4d55-bcac-1b0dcac5068e",
+              "id": "b66ed81d-d0e3-45cf-b435-4c325f8d8043",
               "name": "metadata_schema",
               "value": "{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"title\",\"description\",\"tags\",\"category_id\",\"default_language\",\"made_for_kids\",\"chapters\",\"ai_disclosure\",\"thumbnail_text\",\"review_notes\"],\"properties\":{\"title\":{\"type\":\"string\",\"description\":\"At most 100 characters.\"},\"description\":{\"type\":\"string\",\"description\":\"At most 5000 characters. Contains the chapters block verbatim.\"},\"tags\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"8 to 20 lowercase tags; total length with commas under 480 characters.\"},\"category_id\":{\"type\":\"string\",\"description\":\"YouTube category id as a string, normally '10'.\"},\"default_language\":{\"type\":\"string\",\"description\":\"BCP-47 code, e.g. 'en'.\"},\"made_for_kids\":{\"type\":\"boolean\",\"description\":\"Always false for this channel.\"},\"chapters\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"start_seconds\",\"timestamp\",\"name\"],\"properties\":{\"start_seconds\":{\"type\":\"integer\"},\"timestamp\":{\"type\":\"string\",\"description\":\"M:SS or H:MM:SS, as written in the description.\"},\"name\":{\"type\":\"string\"}}}},\"ai_disclosure\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"required\",\"reason\"],\"properties\":{\"required\":{\"type\":\"boolean\"},\"reason\":{\"type\":\"string\"}}},\"thumbnail_text\":{\"type\":\"string\",\"description\":\"At most four words, or empty.\"},\"review_notes\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}",
               "type": "string"
@@ -273,7 +273,7 @@
         "includeOtherFields": true,
         "options": {}
       },
-      "id": "3d6c42e6-cb1b-4e9e-8665-b951cca07eef",
+      "id": "a3145978-310d-4af0-bd3d-81a037fb909d",
       "name": "Prompts",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
@@ -288,7 +288,7 @@
       "parameters": {
         "jsCode": "// Reads the channel's own publish history (workflow static data) so the concept prompt can avoid repeating itself.\nconst raw = $('Pipeline Config').first().json;\nconst config = { ...raw, channel: JSON.parse(raw.channel), format_spec: JSON.parse(raw.format_spec) };\nconst store = $getWorkflowStaticData('global');\nconst history = Array.isArray(store.history) ? store.history : [];\nconst recent = history.slice(-8).map((h) => ({ published: h.date, status: h.status, format_family: h.format_family, theme: h.theme, palette: h.palette, mood: h.mood, title: h.title }));\nconst now = new Date();\nconst m = now.getUTCMonth();\nconst season = m <= 1 || m === 11 ? 'winter' : m <= 4 ? 'spring' : m <= 7 ? 'summer' : 'autumn';\nreturn [{ json: {\n  run_id: now.toISOString().slice(0, 10) + '-' + $execution.id,\n  today: now.toISOString().slice(0, 10),\n  season_hint: season + ' in the northern hemisphere',\n  config,\n  recent_videos: recent,\n} }];"
       },
-      "id": "0666b2f3-ee5a-4dae-b442-7a1749f38801",
+      "id": "b80211df-6e71-4d87-9eb7-f565afe8ab21",
       "name": "Load Recent Videos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -301,7 +301,7 @@
       "parameters": {
         "jsCode": "// Same request shape as harness/run.mjs buildRequest('concept'). Structured output via output_config.format.\nconst item = $input.first().json;\nconst p = $('Prompts').first().json;\nconst cfg = item.config;\nconst brief = {\n  channel: cfg.channel,\n  format_spec: cfg.format_spec,\n  audio_source: cfg.audio_source,\n  visual_source: cfg.visual_source,\n  recent_videos: item.recent_videos,\n  today: item.today,\n  season_hint: item.season_hint,\n};\nconst body = {\n  model: cfg.anthropic_model,\n  max_tokens: 12000,\n  system: [{ type: 'text', text: p.concept_system, cache_control: { type: 'ephemeral' } }],\n  messages: [{ role: 'user', content: JSON.stringify(brief, null, 2) }],\n  output_config: { effort: cfg.anthropic_effort, format: { type: 'json_schema', schema: JSON.parse(p.concept_schema) } },\n};\nreturn [{ json: { ...item, brief, body } }];"
       },
-      "id": "6d32eb95-31ee-4954-9fdc-92f8eb1f6126",
+      "id": "f280ee61-6c56-472a-bc37-1362afe0333e",
       "name": "Build Concept Request",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -336,7 +336,7 @@
           "timeout": 600000
         }
       },
-      "id": "6bf2d1ec-82e8-49e7-bff1-765e8be31e1c",
+      "id": "cb4307a6-d1cd-46a4-8cc9-dd4fd40df503",
       "name": "Claude: Concept",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -358,7 +358,7 @@
       "parameters": {
         "jsCode": "// ---- shared validation (synced from harness/lib/validate.js; do not edit here) ----\n// Shared validation for Claude outputs. This file has NO imports and NO exports on purpose:\n// the harness loads it with `new Function`, and `run.mjs sync-workflow` pastes it verbatim\n// into the \"Parse Concept\" and \"Parse Metadata\" Code nodes of the n8n workflow between the\n// `// ---- shared validation` markers. Keep it plain ES2020.\n\nfunction extractJsonText(apiResponse) {\n  if (!apiResponse || typeof apiResponse !== 'object') throw new Error('Empty API response');\n  if (apiResponse.stop_reason === 'refusal') {\n    const cat = apiResponse.stop_details && apiResponse.stop_details.category;\n    throw new Error('Claude refused the request' + (cat ? ' (category: ' + cat + ')' : ''));\n  }\n  if (apiResponse.stop_reason === 'max_tokens') {\n    throw new Error('Output truncated at max_tokens; raise max_tokens in the request builder');\n  }\n  const blocks = Array.isArray(apiResponse.content) ? apiResponse.content : [];\n  const text = blocks.filter((b) => b && b.type === 'text').map((b) => b.text).join('');\n  if (!text.trim()) throw new Error('No text block in API response (stop_reason=' + apiResponse.stop_reason + ')');\n  return text;\n}\n\nfunction parseJsonStrict(text, label) {\n  try {\n    return JSON.parse(text);\n  } catch (e) {\n    throw new Error(label + ': output is not valid JSON: ' + e.message + '\\n' + text.slice(0, 400));\n  }\n}\n\nfunction fmtTimestamp(totalSeconds) {\n  const h = Math.floor(totalSeconds / 3600);\n  const m = Math.floor((totalSeconds % 3600) / 60);\n  const s = totalSeconds % 60;\n  const mm = h > 0 ? String(m).padStart(2, '0') : String(m);\n  return (h > 0 ? h + ':' : '') + mm + ':' + String(s).padStart(2, '0');\n}\n\n// Word-bounded so \"retreat\", \"healthy\" and \"wholesome\" do not trip it.\nvar HEALTH_CLAIM = /\\b(cure|cures|cured|treat|treats|treatment|heal|heals|healing|therapy|therapeutic|clinically|guaranteed|insomnia cure|anxiety relief)\\b/i;\n\n// Returns { ok, errors: [], warnings: [] }. Errors block the run; warnings go to the reviewer.\nfunction validateConcept(concept, formatSpec) {\n  const errors = [];\n  const warnings = [];\n  const spec = formatSpec || {};\n  const scenes = Array.isArray(concept.scenes) ? concept.scenes : [];\n\n  if (scenes.length === 0) errors.push('no scenes');\n  const total = scenes.reduce((a, s) => a + (Number(s.duration_seconds) || 0), 0);\n  const rangeMin = Number(spec.duration_minutes_min) || 0;\n  const rangeMax = Number(spec.duration_minutes_max) || 0;\n  if (rangeMin > 0 && rangeMax > 0) {\n    // format_spec gives a range: the model picks the length, the total must land inside it.\n    if (total < rangeMin * 60 || total > rangeMax * 60) errors.push('scene durations sum to ' + total + 's, outside the ' + rangeMin + '-' + rangeMax + ' min range');\n  } else {\n    const targetMin = Number(spec.duration_minutes) || Number(concept.duration_minutes) || 0;\n    if (targetMin > 0) {\n      const drift = Math.abs(total - targetMin * 60) / (targetMin * 60);\n      if (drift > 0.05) errors.push('scene durations sum to ' + total + 's, target ' + targetMin * 60 + 's (' + Math.round(drift * 100) + '% off)');\n    }\n  }\n  if (Math.round(total / 60) !== Number(concept.duration_minutes)) {\n    warnings.push('duration_minutes (' + concept.duration_minutes + ') does not match scene total (' + Math.round(total / 60) + ' min)');\n  }\n  const minScene = Number(spec.min_scene_seconds) || 90;\n  scenes.forEach((s, i) => {\n    if (Number(s.index) !== i + 1) errors.push('scene ' + (i + 1) + ' has index ' + s.index);\n    if (!(Number(s.duration_seconds) >= minScene)) errors.push('scene ' + (i + 1) + ' is shorter than ' + minScene + 's');\n    if (!s.visual_description || s.visual_description.length < 40) errors.push('scene ' + (i + 1) + ' visual_description too thin');\n    if (!Array.isArray(s.palette) || s.palette.length < 3) warnings.push('scene ' + (i + 1) + ' palette has fewer than 3 colours');\n  });\n  if (spec.scene_count_min && scenes.length < spec.scene_count_min) errors.push('fewer scenes than format_spec.scene_count_min');\n  if (spec.scene_count_max && scenes.length > spec.scene_count_max) errors.push('more scenes than format_spec.scene_count_max');\n\n  const intro = concept.spoken_intro || {};\n  if (spec.spoken_intro === false && intro.enabled) errors.push('spoken intro produced but format_spec forbids it');\n  if (intro.enabled && (!intro.script || intro.script.split(/\\s+/).length > 170)) errors.push('spoken intro script missing or longer than ~60s spoken');\n\n  const cc = concept.compliance_checklist || {};\n  ['no_real_people', 'no_brands_or_trademarks', 'no_copyrighted_subjects', 'audio_is_original_or_licensed', 'no_health_claims', 'adult_audience'].forEach((k) => {\n    if (cc[k] !== true) errors.push('compliance_checklist.' + k + ' is not true');\n  });\n  const scan = JSON.stringify([concept.working_title, concept.alternate_titles, concept.theme, intro.script]);\n  const hit = scan.match(HEALTH_CLAIM);\n  if (hit) warnings.push('possible health-claim wording in titles/intro (\"' + hit[0] + '\"): review');\n  if (!concept.variation_rationale || concept.variation_rationale.length < 60) warnings.push('variation_rationale is thin; check against recent videos');\n\n  return { ok: errors.length === 0, errors: errors, warnings: warnings, total_seconds: total };\n}\n\nfunction validateMetadata(meta, concept) {\n  const errors = [];\n  const warnings = [];\n  const title = String(meta.title || '');\n  if (!title.trim()) errors.push('empty title');\n  if (title.length > 100) errors.push('title longer than 100 chars (' + title.length + ')');\n  if (/[A-Z]{5,}/.test(title)) warnings.push('title contains an ALL-CAPS run');\n  if (/[\\u{1F300}-\\u{1FAFF}]/u.test(title)) errors.push('title contains emoji');\n\n  const desc = String(meta.description || '');\n  if (desc.length > 5000) errors.push('description longer than 5000 chars');\n  if (desc.length < 200) warnings.push('description is short (' + desc.length + ' chars)');\n  if (/[<>]/.test(desc)) errors.push('description contains < or > which YouTube rejects');\n\n  const tags = Array.isArray(meta.tags) ? meta.tags.map((t) => String(t).trim()).filter(Boolean) : [];\n  if (tags.length < 8) warnings.push('fewer than 8 tags');\n  if (tags.length > 20) warnings.push('more than 20 tags');\n  const joined = tags.join(',');\n  if (joined.length > 480) errors.push('tags total ' + joined.length + ' chars; YouTube limit is 500 including separators');\n  if (tags.some((t) => t.length > 100)) errors.push('a single tag exceeds 100 chars');\n  const lower = new Set(tags.map((t) => t.toLowerCase()));\n  if (lower.size !== tags.length) warnings.push('duplicate tags');\n\n  if (meta.made_for_kids !== false) errors.push('made_for_kids must be false');\n  if (!/^\\d+$/.test(String(meta.category_id))) errors.push('category_id must be a numeric string');\n\n  // Chapters must match the concept's scene timeline exactly.\n  const scenes = concept && Array.isArray(concept.scenes) ? concept.scenes : [];\n  const chapters = Array.isArray(meta.chapters) ? meta.chapters : [];\n  if (chapters.length < 3) errors.push('fewer than 3 chapters');\n  let cursor = 0;\n  scenes.forEach((s, i) => {\n    const ch = chapters[i];\n    if (!ch) { errors.push('missing chapter for scene ' + (i + 1)); cursor += Number(s.duration_seconds) || 0; return; }\n    if (Number(ch.start_seconds) !== cursor) errors.push('chapter ' + (i + 1) + ' starts at ' + ch.start_seconds + 's, scene timeline says ' + cursor + 's');\n    const expected = fmtTimestamp(cursor);\n    if (ch.timestamp !== expected) errors.push('chapter ' + (i + 1) + ' timestamp \"' + ch.timestamp + '\" should be \"' + expected + '\"');\n    if (!desc.includes(ch.timestamp + ' ')) errors.push('chapter timestamp ' + ch.timestamp + ' not present in description');\n    cursor += Number(s.duration_seconds) || 0;\n  });\n  if (chapters.length > scenes.length) warnings.push('more chapters than scenes');\n  if (!desc.startsWith('0:00') && !desc.includes('\\n0:00 ')) errors.push('description must contain a \"0:00\" chapter line');\n\n  const hit = title.match(HEALTH_CLAIM) || desc.match(HEALTH_CLAIM);\n  if (hit) warnings.push('possible health-claim wording (\"' + hit[0] + '\"); review');\n  const hashtags = (desc.match(/#\\w+/g) || []).length;\n  if (hashtags > 3) warnings.push(hashtags + ' hashtags in description; keep to 3');\n  if (String(meta.thumbnail_text || '').split(/\\s+/).filter(Boolean).length > 4) warnings.push('thumbnail_text longer than 4 words');\n\n  return { ok: errors.length === 0, errors: errors, warnings: warnings };\n}\n// ---- end shared validation ----\n\nconst api = $input.first().json;\nconst ctx = $('Build Concept Request').first().json;\nconst concept = parseJsonStrict(extractJsonText(api), 'concept');\nconst v = validateConcept(concept, ctx.config.format_spec);\nif (!v.ok) throw new Error('Concept failed validation:\\n- ' + v.errors.join('\\n- '));\nreturn [{ json: {\n  run_id: ctx.run_id, today: ctx.today, config: ctx.config, recent_videos: ctx.recent_videos,\n  concept, concept_warnings: v.warnings, total_seconds: v.total_seconds,\n  usage: { concept: api.usage, model: api.model },\n} }];"
       },
-      "id": "a5b33c62-acd3-4452-a825-b27e1120b5ef",
+      "id": "260a4b29-0955-4516-9f5a-638bc1bececc",
       "name": "Parse Concept",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -371,7 +371,7 @@
       "parameters": {
         "jsCode": "const item = $input.first().json;\nconst p = $('Prompts').first().json;\nconst cfg = item.config;\nconst payload = {\n  concept: item.concept,\n  channel_settings: {\n    recent_titles: (item.recent_videos || []).map((r) => r.title).filter(Boolean),\n    default_language: cfg.default_language,\n    ai_disclosure_policy: cfg.ai_disclosure_policy,\n    audio_source: cfg.audio_source,\n    visual_source: cfg.visual_source,\n  },\n};\nconst body = {\n  model: cfg.anthropic_model,\n  max_tokens: 6000,\n  system: [{ type: 'text', text: p.metadata_system, cache_control: { type: 'ephemeral' } }],\n  messages: [{ role: 'user', content: JSON.stringify(payload, null, 2) }],\n  output_config: { effort: cfg.anthropic_effort, format: { type: 'json_schema', schema: JSON.parse(p.metadata_schema) } },\n};\nreturn [{ json: { ...item, body } }];"
       },
-      "id": "5c559151-1ca0-49d5-ac23-91985172d5af",
+      "id": "56593dea-88ee-4e66-ab69-82f0cffd918f",
       "name": "Build Metadata Request",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -406,7 +406,7 @@
           "timeout": 600000
         }
       },
-      "id": "4231b369-5e67-4485-9a1a-25c3a585dc3e",
+      "id": "6ceb9e59-a504-4157-97d0-4c55144e0772",
       "name": "Claude: Metadata",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -428,7 +428,7 @@
       "parameters": {
         "jsCode": "// ---- shared validation (synced from harness/lib/validate.js; do not edit here) ----\n// Shared validation for Claude outputs. This file has NO imports and NO exports on purpose:\n// the harness loads it with `new Function`, and `run.mjs sync-workflow` pastes it verbatim\n// into the \"Parse Concept\" and \"Parse Metadata\" Code nodes of the n8n workflow between the\n// `// ---- shared validation` markers. Keep it plain ES2020.\n\nfunction extractJsonText(apiResponse) {\n  if (!apiResponse || typeof apiResponse !== 'object') throw new Error('Empty API response');\n  if (apiResponse.stop_reason === 'refusal') {\n    const cat = apiResponse.stop_details && apiResponse.stop_details.category;\n    throw new Error('Claude refused the request' + (cat ? ' (category: ' + cat + ')' : ''));\n  }\n  if (apiResponse.stop_reason === 'max_tokens') {\n    throw new Error('Output truncated at max_tokens; raise max_tokens in the request builder');\n  }\n  const blocks = Array.isArray(apiResponse.content) ? apiResponse.content : [];\n  const text = blocks.filter((b) => b && b.type === 'text').map((b) => b.text).join('');\n  if (!text.trim()) throw new Error('No text block in API response (stop_reason=' + apiResponse.stop_reason + ')');\n  return text;\n}\n\nfunction parseJsonStrict(text, label) {\n  try {\n    return JSON.parse(text);\n  } catch (e) {\n    throw new Error(label + ': output is not valid JSON: ' + e.message + '\\n' + text.slice(0, 400));\n  }\n}\n\nfunction fmtTimestamp(totalSeconds) {\n  const h = Math.floor(totalSeconds / 3600);\n  const m = Math.floor((totalSeconds % 3600) / 60);\n  const s = totalSeconds % 60;\n  const mm = h > 0 ? String(m).padStart(2, '0') : String(m);\n  return (h > 0 ? h + ':' : '') + mm + ':' + String(s).padStart(2, '0');\n}\n\n// Word-bounded so \"retreat\", \"healthy\" and \"wholesome\" do not trip it.\nvar HEALTH_CLAIM = /\\b(cure|cures|cured|treat|treats|treatment|heal|heals|healing|therapy|therapeutic|clinically|guaranteed|insomnia cure|anxiety relief)\\b/i;\n\n// Returns { ok, errors: [], warnings: [] }. Errors block the run; warnings go to the reviewer.\nfunction validateConcept(concept, formatSpec) {\n  const errors = [];\n  const warnings = [];\n  const spec = formatSpec || {};\n  const scenes = Array.isArray(concept.scenes) ? concept.scenes : [];\n\n  if (scenes.length === 0) errors.push('no scenes');\n  const total = scenes.reduce((a, s) => a + (Number(s.duration_seconds) || 0), 0);\n  const rangeMin = Number(spec.duration_minutes_min) || 0;\n  const rangeMax = Number(spec.duration_minutes_max) || 0;\n  if (rangeMin > 0 && rangeMax > 0) {\n    // format_spec gives a range: the model picks the length, the total must land inside it.\n    if (total < rangeMin * 60 || total > rangeMax * 60) errors.push('scene durations sum to ' + total + 's, outside the ' + rangeMin + '-' + rangeMax + ' min range');\n  } else {\n    const targetMin = Number(spec.duration_minutes) || Number(concept.duration_minutes) || 0;\n    if (targetMin > 0) {\n      const drift = Math.abs(total - targetMin * 60) / (targetMin * 60);\n      if (drift > 0.05) errors.push('scene durations sum to ' + total + 's, target ' + targetMin * 60 + 's (' + Math.round(drift * 100) + '% off)');\n    }\n  }\n  if (Math.round(total / 60) !== Number(concept.duration_minutes)) {\n    warnings.push('duration_minutes (' + concept.duration_minutes + ') does not match scene total (' + Math.round(total / 60) + ' min)');\n  }\n  const minScene = Number(spec.min_scene_seconds) || 90;\n  scenes.forEach((s, i) => {\n    if (Number(s.index) !== i + 1) errors.push('scene ' + (i + 1) + ' has index ' + s.index);\n    if (!(Number(s.duration_seconds) >= minScene)) errors.push('scene ' + (i + 1) + ' is shorter than ' + minScene + 's');\n    if (!s.visual_description || s.visual_description.length < 40) errors.push('scene ' + (i + 1) + ' visual_description too thin');\n    if (!Array.isArray(s.palette) || s.palette.length < 3) warnings.push('scene ' + (i + 1) + ' palette has fewer than 3 colours');\n  });\n  if (spec.scene_count_min && scenes.length < spec.scene_count_min) errors.push('fewer scenes than format_spec.scene_count_min');\n  if (spec.scene_count_max && scenes.length > spec.scene_count_max) errors.push('more scenes than format_spec.scene_count_max');\n\n  const intro = concept.spoken_intro || {};\n  if (spec.spoken_intro === false && intro.enabled) errors.push('spoken intro produced but format_spec forbids it');\n  if (intro.enabled && (!intro.script || intro.script.split(/\\s+/).length > 170)) errors.push('spoken intro script missing or longer than ~60s spoken');\n\n  const cc = concept.compliance_checklist || {};\n  ['no_real_people', 'no_brands_or_trademarks', 'no_copyrighted_subjects', 'audio_is_original_or_licensed', 'no_health_claims', 'adult_audience'].forEach((k) => {\n    if (cc[k] !== true) errors.push('compliance_checklist.' + k + ' is not true');\n  });\n  const scan = JSON.stringify([concept.working_title, concept.alternate_titles, concept.theme, intro.script]);\n  const hit = scan.match(HEALTH_CLAIM);\n  if (hit) warnings.push('possible health-claim wording in titles/intro (\"' + hit[0] + '\"): review');\n  if (!concept.variation_rationale || concept.variation_rationale.length < 60) warnings.push('variation_rationale is thin; check against recent videos');\n\n  return { ok: errors.length === 0, errors: errors, warnings: warnings, total_seconds: total };\n}\n\nfunction validateMetadata(meta, concept) {\n  const errors = [];\n  const warnings = [];\n  const title = String(meta.title || '');\n  if (!title.trim()) errors.push('empty title');\n  if (title.length > 100) errors.push('title longer than 100 chars (' + title.length + ')');\n  if (/[A-Z]{5,}/.test(title)) warnings.push('title contains an ALL-CAPS run');\n  if (/[\\u{1F300}-\\u{1FAFF}]/u.test(title)) errors.push('title contains emoji');\n\n  const desc = String(meta.description || '');\n  if (desc.length > 5000) errors.push('description longer than 5000 chars');\n  if (desc.length < 200) warnings.push('description is short (' + desc.length + ' chars)');\n  if (/[<>]/.test(desc)) errors.push('description contains < or > which YouTube rejects');\n\n  const tags = Array.isArray(meta.tags) ? meta.tags.map((t) => String(t).trim()).filter(Boolean) : [];\n  if (tags.length < 8) warnings.push('fewer than 8 tags');\n  if (tags.length > 20) warnings.push('more than 20 tags');\n  const joined = tags.join(',');\n  if (joined.length > 480) errors.push('tags total ' + joined.length + ' chars; YouTube limit is 500 including separators');\n  if (tags.some((t) => t.length > 100)) errors.push('a single tag exceeds 100 chars');\n  const lower = new Set(tags.map((t) => t.toLowerCase()));\n  if (lower.size !== tags.length) warnings.push('duplicate tags');\n\n  if (meta.made_for_kids !== false) errors.push('made_for_kids must be false');\n  if (!/^\\d+$/.test(String(meta.category_id))) errors.push('category_id must be a numeric string');\n\n  // Chapters must match the concept's scene timeline exactly.\n  const scenes = concept && Array.isArray(concept.scenes) ? concept.scenes : [];\n  const chapters = Array.isArray(meta.chapters) ? meta.chapters : [];\n  if (chapters.length < 3) errors.push('fewer than 3 chapters');\n  let cursor = 0;\n  scenes.forEach((s, i) => {\n    const ch = chapters[i];\n    if (!ch) { errors.push('missing chapter for scene ' + (i + 1)); cursor += Number(s.duration_seconds) || 0; return; }\n    if (Number(ch.start_seconds) !== cursor) errors.push('chapter ' + (i + 1) + ' starts at ' + ch.start_seconds + 's, scene timeline says ' + cursor + 's');\n    const expected = fmtTimestamp(cursor);\n    if (ch.timestamp !== expected) errors.push('chapter ' + (i + 1) + ' timestamp \"' + ch.timestamp + '\" should be \"' + expected + '\"');\n    if (!desc.includes(ch.timestamp + ' ')) errors.push('chapter timestamp ' + ch.timestamp + ' not present in description');\n    cursor += Number(s.duration_seconds) || 0;\n  });\n  if (chapters.length > scenes.length) warnings.push('more chapters than scenes');\n  if (!desc.startsWith('0:00') && !desc.includes('\\n0:00 ')) errors.push('description must contain a \"0:00\" chapter line');\n\n  const hit = title.match(HEALTH_CLAIM) || desc.match(HEALTH_CLAIM);\n  if (hit) warnings.push('possible health-claim wording (\"' + hit[0] + '\"); review');\n  const hashtags = (desc.match(/#\\w+/g) || []).length;\n  if (hashtags > 3) warnings.push(hashtags + ' hashtags in description; keep to 3');\n  if (String(meta.thumbnail_text || '').split(/\\s+/).filter(Boolean).length > 4) warnings.push('thumbnail_text longer than 4 words');\n\n  return { ok: errors.length === 0, errors: errors, warnings: warnings };\n}\n// ---- end shared validation ----\n\nconst api = $input.first().json;\nconst ctx = $('Build Metadata Request').first().json;\nconst metadata = parseJsonStrict(extractJsonText(api), 'metadata');\nconst v = validateMetadata(metadata, ctx.concept);\nif (!v.ok) throw new Error('Metadata failed validation:\\n- ' + v.errors.join('\\n- '));\nconst { body, ...rest } = ctx;\nrest.usage = { ...rest.usage, metadata: api.usage };\nreturn [{ json: { ...rest, metadata, metadata_warnings: v.warnings } }];"
       },
-      "id": "9ed19868-643f-44a0-a446-d090daefe96c",
+      "id": "342282f1-0299-4cf0-8b0c-55660e25eae3",
       "name": "Parse Metadata",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -441,7 +441,7 @@
       "parameters": {
         "jsCode": "// Builds the Slack review text. Slack section blocks cap at 3000 chars, so this stays compact.\nconst pkg = $input.first().json;\nconst c = pkg.concept, m = pkg.metadata, cfg = pkg.config;\nconst mmss = (s) => { const h = Math.floor(s / 3600), mi = Math.floor((s % 3600) / 60), se = s % 60; return (h ? h + ':' : '') + (h ? String(mi).padStart(2, '0') : mi) + ':' + String(se).padStart(2, '0'); };\nlet t = 0;\nconst scenes = c.scenes.map((s) => { const line = mmss(t) + ' ' + s.name + ' (' + Math.round(s.duration_seconds / 60) + ' min)'; t += s.duration_seconds; return line; });\nconst warnings = [...(pkg.concept_warnings || []), ...(pkg.metadata_warnings || []), ...(m.review_notes || [])];\nconst cut = (s, n) => (s && s.length > n ? s.slice(0, n - 1) + '\\u2026' : s || '');\nconst lines = [\n  '*Concept for review* \\u2014 run `' + pkg.run_id + '` \\u00b7 render mode: *' + cfg.render_mode + '*',\n  '*Title:* ' + m.title,\n  '*Format:* ' + c.format_family + ' \\u00b7 ' + c.duration_minutes + ' min \\u00b7 ' + c.scenes.length + ' scenes \\u00b7 spoken intro: ' + (c.spoken_intro.enabled ? 'yes' : 'no'),\n  '*Theme:* ' + cut(c.theme, 300),\n  '*Why it differs from recent uploads:* ' + cut(c.variation_rationale, 400),\n  '*Scenes:*\\n' + scenes.join('\\n'),\n  '*Audio:* ' + cut(c.audio_brief.mood + ' \\u00b7 ' + c.audio_brief.tonal_centre + ' \\u00b7 ' + c.audio_brief.instrumentation.join(', '), 300),\n  '*Tags:* ' + cut(m.tags.join(', '), 300),\n  '*AI disclosure:* ' + (m.ai_disclosure.required ? 'REQUIRED' : 'not required') + ' \\u2014 ' + cut(m.ai_disclosure.reason, 200),\n  c.assumptions && c.assumptions.length ? '*Assumptions made:*\\n\\u2022 ' + c.assumptions.map((a) => cut(a, 160)).join('\\n\\u2022 ') : '',\n  warnings.length ? '*Check before approving:*\\n\\u2022 ' + warnings.map((w) => cut(w, 160)).join('\\n\\u2022 ') : '',\n  cfg.render_mode === 'creatomate' ? '_Approve = render on Creatomate, then upload to YouTube as PRIVATE._' : '_Approve = record the concept and post the render payload here. Nothing renders or uploads in stub mode._',\n].filter(Boolean);\nlet review_message = lines.join('\\n\\n');\nif (review_message.length > 2900) review_message = review_message.slice(0, 2890) + '\\n\\u2026';\nreturn [{ json: { ...pkg, review_message } }];"
       },
-      "id": "c76da1bc-ec70-428b-b54e-86fafdfc7318",
+      "id": "d6fa2e9c-014c-487f-bdde-a7405c96925a",
       "name": "Assemble Review Package",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -480,7 +480,7 @@
           }
         }
       },
-      "id": "f37cbadd-e4ba-4e90-83b1-84b39a8f7a88",
+      "id": "d792e8e4-b4c0-4115-b6d4-7ace96ba9447",
       "name": "Slack: Request Approval",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
@@ -494,7 +494,7 @@
           "name": "Slack Bot (yt-approvals)"
         }
       },
-      "webhookId": "ab36e1c0-9ac8-4418-b1d0-762c428158fa",
+      "webhookId": "7570b92a-4b6e-4dcf-b9cb-d3ebfa414857",
       "notes": "Mandatory human gate. Output is {data:{approved}}; on timeout the input passes through unchanged and counts as NOT approved.",
       "notesInFlow": true
     },
@@ -509,7 +509,7 @@
           },
           "conditions": [
             {
-              "id": "2abf43d2-3fc1-410e-a764-7252dab89af7",
+              "id": "9e610e4a-bd0e-417d-a272-4f08ac840f07",
               "leftValue": "={{ !!($json.data && $json.data.approved === true) }}",
               "rightValue": "",
               "operator": {
@@ -523,7 +523,7 @@
         },
         "options": {}
       },
-      "id": "62822050-4e94-4c21-96eb-52c08d808d43",
+      "id": "cd49a5d4-5721-4850-baa6-b711e8ba8cce",
       "name": "Approved?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -536,7 +536,7 @@
       "parameters": {
         "jsCode": "function appendHistory(entry) {\n  const store = $getWorkflowStaticData('global');\n  store.history = Array.isArray(store.history) ? store.history : [];\n  store.history.push(entry);\n  if (store.history.length > 60) store.history = store.history.slice(-60);\n}\nconst pkg = $('Assemble Review Package').first().json;\nconst resp = $input.first().json;\nconst status = resp.data && resp.data.approved === false ? 'rejected' : 'timed_out';\nappendHistory({ date: pkg.today, run_id: pkg.run_id, status, format_family: pkg.concept.format_family, theme: pkg.concept.theme, palette: pkg.concept.visual_style.global_palette, mood: pkg.concept.audio_brief.mood, title: pkg.metadata.title });\nconst notice = status === 'rejected'\n  ? ':no_entry: Concept `' + pkg.run_id + '` rejected. Nothing rendered or uploaded.'\n  : ':hourglass: Concept `' + pkg.run_id + '` timed out waiting for approval and was discarded. Nothing rendered or uploaded.';\nreturn [{ json: { run_id: pkg.run_id, status, notice } }];"
       },
-      "id": "f785b8ef-f1b0-46b5-9ac6-939a14cca9fc",
+      "id": "4506c8f5-c8b2-4e0a-b6b1-c870ea188eb4",
       "name": "Record Rejection",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -560,7 +560,7 @@
         "text": "={{ $json.notice }}",
         "otherOptions": {}
       },
-      "id": "6f563dc2-16e6-4c93-9549-fe524d8352e3",
+      "id": "0ad66ce4-09f2-4f52-ac43-0344487298e8",
       "name": "Slack: Rejected Notice",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
@@ -579,7 +579,7 @@
       "parameters": {
         "jsCode": "// The Slack node replaces the item with {data:{approved,...}}; pull the package back from the node before it.\nconst pkg = $('Assemble Review Package').first().json;\nconst approval = $input.first().json.data || {};\nreturn [{ json: { ...pkg, approval } }];"
       },
-      "id": "d8b64562-18fd-4a2d-9247-a23fc0900f68",
+      "id": "a132a233-5876-4c28-b9de-7278cb348bb5",
       "name": "Restore Package",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -599,7 +599,7 @@
           },
           "conditions": [
             {
-              "id": "6431383f-2f34-4682-a841-03efdce349ab",
+              "id": "6aa993b1-43d5-460a-992e-8aff7b2ec042",
               "leftValue": "={{ $json.config.asset_mode === 'generate' }}",
               "rightValue": "",
               "operator": {
@@ -613,7 +613,7 @@
         },
         "options": {}
       },
-      "id": "0dc46534-bd19-40ae-9163-ecdbf2a991d9",
+      "id": "ada9235b-35af-4cce-8cb6-9e14e7dd64a5",
       "name": "Generate assets?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -628,7 +628,7 @@
       "parameters": {
         "jsCode": "// asset_mode = placeholder: no generation, no upload. Lets the render and upload path be exercised for free.\nconst pkg = $input.first().json;\nconst cfg = pkg.config;\nreturn [{ json: { ...pkg, assets: {\n  mode: 'placeholder',\n  audio_url: cfg.placeholder_audio_url,\n  scene_image_urls: pkg.concept.scenes.map(() => cfg.placeholder_image_url),\n} } }];"
       },
-      "id": "88c0cba5-4cee-489f-b3a2-03c9003d5d4e",
+      "id": "78fdc398-3ce6-4e14-8a22-f08ac15810dd",
       "name": "Placeholder Assets",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -641,7 +641,7 @@
       "parameters": {
         "jsCode": "// One item per scene. gpt-image models take no negative prompt, so the exclusions are stated in words.\nconst pkg = $input.first().json;\nconst cfg = pkg.config;\nconst vs = pkg.concept.visual_style;\nreturn pkg.concept.scenes.map((s) => ({ json: {\n  run_id: pkg.run_id,\n  scene_index: s.index,\n  key: cfg.asset_key_prefix + '/' + pkg.run_id + '/scene-' + String(s.index).padStart(2, '0') + '.jpg',\n  prompt: vs.generation_prompt_prefix + ' ' + s.visual_description + ' Colour palette: ' + s.palette.join(', ') + '. Composition leaves room at the edges for a slow push-in. Do not include: ' + vs.negative_prompt,\n} }));"
       },
-      "id": "0b91bff5-aa0f-4ee9-8a98-ca5cae0d33db",
+      "id": "426c2942-c290-4d8a-9c94-06622082858f",
       "name": "Build Image Prompts",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -669,7 +669,7 @@
           }
         }
       },
-      "id": "bfeeceb3-577c-4e42-a674-a94deda08a35",
+      "id": "4f983e29-343a-4c34-96f5-297b7f8eedf7",
       "name": "OpenAI: Generate Scene Image",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -699,7 +699,7 @@
           "mimeType": "image/jpeg"
         }
       },
-      "id": "172bd5c2-e807-4f74-b9fa-efa832bac58c",
+      "id": "dbcb934a-a3fb-4c19-a83f-7c1cdca605e9",
       "name": "Image to Binary",
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
@@ -719,7 +719,7 @@
         "additionalFields": {},
         "tagsUi": {}
       },
-      "id": "d8d740c1-e215-4e0d-a51b-c1215b4877cc",
+      "id": "81f75c40-623f-4276-88c4-62b3e1d2d979",
       "name": "S3: Upload Scene Image",
       "type": "n8n-nodes-base.s3",
       "typeVersion": 1,
@@ -743,7 +743,7 @@
       "parameters": {
         "jsCode": "// Runs once after every upload has finished. Rebuilds the ordered URL list from the prompt items.\nconst cfg = $('Pipeline Config').first().json;\nconst jobs = $('Build Image Prompts').all().map((i) => i.json).sort((a, b) => a.scene_index - b.scene_index);\nconst base = String(cfg.asset_public_base_url).replace(/\\/+$/, '');\nreturn [{ json: { scene_image_urls: jobs.map((j) => base + '/' + j.key) } }];"
       },
-      "id": "f5b7f458-3a13-4cde-ad67-6d791a4b4474",
+      "id": "96a2f7c7-44b4-4d9a-b842-2e48c3fd5a0b",
       "name": "Collect Scene Images",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -756,7 +756,7 @@
       "parameters": {
         "jsCode": "const pkg = $input.first().json;\nconst cfg = pkg.config;\nconst total_ms = pkg.concept.scenes.reduce((a, s) => a + s.duration_seconds, 0) * 1000;\nif (total_ms > cfg.music_max_ms) throw new Error('Piece is ' + total_ms + ' ms; music_max_ms is ' + cfg.music_max_ms + '. Split into two generations or shorten the format.');\nreturn [{ json: {\n  run_id: pkg.run_id,\n  key: cfg.asset_key_prefix + '/' + pkg.run_id + '/music.mp3',\n  body: { prompt: pkg.concept.audio_brief.generation_prompt, music_length_ms: total_ms, force_instrumental: true, model_id: cfg.music_model_id },\n} }];"
       },
-      "id": "d17148f8-6954-4ca2-9ea1-8959b8796533",
+      "id": "2ee63b5e-7bdf-49b6-a5d9-fae4022003c3",
       "name": "Build Music Request",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -793,7 +793,7 @@
           "timeout": 900000
         }
       },
-      "id": "43fd4cc8-ca6b-4f40-b328-fd8dcd0ab39d",
+      "id": "c8486236-bf35-4fe1-b293-cbc3587f1caa",
       "name": "ElevenLabs: Compose Music",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -824,7 +824,7 @@
         "additionalFields": {},
         "tagsUi": {}
       },
-      "id": "e4ca1949-e2f4-477e-b7bf-3e97affd5319",
+      "id": "5001ef7d-7be9-4389-a736-0159a671ccbe",
       "name": "S3: Upload Music",
       "type": "n8n-nodes-base.s3",
       "typeVersion": 1,
@@ -846,7 +846,7 @@
       "parameters": {
         "jsCode": "const cfg = $('Pipeline Config').first().json;\nconst base = String(cfg.asset_public_base_url).replace(/\\/+$/, '');\nreturn [{ json: { audio_url: base + '/' + $('Build Music Request').first().json.key } }];"
       },
-      "id": "85a6fa96-41c6-47e3-a6f8-cb1450e3d7d2",
+      "id": "12497677-aa2f-430b-9b0c-e76288741251",
       "name": "Music URL",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -861,7 +861,7 @@
         "combineBy": "combineByPosition",
         "options": {}
       },
-      "id": "02830999-7a20-40e8-8f4f-fc699f4c7b15",
+      "id": "8438c7d4-3e29-4f4e-b937-7bbc708b5a06",
       "name": "Merge Assets",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
@@ -876,7 +876,7 @@
       "parameters": {
         "jsCode": "const merged = $input.first().json;\nconst pkg = $('Restore Package').first().json;\nif (!Array.isArray(merged.scene_image_urls) || merged.scene_image_urls.length !== pkg.concept.scenes.length) throw new Error('Scene image count mismatch: ' + JSON.stringify(merged.scene_image_urls));\nif (!merged.audio_url) throw new Error('No audio_url from the music branch');\nreturn [{ json: { ...pkg, assets: { mode: 'generate', audio_url: merged.audio_url, scene_image_urls: merged.scene_image_urls } } }];"
       },
-      "id": "5d01c49b-24f2-42e9-80fb-3bf5fed0fe26",
+      "id": "f6b01b8c-ae85-4ec1-b430-818493c1fa9c",
       "name": "Assemble Assets",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -887,9 +887,9 @@
     },
     {
       "parameters": {
-        "jsCode": "// Builds the Creatomate request. Two modes (Pipeline Config.creatomate_mode):\n//   source   (default) - the workflow writes the whole RenderScript for this video: exact scene count, per-scene\n//                        durations, slow push/pull on each still, 3 s cross-fades, a 20 s fade to black and a\n//                        matching audio fade. Nothing to build in the Creatomate editor.\n//   template           - classic template_id + modifications, for a template you designed by hand. Element names:\n//                        Audio, Title-Card, Fade-Out, Scene-N, Scene-N-Image, Scene-N-Label.\nconst pkg = $input.first().json;\nconst cfg = pkg.config;\nconst d = (cfg.format_spec && cfg.format_spec.delivery) || {};\nconst scenes = pkg.concept.scenes;\nconst total = scenes.reduce((a, s) => a + s.duration_seconds, 0);\nconst FADE_OUT = 20;   // seconds; format_spec hard rule: last scene fades to black over its final 20 s\nconst XFADE = 3;       // seconds; cross-fade between scenes\nconst [width, height] = String(d.resolution || '1920x1080').split('x').map(Number);\nconst showTitle = d.title_card && d.title_card !== 'none';\n\nfunction sceneElement(s, i) {\n  const n = i + 1;\n  const zoomIn = i % 2 === 0;   // alternate a slow push-in and a slow pull-back so consecutive scenes never move the same way\n  return {\n    name: 'Scene-' + n, type: 'composition', track: 1, duration: s.duration_seconds,\n    animations: i === 0 ? [] : [{ type: 'fade', duration: XFADE, transition: true }],\n    elements: [\n      { name: 'Scene-' + n + '-Image', type: 'image', source: pkg.assets.scene_image_urls[i], fit: 'cover',\n        animations: [{ type: 'pan', scope: 'element', easing: 'linear',\n          start_scale: zoomIn ? '100%' : '106%', end_scale: zoomIn ? '106%' : '100%',\n          start_x: '50%', end_x: zoomIn ? '51.5%' : '48.5%', start_y: '50%', end_y: '50%' }] },\n      { name: 'Scene-' + n + '-Label', type: 'text', text: s.name, visible: false, y: '92%', width: '60%',\n        font_family: 'Georgia', font_size: '2.4 vmin', fill_color: 'rgba(255,255,255,0.7)', x_alignment: '50%' },\n    ],\n  };\n}\n\nconst source = {\n  output_format: cfg.creatomate_output_format || 'mp4',\n  width, height, frame_rate: Number(d.fps) || 25,\n  elements: [\n    ...scenes.map(sceneElement),\n    { name: 'Fade-Out', type: 'shape', track: 2, time: Math.max(0, total - FADE_OUT), duration: FADE_OUT,\n      width: '100%', height: '100%', fill_color: '#000000', path: 'M 0 0 L 100 0 L 100 100 L 0 100 L 0 0 Z',\n      opacity: [{ time: 0, value: '0%' }, { time: FADE_OUT, value: '100%', easing: 'linear' }] },\n    { name: 'Title-Card', type: 'text', track: 3, time: 0, duration: 8, visible: !!showTitle, text: pkg.metadata.title,\n      y: '88%', width: '70%', font_family: 'Georgia', font_size: '3 vmin', fill_color: 'rgba(255,255,255,0.85)', x_alignment: '50%',\n      animations: [{ type: 'fade', time: 0, duration: 1.5 }, { type: 'fade', time: 6.5, duration: 1.5, reversed: true }] },\n    { name: 'Audio', type: 'audio', track: 4, time: 0, source: pkg.assets.audio_url, duration: null, volume: '100%', audio_fade_out: FADE_OUT },\n  ],\n};\n\n// Template mode: same intent expressed as modifications against a hand-built template.\nconst mods = { 'Audio.source': pkg.assets.audio_url, 'Audio.audio_fade_out': FADE_OUT, 'Fade-Out.time': Math.max(0, total - FADE_OUT), 'Title-Card.text': pkg.metadata.title, 'Title-Card.visible': !!showTitle };\nscenes.forEach((s, i) => { const n = i + 1; mods['Scene-' + n + '.duration'] = s.duration_seconds; mods['Scene-' + n + '-Image.source'] = pkg.assets.scene_image_urls[i]; mods['Scene-' + n + '-Label.text'] = s.name; });\nfor (let n = scenes.length + 1; n <= (cfg.format_spec.scene_count_max || 6); n++) { mods['Scene-' + n + '.visible'] = false; mods['Scene-' + n + '.duration'] = 0; }\n\nconst render_request = cfg.creatomate_mode === 'template'\n  ? { template_id: cfg.creatomate_template_id, output_format: cfg.creatomate_output_format || 'mp4', modifications: mods, metadata: JSON.stringify({ run_id: pkg.run_id }) }\n  : { source, metadata: JSON.stringify({ run_id: pkg.run_id }) };\nreturn [{ json: { ...pkg, total_seconds: total, render_request } }];"
+        "jsCode": "// Builds the Creatomate request. Two modes (Pipeline Config.creatomate_mode):\n//   source   (default) - the workflow writes the whole RenderScript for this video: exact scene count, per-scene\n//                        durations, slow push/pull on each still, 3 s cross-fades, a 20 s fade to black and a\n//                        matching audio fade. Nothing to build in the Creatomate editor.\n//   template           - classic template_id + modifications, for a template you designed by hand. Element names:\n//                        Audio, Title-Card, Fade-Out, Scene-N, Scene-N-Image, Scene-N-Label.\nconst pkg = $input.first().json;\nconst cfg = pkg.config;\nconst d = (cfg.format_spec && cfg.format_spec.delivery) || {};\nconst scenes = pkg.concept.scenes;\nconst total = scenes.reduce((a, s) => a + s.duration_seconds, 0);\nconst FADE_OUT = 20;   // seconds; format_spec hard rule: last scene fades to black over its final 20 s\nconst XFADE = 3;       // seconds; cross-fade between scenes\nconst [width, height] = String(d.resolution || '1920x1080').split('x').map(Number);\nconst showTitle = d.title_card && d.title_card !== 'none';\n\nfunction sceneElement(s, i) {\n  const n = i + 1;\n  const zoomIn = i % 2 === 0;   // alternate a slow push-in and a slow pull-back so consecutive scenes never move the same way\n  return {\n    name: 'Scene-' + n, type: 'composition', track: 1, duration: s.duration_seconds,\n    animations: i === 0 ? [] : [{ type: 'fade', duration: XFADE, transition: true }],\n    elements: [\n      { name: 'Scene-' + n + '-Image', type: 'image', source: pkg.assets.scene_image_urls[i], fit: 'cover',\n        animations: [{ type: 'pan', scope: 'element', easing: 'linear',\n          start_scale: zoomIn ? '100%' : '106%', end_scale: zoomIn ? '106%' : '100%',\n          start_x: '50%', end_x: zoomIn ? '51.5%' : '48.5%', start_y: '50%', end_y: '50%' }] },\n      { name: 'Scene-' + n + '-Label', type: 'text', text: s.name, visible: false, y: '92%', width: '60%',\n        font_family: 'Georgia', font_size: '2.4 vmin', fill_color: 'rgba(255,255,255,0.7)', x_alignment: '50%' },\n    ],\n  };\n}\n\nconst source = {\n  output_format: cfg.creatomate_output_format || 'mp4',\n  width, height, frame_rate: Number(d.fps) || 25,\n  elements: [\n    ...scenes.map(sceneElement),\n    { name: 'Fade-Out', type: 'shape', track: 2, time: Math.max(0, total - FADE_OUT), duration: FADE_OUT,\n      width: '100%', height: '100%', fill_color: '#000000', path: 'M 0 0 L 100 0 L 100 100 L 0 100 L 0 0 Z',\n      opacity: [{ time: 0, value: '0%' }, { time: FADE_OUT, value: '100%', easing: 'linear' }] },\n    { name: 'Title-Card', type: 'text', track: 3, time: 0, duration: 8, visible: !!showTitle, text: pkg.metadata.title,\n      y: '88%', width: '70%', font_family: 'Georgia', font_size: '3 vmin', fill_color: 'rgba(255,255,255,0.85)', x_alignment: '50%',\n      animations: [{ type: 'fade', time: 0, duration: 1.5 }, { type: 'fade', time: 6.5, duration: 1.5, reversed: true }] },\n    // Generated music is produced at the exact piece length, so no loop. Placeholder files are short demo clips, so loop them.\n    { name: 'Audio', type: 'audio', track: 4, time: 0, source: pkg.assets.audio_url, duration: null, volume: '100%', audio_fade_out: FADE_OUT, loop: pkg.assets.mode === 'placeholder' },\n  ],\n};\n\n// Template mode: same intent expressed as modifications against a hand-built template.\nconst mods = { 'Audio.source': pkg.assets.audio_url, 'Audio.audio_fade_out': FADE_OUT, 'Audio.loop': pkg.assets.mode === 'placeholder', 'Fade-Out.time': Math.max(0, total - FADE_OUT), 'Title-Card.text': pkg.metadata.title, 'Title-Card.visible': !!showTitle };\nscenes.forEach((s, i) => { const n = i + 1; mods['Scene-' + n + '.duration'] = s.duration_seconds; mods['Scene-' + n + '-Image.source'] = pkg.assets.scene_image_urls[i]; mods['Scene-' + n + '-Label.text'] = s.name; });\nfor (let n = scenes.length + 1; n <= (cfg.format_spec.scene_count_max || 6); n++) { mods['Scene-' + n + '.visible'] = false; mods['Scene-' + n + '.duration'] = 0; }\n\nconst render_request = cfg.creatomate_mode === 'template'\n  ? { template_id: cfg.creatomate_template_id, output_format: cfg.creatomate_output_format || 'mp4', modifications: mods, metadata: JSON.stringify({ run_id: pkg.run_id }) }\n  : { source, metadata: JSON.stringify({ run_id: pkg.run_id }) };\nreturn [{ json: { ...pkg, total_seconds: total, render_request } }];"
       },
-      "id": "eae1560b-8ca8-496c-aeb5-ee6495c019cc",
+      "id": "a273255a-f9ef-44bf-b187-322a0dae0406",
       "name": "Build Render Request",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -911,7 +911,7 @@
           },
           "conditions": [
             {
-              "id": "312a8abf-d44e-421a-b35d-6647c5423c4a",
+              "id": "96fe5002-5a6c-4154-821d-53974ef890fb",
               "leftValue": "={{ $json.config.render_mode === 'creatomate' }}",
               "rightValue": "",
               "operator": {
@@ -925,7 +925,7 @@
         },
         "options": {}
       },
-      "id": "2cf240a0-ec02-4f8b-9b6f-b5f7ba30ae0c",
+      "id": "89573d3d-bb33-4197-8f1f-cd8491e61cd7",
       "name": "Render mode is Creatomate?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -938,7 +938,7 @@
       "parameters": {
         "jsCode": "function appendHistory(entry) {\n  const store = $getWorkflowStaticData('global');\n  store.history = Array.isArray(store.history) ? store.history : [];\n  store.history.push(entry);\n  if (store.history.length > 60) store.history = store.history.slice(-60);\n}\nconst pkg = $input.first().json;\nappendHistory({ date: pkg.today, run_id: pkg.run_id, status: 'stubbed', format_family: pkg.concept.format_family, theme: pkg.concept.theme, palette: pkg.concept.visual_style.global_palette, mood: pkg.concept.audio_brief.mood, title: pkg.metadata.title });\nconst rr = pkg.render_request;\nconst summary = rr.source\n  ? { mode: 'source', output: rr.source.output_format + ' ' + rr.source.width + 'x' + rr.source.height + '@' + rr.source.frame_rate, total_seconds: pkg.total_seconds, scenes: rr.source.elements.filter((e) => e.type === 'composition').map((e) => ({ name: e.name, duration: e.duration, image: e.elements[0].source })), audio: rr.source.elements.find((e) => e.type === 'audio').source, fade_out_at: rr.source.elements.find((e) => e.name === 'Fade-Out').time }\n  : rr;\nconst notice = ':white_check_mark: Concept `' + pkg.run_id + '` approved in *stub* render mode (assets: ' + pkg.assets.mode + '). Nothing was rendered or uploaded.\\n\\n*Render request summary:*\\n```' + JSON.stringify(summary, null, 2).slice(0, 2600) + '```';\nreturn [{ json: { run_id: pkg.run_id, notice } }];"
       },
-      "id": "f6a2e585-b8c1-42ab-be2c-246c76391594",
+      "id": "3f670d0c-813e-45e1-89a1-c98a2afc951a",
       "name": "Record Stub",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -962,7 +962,7 @@
         "text": "={{ $json.notice }}",
         "otherOptions": {}
       },
-      "id": "daba0196-3946-43d6-9cbf-bd4abd9c0568",
+      "id": "16c77eff-8348-4b9e-a176-53dc03e47092",
       "name": "Slack: Stub Notice",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
@@ -999,7 +999,7 @@
           "timeout": 60000
         }
       },
-      "id": "94e916c9-96a5-4f60-b716-661547d261b5",
+      "id": "3a865470-d624-43b9-90dd-6fad63063235",
       "name": "Creatomate: Start Render",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -1023,7 +1023,7 @@
       "parameters": {
         "jsCode": "// Creatomate returns one render object per template output; we use the first.\nconst r = $input.first().json;\nif (!r || !r.id) throw new Error('Creatomate did not return a render id: ' + JSON.stringify(r).slice(0, 300));\nconst pkg = $('Build Render Request').first().json;\nreturn [{ json: { ...pkg, render: { id: r.id, status: r.status } } }];"
       },
-      "id": "ba5fd0ab-96fa-44bf-9340-5daa802dbbe9",
+      "id": "cb1d5e39-e080-47fc-bfd9-924b65ed71c9",
       "name": "Parse Render Start",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1042,7 +1042,7 @@
         "resumeUnit": "hours",
         "options": {}
       },
-      "id": "af075144-c5ec-4b53-b159-442463e08e6a",
+      "id": "706ac14c-ee51-445d-ace7-601b7d155d9e",
       "name": "Wait for Render",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
@@ -1050,7 +1050,7 @@
         6260,
         100
       ],
-      "webhookId": "5bf323ef-8f2f-4ced-8512-d1407fee1d34",
+      "webhookId": "055d1917-f983-487a-89d1-7f34f660ca51",
       "notes": "Resumes on the Creatomate webhook or after the timeout; either way the next node fetches the authoritative status.",
       "notesInFlow": true
     },
@@ -1064,7 +1064,7 @@
           "timeout": 60000
         }
       },
-      "id": "18d3d0a2-6b51-4df2-9936-82a977fb06e8",
+      "id": "719ad3d2-c4ec-4a9c-be4a-3fcd54b95c0e",
       "name": "Creatomate: Get Render",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -1093,7 +1093,7 @@
           },
           "conditions": [
             {
-              "id": "f6c0fbd2-9018-4925-9889-bd261337203f",
+              "id": "0a149692-5cd7-4ac5-8ef1-8b6ac36ae96b",
               "leftValue": "={{ $json.status === 'succeeded' && !!$json.url }}",
               "rightValue": "",
               "operator": {
@@ -1107,7 +1107,7 @@
         },
         "options": {}
       },
-      "id": "9a444be7-c563-49d6-bfce-50b3fbd8bc7f",
+      "id": "9c6e8b31-9d39-429a-b65b-ad738fddec5d",
       "name": "Render succeeded?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -1131,7 +1131,7 @@
         "text": "={{ ':x: Render for run `' + $('Parse Render Start').first().json.run_id + '` did not succeed. Status: ' + $json.status + ($json.error_message ? ' \\u2014 ' + $json.error_message : '') + '. Nothing uploaded. Render id ' + $('Parse Render Start').first().json.render.id }}",
         "otherOptions": {}
       },
-      "id": "c63a4b72-5775-41a1-b3e6-f91f36812c33",
+      "id": "e256ea4c-02a7-4ea7-b122-de24f5d0b2d2",
       "name": "Slack: Render Failed",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
@@ -1160,7 +1160,7 @@
           "timeout": 1800000
         }
       },
-      "id": "b44590d4-868a-45ee-99e1-3f0cba500424",
+      "id": "52042d06-c499-4095-a748-538c88a7e955",
       "name": "Download Render",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -1191,7 +1191,7 @@
           "defaultLanguage": "={{ $('Parse Render Start').first().json.metadata.default_language }}"
         }
       },
-      "id": "abd5088f-a4db-4808-a74b-e55dab93783e",
+      "id": "9502e93e-96b1-4652-8bfd-8a9022915c22",
       "name": "YouTube: Upload (Private)",
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
@@ -1212,7 +1212,7 @@
       "parameters": {
         "jsCode": "function appendHistory(entry) {\n  const store = $getWorkflowStaticData('global');\n  store.history = Array.isArray(store.history) ? store.history : [];\n  store.history.push(entry);\n  if (store.history.length > 60) store.history = store.history.slice(-60);\n}\nconst up = $input.first().json;\nconst pkg = $('Parse Render Start').first().json;\nconst video_id = up.id;\nif (!video_id) throw new Error('YouTube upload returned no video id: ' + JSON.stringify(up).slice(0, 300));\nappendHistory({ date: pkg.today, run_id: pkg.run_id, status: 'published_private', video_id, format_family: pkg.concept.format_family, theme: pkg.concept.theme, palette: pkg.concept.visual_style.global_palette, mood: pkg.concept.audio_brief.mood, title: pkg.metadata.title });\nconst disclosure = pkg.metadata.ai_disclosure.required;\nconst notice = ':lock: Uploaded as PRIVATE for run `' + pkg.run_id + '`\\n*' + pkg.metadata.title + '*\\nhttps://studio.youtube.com/video/' + video_id + '/edit\\nAI disclosure flag: ' + (disclosure ? 'set via API' : 'not set (' + pkg.metadata.ai_disclosure.reason + ')') + '\\nReview in Studio, then set to Public by hand.';\nreturn [{ json: { video_id, disclosure_required: disclosure, notice } }];"
       },
-      "id": "52a4ece8-44b2-42f8-aa80-a6fee3a07b18",
+      "id": "fc2bede9-917e-44c2-8f8a-78e611b8863c",
       "name": "Record Publish",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1232,7 +1232,7 @@
           },
           "conditions": [
             {
-              "id": "a359241f-2a97-496c-bd57-213ba684746c",
+              "id": "bfd0f825-d225-49f4-b085-a095a88ebe83",
               "leftValue": "={{ $json.disclosure_required === true }}",
               "rightValue": "",
               "operator": {
@@ -1246,7 +1246,7 @@
         },
         "options": {}
       },
-      "id": "fc0a4687-eb91-4ce1-a9d1-1fb457d7e9c1",
+      "id": "d0f706ea-c42f-45a5-8b1c-7de89c138775",
       "name": "AI disclosure needed?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -1277,7 +1277,7 @@
           "timeout": 60000
         }
       },
-      "id": "e0fc70ca-56ba-4519-ac09-dc38e65c23f8",
+      "id": "41f697e7-f860-4bf3-bd43-4cc6b4565f59",
       "name": "YouTube: Flag Synthetic Media",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -1312,7 +1312,7 @@
         "text": "={{ $('Record Publish').first().json.notice }}",
         "otherOptions": {}
       },
-      "id": "6bcccba3-cd5f-4cdb-b7b5-e2d19dedc90e",
+      "id": "8b107a34-b4b3-4fa0-8e25-dbb615d7761d",
       "name": "Slack: Uploaded (Private)",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
@@ -1333,7 +1333,7 @@
         "width": 700,
         "height": 220
       },
-      "id": "81c2fb2b-3196-42d1-96ff-dd3bef2807b2",
+      "id": "90edc17b-074c-42ed-9609-a46044e695b5",
       "name": "Note 47",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -1348,7 +1348,7 @@
         "width": 480,
         "height": 160
       },
-      "id": "44ba3d07-0cee-415c-9b64-bdc660df3a54",
+      "id": "d80c7e23-5c34-4007-ad10-5eb2fc2b7696",
       "name": "Note 48",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -1363,7 +1363,7 @@
         "width": 420,
         "height": 120
       },
-      "id": "abfebf35-9671-464a-98fd-d48ebe735c02",
+      "id": "91ce901c-a0ae-49d5-b0fa-d50aa5311432",
       "name": "Note 49",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -1378,7 +1378,7 @@
         "width": 700,
         "height": 160
       },
-      "id": "2ad0a46b-bb90-4324-b5ce-72d7617054f2",
+      "id": "0cf1e508-3b71-43ce-b0dd-82c6aa643ae2",
       "name": "Note 50",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -1393,7 +1393,7 @@
         "width": 700,
         "height": 160
       },
-      "id": "518da530-5267-445a-8b18-0dd5772c07e2",
+      "id": "00c5983e-c608-4ce3-bed0-a6eb8a8d6497",
       "name": "Note 51",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,

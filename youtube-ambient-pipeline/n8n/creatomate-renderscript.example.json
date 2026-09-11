@@ -14,7 +14,7 @@
         {
           "name": "Scene-1-Image",
           "type": "image",
-          "source": "https://REPLACE.example.com/runs/2026-09-09-1234/scene-01.jpg",
+          "source": "https://REPLACE.example.com/runs/2026-09-11-1234/scene-01.jpg",
           "fit": "cover",
           "animations": [
             {
@@ -60,7 +60,7 @@
         {
           "name": "Scene-2-Image",
           "type": "image",
-          "source": "https://REPLACE.example.com/runs/2026-09-09-1234/scene-02.jpg",
+          "source": "https://REPLACE.example.com/runs/2026-09-11-1234/scene-02.jpg",
           "fit": "cover",
           "animations": [
             {
@@ -106,7 +106,7 @@
         {
           "name": "Scene-3-Image",
           "type": "image",
-          "source": "https://REPLACE.example.com/runs/2026-09-09-1234/scene-03.jpg",
+          "source": "https://REPLACE.example.com/runs/2026-09-11-1234/scene-03.jpg",
           "fit": "cover",
           "animations": [
             {
@@ -152,7 +152,7 @@
         {
           "name": "Scene-4-Image",
           "type": "image",
-          "source": "https://REPLACE.example.com/runs/2026-09-09-1234/scene-04.jpg",
+          "source": "https://REPLACE.example.com/runs/2026-09-11-1234/scene-04.jpg",
           "fit": "cover",
           "animations": [
             {
@@ -237,10 +237,11 @@
       "type": "audio",
       "track": 4,
       "time": 0,
-      "source": "https://REPLACE.example.com/runs/2026-09-09-1234/music.mp3",
+      "source": "https://REPLACE.example.com/runs/2026-09-11-1234/music.mp3",
       "duration": null,
       "volume": "100%",
-      "audio_fade_out": 20
+      "audio_fade_out": 20,
+      "loop": false
     }
   ]
 }
