@@ -20,10 +20,10 @@ fi
 echo "   ffmpeg $(ffmpeg -version | head -1 | awk '{print $3}'), node $(node -v)"
 
 echo "== user, directories, code"
-id -u render >/dev/null 2>&1 || useradd --system --home /var/lib/ambient-render --shell /usr/sbin/nologin render
+id -u ambient >/dev/null 2>&1 || useradd --system --user-group --home /var/lib/ambient-render --shell /usr/sbin/nologin ambient
 mkdir -p "$APP" /var/lib/ambient-render
 cp "$SRC/server.mjs" "$SRC/render.mjs" "$APP/"
-chown -R render:render /var/lib/ambient-render "$APP"
+chown -R ambient:ambient /var/lib/ambient-render "$APP"
 
 if [ ! -f "$ENV" ]; then
   SECRET="$(head -c 32 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 40)"
@@ -48,8 +48,8 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-User=render
-Group=render
+User=ambient
+Group=ambient
 EnvironmentFile=/etc/ambient-render.env
 WorkingDirectory=/opt/ambient-render
 ExecStart=/usr/bin/node /opt/ambient-render/server.mjs

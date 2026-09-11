@@ -35,7 +35,7 @@ scp -r youtube-ambient-pipeline/render-service root@<ip>:/root/render-service
 ssh root@<ip> "bash /root/render-service/install.sh <ip>"
 ```
 
-The installer adds ffmpeg and Node 22, creates a `render` system user, writes `/etc/ambient-render.env`
+The installer adds ffmpeg and Node 22, creates an `ambient` system user, writes `/etc/ambient-render.env`
 with a generated secret, installs a systemd unit `ambient-render`, and prints the base URL and secret.
 Re-running it upgrades the code and keeps the secret. Open TCP 8787 in the Hetzner firewall (and 22 for SSH).
 
