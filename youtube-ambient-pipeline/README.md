@@ -29,8 +29,9 @@ flipping to public is a manual act in YouTube Studio.
 
 | Path | What |
 |---|---|
+| `render-service/` | ffmpeg render service for a small VPS: same API contract as Creatomate, no per-minute cost. Own README inside. |
 | `n8n/creatomate-renderscript.example.json` | One generated Creatomate RenderScript, for reference or for pasting into their editor. |
-| `n8n/ambient-pipeline.workflow.json` | Importable workflow. Credentials referenced by name only: `Anthropic API`, `Slack Bot (yt-approvals)`, `OpenAI API`, `ElevenLabs API`, `Asset Storage (S3)`, `Creatomate API`, `YouTube (channel)`. |
+| `n8n/ambient-pipeline.workflow.json` | Importable workflow. Credentials referenced by name only: `Anthropic API`, `Slack Bot (yt-approvals)`, `OpenAI API`, `ElevenLabs API`, `Asset Storage (S3)`, `Render Service` (or `Creatomate API`), `YouTube (channel)`. |
 | `prompts/concept.system.md` | Claude system prompt: brief → video concept. Versioned in its header comment. |
 | `prompts/metadata.system.md` | Claude system prompt: concept → title, description, tags, chapters, disclosure. |
 | `prompts/schemas/*.schema.json` | JSON schemas enforced through the API's structured output (`output_config.format`). |
@@ -153,11 +154,22 @@ content" flag. The metadata prompt applies YouTube's rule (realistic content a v
 real) plus the channel's own policy string in `Pipeline Config.ai_disclosure_policy`. The reviewer sees
 the decision and reason in Slack before approving.
 
-### 4. Creatomate (render; optional until `render_mode = creatomate`)
+### 4. Renderer: your own ffmpeg service (recommended) or Creatomate
 
-1. Create an API key under **Project settings → API Integration**.
-2. In n8n: **Credentials → New → Header Auth**. Name **`Creatomate API`**, header name
-   `Authorization`, value `Bearer <api key>`.
+The workflow talks to whichever renderer `Pipeline Config.render_api_base` points at, through two
+nodes, **Render: Start** and **Render: Get**, with one Header Auth credential.
+
+**ffmpeg render service on a VPS (recommended).** Creatomate bills per output minute (roughly 30
+credits per 1080p minute, so a 45-minute piece costs about 1,400 credits and the $54 plan carries
+2,000 a month), and its trial renders at one quarter scale. The render itself is stills, slow zoom,
+cross-fades and one audio track, which ffmpeg does for free. `render-service/` is a small HTTP service
+with the same API shape as Creatomate; a €4 Hetzner CX22 renders an 8-minute piece in about ten minutes.
+Setup is in `render-service/README.md`; in n8n it is one Header Auth credential named `Render Service`
+(`Authorization: Bearer <secret>`) bound on the two render nodes, and `render_api_base` =
+`http://<ip>:8787/v1`.
+
+**Creatomate.** API key under **Project settings → API Integration**; Header Auth credential
+(`Authorization: Bearer <key>`) on the same two nodes; `render_api_base` = `https://api.creatomate.com/v2`.
 
 That is all. With `creatomate_mode = source` (the default) there is **no template to build**: the
 `Build Render Request` node writes the complete RenderScript for each video and posts it as
@@ -256,7 +268,7 @@ model can avoid repeating itself. Static data persists across runs on both Cloud
 |---|---|---|
 | Slack approval callbacks | Works out of the box (public HTTPS). | Needs a public HTTPS origin and `WEBHOOK_URL` set. |
 | Creatomate webhook to `$execution.resumeUrl` | Works. | Same public-origin requirement. |
-| Downloading the MP4 and streaming it to YouTube | Pilot 5–10 min (roughly 100–400 MB): probably fine. Launch 30–60 min (1–3 GB): **likely to fail**, binary data is held in memory and Cloud plans cap execution memory. | Set `N8N_DEFAULT_BINARY_DATA_MODE=filesystem` and give the container disk; the YouTube node streams from the binary in chunks. |
+| Downloading the MP4 and streaming it to YouTube | Pilot 5–10 min (roughly 100–400 MB): probably fine. Launch 30–60 min (1–3 GB): **likely to fail**, binary data is held in memory and Cloud plans cap execution memory. | Set `N8N_DEFAULT_BINARY_DATA_MODE=filesystem` and give the container disk; the YouTube node streams from the binary in chunks. The render VPS is the natural home for self-hosted n8n when that day comes. |
 | Waiting executions (hours for approval and render) | Fine. | Fine; make sure `EXECUTIONS_DATA_SAVE_ON_PROGRESS` / `saveExecutionProgress` is on (it is set in the workflow). |
 
 If you want to stay on Cloud, the pragmatic split is: keep concept, metadata and the Slack gate in
