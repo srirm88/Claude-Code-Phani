@@ -1,0 +1,11 @@
+{
+  "name": "ace-toolkit",
+  "displayName": "ACE Integration Toolkit",
+  "description": "Review, write and troubleshoot IBM ACE 12.0.12 / MQ 9.3 integrations on AIX 7.3 (POWER9), plus the NGINX API gateway on RHEL 9 in the DMZ. Five skills covering code review, code generation, production triage, cross-tier solution review and gateway configuration.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Phani Kumar Akiri"
+  },
+  "repository": "https://github.com/srirm88/Claude-Code-Phani",
+  "keywords": ["ibm-ace", "iib", "esql", "ibm-mq", "nginx", "aix", "rhel9", "integration", "api-gateway"]
+}

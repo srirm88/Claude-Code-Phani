@@ -13,13 +13,13 @@
 
 set -u
 
-SRC=`cd "\`dirname "$0"\`/.claude/skills" 2>/dev/null && pwd`
+SRC=`cd "\`dirname "$0"\`/plugins/ace-toolkit/skills" 2>/dev/null && pwd`
 DEST=${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}
 SKILLS="ace-code-review ace-build ace-triage integration-review nginx-review"
 MODE=${1:---link}
 
 if [ -z "$SRC" ] || [ ! -d "$SRC" ]; then
-    echo "error: cannot find .claude/skills next to this script" >&2
+    echo "error: cannot find plugins/ace-toolkit/skills next to this script" >&2
     exit 1
 fi
 

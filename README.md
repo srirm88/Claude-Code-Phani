@@ -113,12 +113,36 @@ skills state that they must not widen.
 
 ## Install
 
-### Claude Code — this project only
+The five skills ship as one Claude Code plugin, `ace-toolkit`, and this repo is
+also the marketplace that serves it. Three ways in — pick one.
 
-Clone the repo. Claude Code picks the skills up from `.claude/skills/` whenever
-you work inside it. Nothing else to do.
+### Claude Code — as a plugin (recommended)
 
-### Claude Code — everywhere
+```sh
+/plugin marketplace add srirm88/Claude-Code-Phani
+/plugin install ace-toolkit@phani-integration
+```
+
+Updates are `/plugin update ace-toolkit` once the `version` in
+`plugins/ace-toolkit/.claude-plugin/plugin.json` is bumped.
+
+**Plugin skills are namespaced.** `/ace-toolkit:ace-code-review`, not
+`/ace-code-review`. Typing `/ace` and tabbing gets you there.
+
+This route is the only one that carries the `SessionStart` hook — see
+[Hook](#hook) below.
+
+### Claude Code — local plugin, no marketplace
+
+For editing the skills and seeing the change immediately:
+
+```sh
+claude --plugin-dir /path/to/Claude-Code-Phani/plugins/ace-toolkit
+```
+
+Then `/reload-plugins` after each edit, no restart needed.
+
+### Claude Code — as plain skills, un-namespaced
 
 ```sh
 sh install.sh              # symlink; git pull keeps them current
@@ -134,7 +158,9 @@ shell scripts. Git Bash ships with Git for Windows; WSL works too. `--copy` is
 the safer choice on Windows, since symlinks need Developer Mode or an elevated
 shell.
 
-**All three install together, by design.** `ace-build` and `ace-triage` reach
+This route gives you `/ace-code-review` with no prefix, but no hook.
+
+**All five install together, by design.** `ace-build` and `ace-triage` reach
 into `ace-code-review` by relative path — for the shared conventions file and
 the pre-scan script. The installer refuses a partial install and warns if the
 references cannot resolve.
@@ -189,6 +215,44 @@ terminators`.
 reads output you paste in. `ace-code-review` is the least portable, because the
 pre-scan needs ACE source files on a filesystem it can see.
 
+## Hook
+
+The plugin carries one `SessionStart` hook: `scripts/crlf-guard.sh`.
+
+Every scanner in this repo is POSIX `sh`. Cloned on Windows with
+`core.autocrlf=true`, git rewrites them with CRLF and they die on line 1 —
+
+```
+ace-prescan.sh: set: Illegal option -
+```
+
+— which from Claude's side looks identical to a clean scan. You get "no
+candidates found" on code that was never scanned. That is the worst possible
+failure mode for a review tool: silent, and confidence-inspiring.
+
+The hook checks the plugin's own scripts at session start and says so, loudly,
+if any carry CR. It is read-only, changes nothing, and prints nothing when the
+tree is clean. It always exits 0, so it can never block a session.
+
+This is the one thing a skill cannot do — skills only run when the model decides
+to invoke one. A hook runs whether or not anyone is paying attention.
+
+## Layout
+
+```
+.claude-plugin/marketplace.json      this repo as a plugin marketplace
+plugins/ace-toolkit/
+├── .claude-plugin/plugin.json       the plugin manifest
+├── hooks/hooks.json                 SessionStart -> crlf-guard.sh
+├── scripts/crlf-guard.sh
+└── skills/                          the five skills
+install.sh                           copy/symlink skills into ~/.claude/skills
+bundle.sh                            one self-contained ZIP per skill -> dist/
+```
+
+`bundle.sh` still exists and still matters: claude.ai takes one ZIP per skill
+and knows nothing about plugins. The plugin format buys you nothing there.
+
 ## Use
 
 Ask in plain language — the skills trigger on intent, not a command:
@@ -202,17 +266,17 @@ Ask in plain language — the skills trigger on intent, not a command:
 Or run the pre-scan directly:
 
 ```sh
-sh .claude/skills/ace-code-review/scripts/ace-prescan.sh --changed
-sh .claude/skills/ace-code-review/scripts/ace-prescan.sh /path/to/application
-sh .claude/skills/nginx-review/scripts/nginx-prescan.sh /etc/nginx
-sh .claude/skills/nginx-review/scripts/rhel9-gateway-check.sh
+sh plugins/ace-toolkit/skills/ace-code-review/scripts/ace-prescan.sh --changed
+sh plugins/ace-toolkit/skills/ace-code-review/scripts/ace-prescan.sh /path/to/application
+sh plugins/ace-toolkit/skills/nginx-review/scripts/nginx-prescan.sh /etc/nginx
+sh plugins/ace-toolkit/skills/nginx-review/scripts/rhel9-gateway-check.sh
 ```
 
 Output is `SEVERITY|RULE|path:line|message`, sorted HIGH → MED → LOW.
 
 ## Before you rely on any of this
 
-**Edit `.claude/skills/ace-code-review/references/conventions.md`.** It ships as
+**Edit `plugins/ace-toolkit/skills/ace-code-review/references/conventions.md`.** It ships as
 placeholders and is the single shared conventions file for all three skills.
 Naming standards, queue conventions, error-handling patterns and repo layout are
 shop-specific, and the skills are instructed not to report or invent a convention

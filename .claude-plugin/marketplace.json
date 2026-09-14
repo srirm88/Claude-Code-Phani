@@ -1,0 +1,15 @@
+{
+  "name": "phani-integration",
+  "owner": {
+    "name": "Phani Kumar Akiri"
+  },
+  "description": "Integration-architecture plugins for IBM ACE, IBM MQ and NGINX API gateway.",
+  "plugins": [
+    {
+      "name": "ace-toolkit",
+      "source": "./plugins/ace-toolkit",
+      "description": "IBM ACE / MQ / NGINX review, build and triage skills.",
+      "category": "development"
+    }
+  ]
+}

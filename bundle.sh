@@ -19,7 +19,7 @@
 set -u
 
 ROOT=`cd "\`dirname "$0"\`" && pwd`
-SRC=$ROOT/.claude/skills
+SRC=$ROOT/plugins/ace-toolkit/skills
 OUT=${1:-$ROOT/dist}
 REVIEW=$SRC/ace-code-review
 
@@ -118,7 +118,7 @@ Upload each ZIP separately at https://claude.ai/customize/skills
 Code execution must be enabled in your Claude settings for the skills to run.
 
 The bundled conventions.md is a snapshot. After editing the canonical copy in
-.claude/skills/ace-code-review/references/conventions.md, re-run this script and
+plugins/ace-toolkit/skills/ace-code-review/references/conventions.md, re-run this script and
 re-upload, or the two will drift.
 NOTE
 exit $RC

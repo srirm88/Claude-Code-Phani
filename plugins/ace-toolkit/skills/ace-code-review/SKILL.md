@@ -42,9 +42,13 @@ State the scope in one line before you start. Do not silently widen it.
 ### 2. Run the deterministic pre-scan
 
 ```sh
-sh .claude/skills/ace-code-review/scripts/ace-prescan.sh --changed        # scope to a diff
-sh .claude/skills/ace-code-review/scripts/ace-prescan.sh <path> [path...] # scope to paths
+sh scripts/ace-prescan.sh --changed        # scope to a diff
+sh scripts/ace-prescan.sh <path> [path...] # scope to paths
 ```
+
+Paths are relative to this skill's own directory — wherever it is installed
+(`~/.claude/skills/`, a plugin directory, or a claude.ai upload). Resolve it
+from the location of this `SKILL.md`, never from the user's working directory.
 
 Output is `SEVERITY|RULE|path:line|message`.
 
