@@ -9,6 +9,8 @@ from openpyxl.comments import Comment
 OUT = "/home/user/Claude-Code-Phani/tools/ABK_Integration_Team_Tracker.xlsx"
 TODAY = date(2026, 9, 14)
 def d(n): return TODAY + timedelta(days=n)
+import sys
+SAMPLE = "--sample" in sys.argv   # default: clean file, no test data
 
 FONT = "Arial"
 HDR_FILL = PatternFill("solid", fgColor="1F3864")
@@ -120,12 +122,13 @@ header_block(ws_m, "Team",
     ["Name", "Role", "Primary Skills", "Location / Shift", "Notes", "Open Tasks", "In Progress", "Blocked", "Overdue", "Done (all time)"],
     [18, 26, 34, 16, 28, 11, 11, 10, 10, 12])
 team = [
-    ("Phani", "Integration Architect", "ACE 12, MQ, API design, governance", "Onsite", "Me"),
+    ("Phani", "Integration Architect", "ACE 12, MQ, API design, governance", "", "Me - keep this name identical to Lists!K4"),
     ("Ravi Kumar", "Senior ACE Developer", "ESQL, JavaCompute, DFDL", "Offshore", "Sample row - replace"),
     ("Priya Nair", "ACE Developer", "ESQL, REST APIs, XMLNSC", "Offshore", "Sample row - replace"),
     ("Suresh Babu", "MQ Administrator", "MQ clusters, AIX, TLS", "Onsite", "Sample row - replace"),
     ("Anita Rao", "Test Lead", "SIT/UAT, SoapUI, Postman", "Offshore", "Sample row - replace"),
 ]
+if not SAMPLE: team = team[:1]
 for i, row in enumerate(team, start=5):
     for ci, v in enumerate(row, start=1):
         ws_m.cell(row=i, column=ci, value=v)
@@ -159,6 +162,7 @@ projects = [
     ("PRJ-004", "Payments REST API via NGINX gateway", "Finance", "API Gateway", "High", "On Hold", "Phani", d(-60), d(60), "Red",
      "Security review", "Sample row - replace. Blocked on client cert issuance from InfoSec."),
 ]
+if not SAMPLE: projects = []
 for i, row in enumerate(projects, start=5):
     vals = list(row[:10]) + [None] * 5 + list(row[10:])
     for ci, v in enumerate(vals, start=1):
@@ -208,6 +212,7 @@ tasks = [
     ("TSK-012", "PRJ-004", "NGINX upstream config for ACE HTTPS listener", "Build", "Priya Nair", "Medium", "On Hold", d(-25), d(30), None, "Depends on TSK-011", d(-7), ""),
     ("TSK-013", "", "Monthly architecture governance forum - prep slides", "Governance", "Phani", "Medium", "Not Started", d(0), d(5), None, "", None, "Non-project task: leave Project ID blank"),
 ]
+if not SAMPLE: tasks = []
 for i, row in enumerate(tasks, start=5):
     tid, pid, task, cat, who, pri, st, created, due, comp, blk, upd, notes = row
     vals = {1: tid, 2: pid, 4: task, 5: cat, 6: who, 7: pri, 8: st, 9: created, 10: due, 11: comp, 14: blk, 15: upd, 16: notes}
@@ -244,6 +249,7 @@ deps = [
     (d(-3), "PRJ-002", "ACE fixpack 12.0.12.0", "12.0.12.0", "UAT", "ACENODE02 / all servers", "Ravi Kumar", "CHG0041305", "Success", "Sample row - replace"),
     (d(-1), "PRJ-001", "SAP_SFDC_OrderSync.bar", "1.3.1", "SIT", "ACENODE01 / SIT_IS01", "Priya Nair", "CHG0041331", "Failed", "Sample row - replace. BIP2087E on deploy, policy project missing; redeployed 1.3.1 same day"),
 ]
+if not SAMPLE: deps = []
 for i, row in enumerate(deps, start=5):
     for ci, v in enumerate(row, start=1): ws_d.cell(row=i, column=ci, value=v)
 MAXD = 504
@@ -425,7 +431,7 @@ rows = [
     ("", ""),
     ("Limits and assumptions", ""),
     ("Capacity", "Formulas cover 200 projects, 500 tasks, 50 team members, 500 releases. Copy the formula rows down to extend."),
-    ("Sample data", "Rows marked 'Sample row - replace' on Projects, Tasks, Team, Releases are placeholders showing the expected format. Delete them before real use."),
+    ("Getting started", "Projects, Tasks and Releases are empty. Add your team on the Team sheet first, then projects, then tasks. IDs are free text: suggested format PRJ-001 and TSK-001."),
     ("Dates", "Days Left and Overdue use TODAY(); they change every time the file is opened. Excel needs automatic calculation on (Formulas > Calculation Options)."),
     ("Ownership", "Assumes this workbook is the only tracker. If the team logs work in Jira / ServiceNow / ADO, keep only projects and milestones here or it will drift."),
     ("Effort", "No estimated / actual hours by design. Add columns to Tasks if you need effort reporting."),
@@ -446,4 +452,5 @@ wb._sheets=[wb[n] for n in order]
 wb.active=1
 print(wb.sheetnames)
 wb.save(OUT)
+print("sample data:", SAMPLE)
 print("saved", OUT)
