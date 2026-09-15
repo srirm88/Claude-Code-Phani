@@ -139,3 +139,19 @@ project.
 - If the GUI stalls on model load, it is almost always RAM, not VRAM.
 - Do not keep the VMware VM in the loop via network shares or port
   forwarding. Compute has to be where the GPU is.
+
+## Offline operation
+
+Generation runs entirely on the local GPU. No licence check, no API key,
+no phone-home. Internet is needed only for:
+
+- Initial downloads: ComfyUI, PyTorch, the Manager, and model weights
+  (Qwen-Image 2.0 FP8 and Wan 2.2 5B are each roughly 10 GB).
+- ComfyUI Manager when installing or updating nodes and models. It does
+  nothing on its own.
+- Updates, only when run.
+
+Stock ComfyUI and the models listed above make no outbound calls. Some
+third-party custom nodes do (helper-model downloads on first use, or
+wrappers around cloud APIs). To verify, block outbound access for the WSL2
+instance in Windows Firewall after setup and run a generation.
