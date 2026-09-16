@@ -7,7 +7,7 @@ and ComfyUI as the host.
 Personal-project notes. Nothing here is used by the ACE skills or the
 install/bundle scripts.
 
-## Why WSL2 and not VMware
+## Why WSL2 (or bare-metal Ubuntu) and not VMware
 
 VMware Workstation and Player do not pass the GPU through to a Linux guest.
 The guest sees a virtual SVGA adapter, not the NVIDIA card, so there is no
@@ -16,21 +16,50 @@ checkbox accelerates the virtual display only; PyTorch will not see a CUDA
 device. GPU passthrough exists only on ESXi and vSphere.
 
 WSL2 gets CUDA natively from the Windows NVIDIA driver. Same Linux workflow,
-real GPU.
+real GPU. On a self-built box, bare-metal Ubuntu is the other option: no
+Windows licence, no virtualization layer, same ComfyUI steps minus the WSL2
+section.
 
 ## Hardware
 
-| Item | Requirement | Why |
+Starting point: Dell OptiPlex Tower Plus 7020 with an i7-14700, 64 GB DDR5
+UDIMM, 1 TB NVMe. The Dell chassis cannot take the card: proprietary PSU
+(260 W or 500 W, no 12V-2x6, no standard ATX swap), GPU length limit around
+250 mm, Dell-supported ceiling is an RTX 4060 8 GB. So the CPU, RAM, and
+SSD move to a standard build and the Dell becomes a spare shell.
+
+| Part | Pick | Approx KWD |
 |---|---|---|
-| GPU | RTX 5070 Ti, 16 GB GDDR7, Blackwell | FP8 and FP4 support halves model memory footprint |
-| PSU | 850 W with 12V-2x6 connector or clean adapter | Card draws around 300 W on its own |
-| System RAM | 64 GB DDR5 already in the PC | Enables Wan 2.2 14B and 70B LLM offload; WSL2 claims half by default |
+| Motherboard | Gigabyte B760M DS3H Gen5, LGA1700, 4x DDR5, PCIe 5.0 x16, 2x M.2 | 45 |
+| Case | Mesh-front ATX mid-tower, 330 mm GPU clearance | 21 to 26 |
+| CPU cooler | Thermalright Assassin X 120 SE (Dell cooler does not fit a standard board) | 11 |
+| PSU | 850 W ATX 3.1 with native 12V-2x6, e.g. SilverStone DA850R | 37 |
+| GPU | RTX 5070 Ti 16 GB GDDR7, Gigabyte Aero OC via Amazon.ae, or Inno3D X3 OC at Microless Kuwait | 330 or 420 |
+| Moved from Dell | i7-14700, 64 GB DDR5, 1 TB NVMe | 0 |
+
+Build checklist:
+
+- Flash the board to the latest BIOS before first real use. The i7-14700 is
+  Raptor Lake; use the Intel Default Settings power profile, never an
+  unlimited or "performance" preset.
+- Set PL1 = 125 W, PL2 = 150 W. More than Dell gives it, within the cooler.
+- Leave XMP off. Dell modules are 4400 or 5600 MT/s JEDEC; run them as-is.
+- Windows licence is Dell OEM. Boot the moved SSD first; it usually
+  reactivates via a linked Microsoft account. If not, a Win 11 Pro key is
+  about 40 KWD, or skip Windows and run Ubuntu bare metal (see below).
 
 16 GB VRAM is the floor, not the ceiling. It runs Qwen-Image 2.0 at full
-quality, FLUX.2 klein comfortably, and Wan 2.2 with quantized weights. Video
-models want 24 GB to run without offloading; offloading to system RAM turns a
-two-minute clip into a fifteen-minute one. If video becomes central, spend
-on VRAM (used RTX 4090 24 GB, or RTX 5090 32 GB), not on generation.
+quality, FLUX.2 klein comfortably, and Wan 2.2 5B in FP8. With 64 GB of
+system RAM, Wan 2.2 14B and 70B LLMs run with offload, slowly. Video
+models want 24 GB to run without offloading; the 24 GB RTX 5070 Ti Super
+is rumoured for late 2026 or early 2027 and not released. If video becomes
+central, spend on VRAM (RTX 5090 32 GB, about 1,800 KWD in the UAE), not on
+generation. Cloud (RunPod or Vast.ai RTX 5090 at 0.50 to 1.00 USD/hour) is
+the cheap way to get 24 to 32 GB for occasional jobs.
+
+Fallback without opening the Dell: RTX 5060 Ti 16 GB (180 W, one 8-pin,
+about 240 mm) fits the Tower Plus only with the 500 W Dell PSU. Same VRAM,
+roughly half the speed, about 170 KWD.
 
 ## Model picks
 
