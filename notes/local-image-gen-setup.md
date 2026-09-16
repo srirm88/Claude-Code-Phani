@@ -24,7 +24,7 @@ real GPU.
 |---|---|---|
 | GPU | RTX 5070 Ti, 16 GB GDDR7, Blackwell | FP8 and FP4 support halves model memory footprint |
 | PSU | 850 W with 12V-2x6 connector or clean adapter | Card draws around 300 W on its own |
-| System RAM | 32 GB | Model loading and offloading; WSL2 claims half by default |
+| System RAM | 64 GB DDR5 already in the PC | Enables Wan 2.2 14B and 70B LLM offload; WSL2 claims half by default |
 
 16 GB VRAM is the floor, not the ceiling. It runs Qwen-Image 2.0 at full
 quality, FLUX.2 klein comfortably, and Wan 2.2 with quantized weights. Video
@@ -132,7 +132,7 @@ project.
 
   ```ini
   [wsl2]
-  memory=24GB
+  memory=40GB
   ```
 
   Then `wsl --shutdown` from PowerShell for it to take effect.
