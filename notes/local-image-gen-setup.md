@@ -255,6 +255,86 @@ memory. When switching from chat to image generation, either wait out the
 keep-alive, or `ollama stop qwen3:30b-a3b`, or set keep-alive shorter. If
 this becomes a daily annoyance it is the argument for a second card later.
 
+## Power and throughput
+
+Estimates for this build (i7-14700 capped at 150 W, RTX 5070 Ti at 300 W,
+64 GB DDR5), measured at the wall. Expect plus or minus 30 percent until
+measured on the actual box.
+
+### Draw
+
+| State | Watts |
+|---|---|
+| Idle, box on, GPU asleep | 60 to 80 |
+| Local LLM chat | 250 to 350 |
+| Image generation | 350 to 420 |
+| Video generation, GPU flat out and CPU busy | 420 to 500 |
+| Millisecond transient spikes | up to 650 |
+
+The 850 W PSU is for the spikes and for a possible second card, not for
+the sustained load. A 650 W unit would run this build and would be the
+first thing to fail on an upgrade.
+
+### Throughput
+
+| Output | Time | Per hour |
+|---|---|---|
+| Image 1024², Z-Image Turbo or FLUX.2 klein, 4 to 8 steps | 1 to 2 s | 2,000 to 3,000 |
+| Image 1024², Qwen-Image 2.0 FP8, 30 to 50 steps | 8 to 15 s | 250 to 450 |
+| Image 2K, Qwen-Image 2.0 | 30 to 50 s | 70 to 120 |
+| Video 5 s 720p, Wan 2.2 5B FP8 (fits VRAM) | 3 to 6 min | 10 to 20 |
+| Video 5 s 480p, Wan 2.2 14B FP8 (offloaded to RAM) | 8 to 15 min | 4 to 7 |
+| Video 5 s 720p, Wan 2.2 14B FP8 (offloaded to RAM) | 15 to 30 min | 2 to 4 |
+| LLM 14B dense 4-bit, fits VRAM | 40 to 55 tok/s | 100k+ words |
+| LLM 30B MoE 4-bit, mostly in VRAM | 25 to 40 tok/s | 70k to 100k words |
+| LLM 32B dense 4-bit, partial offload | 8 to 12 tok/s | 20k to 30k words |
+| LLM 70B dense 4-bit, mostly in RAM | 2 to 3 tok/s | 5k to 8k words |
+| Whisper large-v3-turbo | 40x real time | 40 h of audio |
+| Image LoRA, 20 to 50 images, 1,000 to 2,000 steps | 20 to 60 min | |
+
+First run after boot adds one to three minutes for kernel compile and model
+load. Switching between ComfyUI and Ollama evicts one model to load the
+other. Batching four images costs about 2.5x one image, not 4x.
+
+### Energy per output
+
+| Output | Time | Draw | Energy |
+|---|---|---|---|
+| One image, Z-Image Turbo | 1.5 s | 400 W | 0.17 Wh |
+| One image, Qwen-Image 2.0 | 12 s | 400 W | 1.3 Wh |
+| One 5 s clip, Wan 2.2 5B | 5 min | 420 W | 35 Wh |
+| One 5 s clip, Wan 2.2 14B at 720p | 20 min | 450 W | 150 Wh |
+| 1,000 tokens from the 30B model | 30 s | 300 W | 2.5 Wh |
+| One hour of audio transcribed | 90 s | 350 W | 9 Wh |
+| One image LoRA training run | 40 min | 450 W | 300 Wh |
+
+A phone charge is about 15 Wh. A thousand Qwen images is one kettle boil.
+
+### Monthly energy
+
+| Pattern | Generating | Idle | Total |
+|---|---|---|---|
+| Weekend hobbyist, 20 h generating, box on only when used | 8 kWh | 3 kWh | ~11 kWh |
+| Serious, 80 h generating, box on 24/7 | 32 kWh | 46 kWh | ~78 kWh |
+| Video-heavy, 150 h of 14B clips, on 24/7 | 68 kWh | 41 kWh | ~109 kWh |
+
+At Kuwait's residential tariff of about 2 fils/kWh the heaviest pattern is
+under a quarter dinar a month. On a UAE tariff of roughly 30 fils/kWh it is
+about 33 AED. Electricity does not enter the budget.
+
+Idle at 70 W for 24 h a day is 50 kWh a month, more than the generating in
+the serious pattern. Leave the box on and let the GPU sleep (it does on its
+own); suspend it when away for days; do not shut down nightly, the reboot
+and model reload cost time, which is the scarce resource.
+
+Heat is the real cost: every watt ends up in the room and the air
+conditioner spends about a third again to remove it. Keep the box in open
+air, not a closed cabinet, exhaust pointed away from where you sit.
+
+For scale: one datacentre accelerator of the class that serves frontier
+models draws 700 to 1,200 W alone, a serving node of eight is about 10 kW.
+This box is roughly a thousandth of one node.
+
 ## Bare-metal gotchas
 
 - Kernel updates rebuild the NVIDIA module via DKMS. If the desktop comes up
