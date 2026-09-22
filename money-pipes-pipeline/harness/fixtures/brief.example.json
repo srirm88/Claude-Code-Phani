@@ -1,0 +1,50 @@
+{
+  "video": {
+    "order": 1,
+    "title": "Why your bank app dies at midnight",
+    "hook": "You tried to pay at 11:58pm and got 'temporarily unavailable'. Nothing was broken. A gate closed.",
+    "pillar": "Machines behind it",
+    "thumbnail_variant": "Gate",
+    "anonymisation_risk": "Low",
+    "notes": "Batch window, EOD, why the app is read-only. Zero research needed.",
+    "next_video": "Your bank's core system is older than you"
+  },
+  "channel": {
+    "name": "The Money Pipes",
+    "tagline": "Money is a message.",
+    "positioning": "Practical Engineering for banking. The channel is about the pipes, not the money. Not personal finance, not investing, not fintech news.",
+    "voice": "Calm, precise, dry. Someone who has been inside the machine and finds it more interesting than infuriating. Every technical term gets one plain-English translation on first use. No greetings, no announcements, no exclamation marks.",
+    "newsletter_url": "https://themoneypipes.substack.com"
+  },
+  "format_spec": {
+    "words_min": 1200,
+    "words_max": 1900,
+    "target_minutes_min": 8,
+    "target_minutes_max": 13,
+    "delivery": { "resolution": "1920x1080", "fps": 25, "lufs": -16, "title_card": "none" }
+  },
+  "diagram_grammar": {
+    "objects": ["phone", "pipe", "dot", "tank", "valve", "gate", "clock", "job_column", "label", "external_tank", "gauge", "calendar"],
+    "meaning": {
+      "tank": "an account or ledger; a level line shows balance",
+      "external_tank": "another party's ledger (network, scheme, other bank); dashed outline",
+      "pipe": "a rail, network or path a message travels; copper when active, grey when idle",
+      "dot": "a message in transit",
+      "valve": "a gateway, switch or router",
+      "gate": "a batch window or cut-off; closed = blocking",
+      "clock": "wall-clock time",
+      "job_column": "a chain of batch jobs, top to bottom; items[] are the job names",
+      "gauge": "pressure or queue depth",
+      "calendar": "a month with one day highlighted",
+      "phone": "the customer's app",
+      "label": "free text label, under four words"
+    },
+    "motion": ["none", "dots_flow", "push_in"],
+    "colours": { "background": "#10273A", "line": "#EAE4D6", "active": "#B8722C", "fault": "#D64545", "idle": "#5F6B76" }
+  },
+  "banned_names": ["ABK", "Al Ahli Bank of Kuwait", "Al Ahli", "NBK", "National Bank of Kuwait", "KFH", "Kuwait Finance House", "Gulf Bank", "Burgan Bank", "Boubyan", "CBK", "Commercial Bank of Kuwait", "Warba", "HDFC", "ICICI", "SBI", "State Bank of India", "Axis Bank", "Kotak", "Emirates NBD", "FAB", "ADCB", "Mashreq", "QNB", "Al Rajhi", "SNB"],
+  "vendor_names": ["Finacle", "Temenos", "T24", "Transact", "Flexcube", "IBM MQ", "App Connect", "ACE", "IIB", "WebSphere", "Kong", "APIC", "API Connect", "CP4I", "Oracle", "Infosys", "TCS BaNCS", "BaNCS", "Silverlake", "Mambu", "Thought Machine"],
+  "jargon_terms": ["end-of-day", "EOD", "business date", "cut-off", "settlement", "authorisation", "stand-in", "reconciliation", "batch", "posting", "accrual", "capitalisation", "general ledger", "ledger"],
+  "recent_videos": [],
+  "today": "2026-09-22"
+}

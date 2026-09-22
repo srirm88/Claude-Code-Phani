@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+<rect width="1920" height="1080" fill="#10273A"/>
+<text x="80" y="90" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#5F6B76">17</text>
+<text x="140" y="90" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#5F6B76">The date that rolled twice</text>
+<text x="1840" y="1030" text-anchor="end" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="26" fill="#B8722C">the money pipes</text>
+<rect x="760" y="300" width="400" height="300" rx="22" fill="none" stroke="#D64545" stroke-width="8"/><path d="M774 435.0 H1146" stroke="#EAE4D6" stroke-width="5" stroke-linecap="round"/>
+<rect x="640" y="650" width="640" height="70" rx="10" fill="#D64545"/>
+<text x="960" y="697" text-anchor="middle" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="30" fill="#10273A">today → tomorrow → day after</text>
+</svg>

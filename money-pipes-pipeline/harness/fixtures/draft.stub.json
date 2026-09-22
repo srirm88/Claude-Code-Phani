@@ -1,0 +1,670 @@
+{
+  "title_working": "Why your bank app dies at midnight",
+  "title_alternates": [
+    "Your bank is closed at midnight. The app just didn't tell you.",
+    "What \"temporarily unavailable\" actually means"
+  ],
+  "sections": [
+    {
+      "index": 1,
+      "heading": "Hook",
+      "narration": "It's 11:58 at night. You're paying for something — a taxi, a late order, a bill that's due today — and the app says \"temporarily unavailable. Please try again later.\"\n\nYou try again. Same thing. You check your internet. Fine. You restart the app. Same message. Around 12:20, it works, and you never think about it again.\n\nNothing was broken. Nobody was hacked. Nothing crashed. What happened is that a gate closed, on a schedule, the way it closes every single night — and your bank's app has no honest way to tell you that.\n\nThis is the story of that gate.",
+      "frames": [
+        {
+          "narration_cue": "It's 11:58 at night",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger",
+              "position": "right"
+            },
+            {
+              "kind": "dot"
+            },
+            {
+              "kind": "clock",
+              "value": "23:58",
+              "position": "top-right"
+            }
+          ],
+          "motion": "dots_flow",
+          "fault": false
+        },
+        {
+          "narration_cue": "temporarily unavailable. Please try again later",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left",
+              "label": "unavailable"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "closed"
+            },
+            {
+              "kind": "pipe",
+              "state": "idle"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger",
+              "state": "idle",
+              "position": "right"
+            },
+            {
+              "kind": "dot"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        },
+        {
+          "narration_cue": "a gate closed, on a schedule",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "closed"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger",
+              "state": "idle",
+              "position": "right"
+            },
+            {
+              "kind": "clock",
+              "value": "00:00",
+              "position": "top-right"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "heading": "What everyone gets wrong",
+      "narration": "The assumption is that a bank's system is like any other app: it's on, it takes requests, it answers them. When it says \"unavailable,\" something has failed.\n\nBut a bank isn't running one system. It's running two very different kinds of system that were built in different decades for different purposes, and every night, for a window of time, they can't both be fully awake.\n\nThe first kind is what you touch: the app, the website, the card network, the ATM. Built for the last twenty years. Always on. Answers in milliseconds.\n\nThe second kind is the ledger. The thing that actually knows how much money you have. It was designed — in most banks — around an idea that sounds absurd today: that the bank has a date. One date. A business day. And at the end of the business day, the ledger has to close the day, do the accounting, and open the next one.\n\nThat closing process is called end-of-day. Everyone inside a bank calls it EOD. And EOD is the gate.",
+      "frames": [
+        {
+          "narration_cue": "The assumption is that a bank's system is like any other app",
+          "objects": [
+            {
+              "kind": "label",
+              "label": "always on",
+              "position": "left"
+            },
+            {
+              "kind": "valve",
+              "label": "app"
+            },
+            {
+              "kind": "valve",
+              "label": "card"
+            },
+            {
+              "kind": "valve",
+              "label": "ATM"
+            },
+            {
+              "kind": "label",
+              "label": "the ledger",
+              "position": "right"
+            },
+            {
+              "kind": "tank",
+              "label": "one big tank",
+              "position": "right"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        },
+        {
+          "narration_cue": "that the bank has a date",
+          "objects": [
+            {
+              "kind": "tank",
+              "position": "centre"
+            },
+            {
+              "kind": "label",
+              "label": "business date: today",
+              "position": "bottom"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "heading": "The mechanism",
+      "narration": "Let's follow it.\n\nThe business date. Inside the ledger, every transaction is stamped with the bank's business date, not the wall clock. On a normal day, the business date is today. But the ledger can't post a transaction to \"today\" forever, because at some point the accounting for today has to be finalised: interest calculated, fees applied, balances agreed. So there is a cut-off. At a fixed time — usually late evening, often around midnight, it varies — the bank declares: today is done.\n\nWhat EOD actually does. Once the day is declared done, the ledger runs a sequence of jobs. Not one job — a chain. Dozens, sometimes hundreds, in a strict order, because each one needs the previous one's output. Roughly:\n\nClose the day: stop accepting new postings dated today.\nAccrue interest: for every account that earns or owes interest, work out today's slice. Every account. Every night.\nApply fees and standing instructions: the transfer you scheduled, the loan instalment that's due, the monthly charge.\nUpdate the general ledger: the bank's own books, where all customer accounts roll up into the numbers the bank reports to the regulator.\nGenerate the outputs: statements, alerts, the files that get sent to other systems, the reports someone reads at 8am.\nTake a backup.\nRoll the date: today becomes yesterday. Tomorrow becomes today.\nOpen the day: start accepting postings again.\n\nThese jobs run one after another, and a lot of them need the ledger to hold still while they run. You can't accrue interest on a balance that's changing underneath you. So while the chain runs, the ledger is, in effect, closed for business.\n\nWhy the app can't just work anyway. Here's the part that matters. The app doesn't have your balance. It asks the ledger. When the ledger is in EOD, the app's request lands at a closed gate.\n\nBanks handle that gate in one of three ways, and which one yours uses decides what you see at midnight.\n\nOption one: reject. The gate is closed, the request bounces, the app shows \"unavailable.\" Honest, simple, and the oldest approach.\n\nOption two: queue. The request waits in line. When the gate opens, the queue drains, and your payment goes through — dated tomorrow. You saw a spinner. You didn't see the queue.\n\nOption three: stand-in. The bank keeps a second, simplified copy of your balance in the always-on layer. During EOD, that copy answers instead of the ledger. Small payments get approved against it. When the ledger wakes up, the two are reconciled. This is why card payments at a shop often work at midnight while a transfer in the app doesn't — the card network has stand-in built in from its very beginning; the app's transfer path may not.\n\nWhy midnight, and why month-end is worse. The nightly chain is heavy. The month-end chain is heavier — it adds interest capitalisation, which is where accrued interest actually gets added to your balance, plus monthly fees, plus monthly statements for every customer, plus regulatory reports. Same gate, longer close. If you've ever noticed the app being slow or absent on the last night of the month, that's not your imagination. It's the longest batch of the month.\n\nAnd if the chain runs long — a job fails and gets rerun, a file from another system arrives late — the gate stays closed past its planned time. That's the night you got \"unavailable\" at 00:40 instead of 00:10.",
+      "frames": [
+        {
+          "narration_cue": "Let's follow it.",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "open"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger",
+              "position": "right"
+            },
+            {
+              "kind": "dot"
+            },
+            {
+              "kind": "clock",
+              "value": "22:00",
+              "position": "top-right"
+            }
+          ],
+          "motion": "dots_flow",
+          "fault": false
+        },
+        {
+          "narration_cue": "there is a cut-off",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "closed",
+              "label": "day closed"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger",
+              "state": "idle",
+              "position": "right"
+            },
+            {
+              "kind": "clock",
+              "value": "cut-off",
+              "position": "top-right"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        },
+        {
+          "narration_cue": "Not one job — a chain",
+          "objects": [
+            {
+              "kind": "job_column",
+              "items": [
+                "close day",
+                "accrue interest",
+                "fees & instructions",
+                "general ledger",
+                "outputs",
+                "backup",
+                "roll date",
+                "open day"
+              ]
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        },
+        {
+          "narration_cue": "Accrue interest: for every account",
+          "objects": [
+            {
+              "kind": "job_column",
+              "items": [
+                "close day",
+                "accrue interest",
+                "fees & instructions",
+                "general ledger",
+                "outputs",
+                "backup",
+                "roll date",
+                "open day"
+              ],
+              "state": "active",
+              "value": "accrue interest"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        },
+        {
+          "narration_cue": "the app's request lands at a closed gate",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "closed"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger",
+              "state": "idle",
+              "position": "right"
+            },
+            {
+              "kind": "dot"
+            },
+            {
+              "kind": "dot"
+            },
+            {
+              "kind": "dot"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        },
+        {
+          "narration_cue": "Option one: reject.",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left",
+              "label": "unavailable"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "closed"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger",
+              "state": "idle",
+              "position": "right"
+            },
+            {
+              "kind": "dot"
+            }
+          ],
+          "motion": "none",
+          "fault": false,
+          "text_card": "reject"
+        },
+        {
+          "narration_cue": "Option two: queue.",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "open"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger · dated tomorrow",
+              "position": "right"
+            },
+            {
+              "kind": "dot"
+            },
+            {
+              "kind": "dot"
+            },
+            {
+              "kind": "dot"
+            }
+          ],
+          "motion": "dots_flow",
+          "fault": false,
+          "text_card": "queue"
+        },
+        {
+          "narration_cue": "Option three: stand-in.",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "closed"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger",
+              "state": "idle",
+              "position": "right"
+            },
+            {
+              "kind": "external_tank",
+              "label": "stand-in balance",
+              "state": "dashed",
+              "position": "top"
+            },
+            {
+              "kind": "dot"
+            },
+            {
+              "kind": "label",
+              "label": "transfer waits"
+            }
+          ],
+          "motion": "none",
+          "fault": false,
+          "text_card": "stand-in"
+        },
+        {
+          "narration_cue": "The month-end chain is heavier",
+          "objects": [
+            {
+              "kind": "job_column",
+              "items": [
+                "close day",
+                "accrue interest",
+                "fees & instructions",
+                "capitalise interest",
+                "monthly fees",
+                "statements",
+                "general ledger",
+                "outputs",
+                "backup",
+                "roll date",
+                "open day"
+              ]
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "heading": "Where it breaks",
+      "narration": "Three failure modes, all of which I've watched from the inside, none of which the app will ever describe honestly.\n\nThe stuck job. One job in the chain fails — a bad record, a full disk, a dependency that didn't arrive. Everything behind it waits. If nobody's watching, the gate stays shut until someone wakes up. Most banks have people watching. Not all of them have people watching every night.\n\nThe half-open gate. The ledger opens the day, but one of the downstream systems didn't finish. Now your balance is right but your statement is wrong, or your alert is missing, or the payment you made at 00:05 shows twice for an hour because two systems disagree about which date it belongs to. It gets fixed by the reconciliation job — the next night.\n\nThe date that rolled twice. Rare, and the one engineers tell stories about. The chain reruns, the date advances again, and for a few minutes the bank believes it's the day after tomorrow. Everything is wrong until someone rolls it back. It's the reason EOD is guarded by more checks than almost anything else in the bank.\n\nNone of this is a design flaw in the sense of a mistake. It is what a single-date ledger has to do. The alternative — a ledger with no business day, where accounting happens continuously — exists, and newer banks run on it. The reason older banks don't just switch is the same reason you don't rebuild a bridge while people are driving on it. That's a different video.",
+      "frames": [
+        {
+          "narration_cue": "The stuck job.",
+          "objects": [
+            {
+              "kind": "job_column",
+              "items": [
+                "close day",
+                "accrue interest",
+                "fees & instructions",
+                "general ledger",
+                "outputs",
+                "backup",
+                "roll date",
+                "open day"
+              ],
+              "state": "fault",
+              "value": "general ledger"
+            }
+          ],
+          "motion": "none",
+          "fault": true
+        },
+        {
+          "narration_cue": "The half-open gate.",
+          "objects": [
+            {
+              "kind": "phone",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "gate",
+              "state": "open"
+            },
+            {
+              "kind": "tank",
+              "label": "ledger · open",
+              "position": "right"
+            },
+            {
+              "kind": "pipe",
+              "state": "fault",
+              "label": "alerts"
+            }
+          ],
+          "motion": "none",
+          "fault": true
+        },
+        {
+          "narration_cue": "The date that rolled twice.",
+          "objects": [
+            {
+              "kind": "tank",
+              "state": "fault",
+              "position": "centre"
+            },
+            {
+              "kind": "label",
+              "label": "today → tomorrow → day after",
+              "state": "fault",
+              "position": "bottom"
+            }
+          ],
+          "motion": "none",
+          "fault": true
+        },
+        {
+          "narration_cue": "None of this is a design flaw",
+          "objects": [
+            {
+              "kind": "tank",
+              "label": "single business date",
+              "position": "left"
+            },
+            {
+              "kind": "external_tank",
+              "label": "continuous ledger",
+              "state": "dashed",
+              "position": "right"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "heading": "The takeaway",
+      "narration": "So: \"temporarily unavailable\" at midnight is almost never a failure. It's the gate. Your bank closed the day, ran the accounting, and opened the next one, and the app didn't have the words to say so.\n\nIf you want a rule of thumb: money you spend by card usually survives midnight, because the card network was designed to stand in. Money you move between accounts often doesn't, because that path goes straight to the ledger. And the last night of the month is the one night to avoid both.\n\nMoney is a message. At midnight, for a few minutes, the message has nowhere to go.\n\nNext video: the ledger itself — why the thing holding your balance was designed before the web, and why nobody replaces it.\n\n---",
+      "frames": [
+        {
+          "narration_cue": "If you want a rule of thumb",
+          "objects": [
+            {
+              "kind": "valve",
+              "label": "card",
+              "position": "left"
+            },
+            {
+              "kind": "pipe",
+              "state": "active"
+            },
+            {
+              "kind": "external_tank",
+              "label": "stand-in",
+              "state": "dashed"
+            },
+            {
+              "kind": "valve",
+              "label": "transfer",
+              "position": "left"
+            },
+            {
+              "kind": "gate",
+              "state": "closed"
+            },
+            {
+              "kind": "calendar",
+              "value": "last day",
+              "position": "right"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        },
+        {
+          "narration_cue": "Money is a message.",
+          "objects": [
+            {
+              "kind": "label",
+              "label": "The Money Pipes",
+              "position": "centre"
+            },
+            {
+              "kind": "label",
+              "label": "Money is a message.",
+              "position": "bottom"
+            },
+            {
+              "kind": "external_tank",
+              "label": "next video",
+              "state": "dashed",
+              "position": "left"
+            },
+            {
+              "kind": "external_tank",
+              "label": "subscribe",
+              "state": "dashed",
+              "position": "right"
+            }
+          ],
+          "motion": "none",
+          "fault": false
+        }
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "end-of-day",
+      "plain": "the nightly process that closes the accounting for one business day and opens the next"
+    },
+    {
+      "term": "EOD",
+      "plain": "end-of-day, what everyone inside a bank calls it"
+    },
+    {
+      "term": "business date",
+      "plain": "the ledger's idea of what day it is, separate from the clock"
+    },
+    {
+      "term": "cut-off",
+      "plain": "the fixed time after which nothing more is posted to today"
+    },
+    {
+      "term": "ledger",
+      "plain": "the system that actually knows how much money you have"
+    },
+    {
+      "term": "stand-in",
+      "plain": "a simplified copy of your balance that answers while the ledger is closed"
+    },
+    {
+      "term": "reconciliation",
+      "plain": "the job that checks two systems agree, and finds out when they do not"
+    },
+    {
+      "term": "general ledger",
+      "plain": "the bank's own books, where customer accounts roll up"
+    },
+    {
+      "term": "accrual",
+      "plain": "working out today's slice of interest for every account"
+    },
+    {
+      "term": "capitalisation",
+      "plain": "the moment accrued interest is actually added to your balance"
+    },
+    {
+      "term": "batch",
+      "plain": "a group of jobs run together on a schedule rather than one at a time as requests arrive"
+    }
+  ],
+  "simplifications": [
+    "Cut-off times, job names and job order vary widely between banks and core systems.",
+    "\"Stand-in\" is described at the pattern level; real implementations differ.",
+    "Some modern cores run without a single business date; that is a separate video."
+  ],
+  "open_questions_for_author": [
+    "Is the typical cut-off closer to 22:00, midnight, or later in the banks you know?",
+    "Does the card network stand-in really cover most small payments at midnight, or does it depend on the issuer?",
+    "Is \"hundreds of jobs\" fair for a mid-sized bank, or is it dozens?",
+    "Is the double date roll real enough to keep, or folklore?",
+    "Do most banks queue app transfers during EOD, or reject them outright?"
+  ],
+  "assumptions": [
+    "Audience does not know what a ledger is."
+  ],
+  "compliance": {
+    "no_bank_named": true,
+    "no_vendor_blamed": true,
+    "no_identifying_numbers": true,
+    "no_banned_phrases": true,
+    "no_recommendations": true,
+    "notes": "Converted from the author-approved video 1 script."
+  }
+}

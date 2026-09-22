@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+<rect width="1920" height="1080" fill="#10273A"/>
+<text x="80" y="90" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#5F6B76">09</text>
+<text x="140" y="90" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#5F6B76">each job in turn (accrue interest active)</text>
+<text x="1840" y="1030" text-anchor="end" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="26" fill="#B8722C">the money pipes</text>
+<path d="M900 200.0 L900 251.42857142857144" stroke="#B8722C" stroke-width="14" stroke-linecap="round" fill="none"/>
+<rect x="760" y="140.0" width="280" height="60" rx="14" fill="none" stroke="#B8722C" stroke-width="6"/>
+<text x="1100" y="180.0" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#EAE4D6">close day</text>
+<path d="M900 311.42857142857144 L900 362.8571428571429" stroke="#B8722C" stroke-width="14" stroke-linecap="round" fill="none"/>
+<rect x="760" y="251.42857142857144" width="280" height="60" rx="14" fill="#B8722C" stroke="#B8722C" stroke-width="6"/>
+<text x="1100" y="291.42857142857144" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#10273A">accrue interest</text>
+<text x="900" y="291.42857142857144" text-anchor="middle" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="26" fill="#10273A">accrue interest</text>
+<path d="M900 422.8571428571429 L900 474.28571428571433" stroke="#B8722C" stroke-width="14" stroke-linecap="round" fill="none"/>
+<rect x="760" y="362.8571428571429" width="280" height="60" rx="14" fill="none" stroke="#5F6B76" stroke-width="6"/>
+<text x="1100" y="402.8571428571429" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#EAE4D6">fees &amp; instructions</text>
+<path d="M900 534.2857142857142 L900 585.7142857142857" stroke="#B8722C" stroke-width="14" stroke-linecap="round" fill="none"/>
+<rect x="760" y="474.2857142857143" width="280" height="60" rx="14" fill="none" stroke="#5F6B76" stroke-width="6"/>
+<text x="1100" y="514.2857142857142" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#EAE4D6">general ledger</text>
+<path d="M900 645.7142857142858 L900 697.1428571428572" stroke="#B8722C" stroke-width="14" stroke-linecap="round" fill="none"/>
+<rect x="760" y="585.7142857142858" width="280" height="60" rx="14" fill="none" stroke="#5F6B76" stroke-width="6"/>
+<text x="1100" y="625.7142857142858" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#EAE4D6">outputs</text>
+<path d="M900 757.1428571428571 L900 808.5714285714286" stroke="#B8722C" stroke-width="14" stroke-linecap="round" fill="none"/>
+<rect x="760" y="697.1428571428571" width="280" height="60" rx="14" fill="none" stroke="#5F6B76" stroke-width="6"/>
+<text x="1100" y="737.1428571428571" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#EAE4D6">backup</text>
+<path d="M900 868.5714285714286 L900 920.0" stroke="#B8722C" stroke-width="14" stroke-linecap="round" fill="none"/>
+<rect x="760" y="808.5714285714286" width="280" height="60" rx="14" fill="none" stroke="#5F6B76" stroke-width="6"/>
+<text x="1100" y="848.5714285714286" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#EAE4D6">roll date</text>
+<rect x="760" y="920.0" width="280" height="60" rx="14" fill="none" stroke="#5F6B76" stroke-width="6"/>
+<text x="1100" y="960.0" text-anchor="start" font-family="IBM Plex Mono, JetBrains Mono, monospace" font-weight="500" font-size="28" fill="#EAE4D6">open day</text>
+</svg>

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MoneyPipesMetadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title_variants", "description", "tags", "chapters", "pinned_comment", "thumbnail_text", "category_id", "made_for_kids"],
+  "properties": {
+    "title_variants": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "type": "string", "maxLength": 70 } },
+    "description": { "type": "string", "minLength": 200, "maxLength": 5000 },
+    "tags": { "type": "array", "minItems": 10, "maxItems": 15, "items": { "type": "string", "maxLength": 60 } },
+    "chapters": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["start_seconds", "timestamp", "label"],
+        "properties": {
+          "start_seconds": { "type": "integer", "minimum": 0 },
+          "timestamp": { "type": "string", "pattern": "^\\d+:\\d{2}$" },
+          "label": { "type": "string", "maxLength": 60 }
+        }
+      }
+    },
+    "pinned_comment": { "type": "string", "maxLength": 500 },
+    "thumbnail_text": { "type": "string", "maxLength": 50 },
+    "category_id": { "type": "string", "pattern": "^\\d+$" },
+    "made_for_kids": { "type": "boolean", "const": false }
+  }
+}

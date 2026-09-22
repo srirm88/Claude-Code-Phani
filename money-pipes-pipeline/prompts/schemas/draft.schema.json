@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MoneyPipesDraft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title_working", "title_alternates", "sections", "glossary", "simplifications", "open_questions_for_author", "assumptions", "compliance"],
+  "properties": {
+    "title_working": { "type": "string", "minLength": 8, "maxLength": 80 },
+    "title_alternates": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "string", "maxLength": 80 } },
+    "sections": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["index", "heading", "narration", "frames"],
+        "properties": {
+          "index": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "heading": { "type": "string", "enum": ["Hook", "What everyone gets wrong", "The mechanism", "Where it breaks", "The takeaway"] },
+          "narration": { "type": "string", "minLength": 80 },
+          "frames": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["narration_cue", "objects", "motion", "fault"],
+              "properties": {
+                "narration_cue": { "type": "string", "minLength": 6, "maxLength": 120 },
+                "objects": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 7,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["kind"],
+                    "properties": {
+                      "kind": { "type": "string", "enum": ["phone", "pipe", "dot", "tank", "valve", "gate", "clock", "job_column", "label", "external_tank", "gauge", "calendar"] },
+                      "label": { "type": "string", "maxLength": 40 },
+                      "state": { "type": "string", "enum": ["active", "idle", "fault", "open", "closed", "dashed"] },
+                      "position": { "type": "string", "enum": ["left", "centre", "right", "top", "bottom", "top-right", "top-left"] },
+                      "items": { "type": "array", "maxItems": 12, "items": { "type": "string", "maxLength": 30 } },
+                      "value": { "type": "string", "maxLength": 20 }
+                    }
+                  }
+                },
+                "motion": { "type": "string", "enum": ["none", "dots_flow", "push_in"] },
+                "fault": { "type": "boolean" },
+                "text_card": { "type": "string", "maxLength": 40 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "glossary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["term", "plain"],
+        "properties": { "term": { "type": "string" }, "plain": { "type": "string" } }
+      }
+    },
+    "simplifications": { "type": "array", "minItems": 2, "maxItems": 4, "items": { "type": "string", "maxLength": 240 } },
+    "open_questions_for_author": { "type": "array", "minItems": 3, "maxItems": 12, "items": { "type": "string", "maxLength": 240 } },
+    "assumptions": { "type": "array", "items": { "type": "string", "maxLength": 240 } },
+    "compliance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["no_bank_named", "no_vendor_blamed", "no_identifying_numbers", "no_banned_phrases", "no_recommendations"],
+      "properties": {
+        "no_bank_named": { "type": "boolean" },
+        "no_vendor_blamed": { "type": "boolean" },
+        "no_identifying_numbers": { "type": "boolean" },
+        "no_banned_phrases": { "type": "boolean" },
+        "no_recommendations": { "type": "boolean" },
+        "notes": { "type": "string", "maxLength": 400 }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "ambient-pipeline-harness",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dry-run and live-test the Claude prompts used by the n8n ambient-video pipeline, and sync them into the workflow JSON.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "concept": "node run.mjs concept",
+    "metadata": "node run.mjs metadata",
+    "all": "node run.mjs all",
+    "dry": "node run.mjs all --dry-run",
+    "sync": "node run.mjs sync-workflow",
+    "check": "node run.mjs check-workflow"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.124.0"
+  }
+}
