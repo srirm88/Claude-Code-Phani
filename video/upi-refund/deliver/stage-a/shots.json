@@ -1,0 +1,79 @@
+[
+  {
+    "id": "s1-f1",
+    "start": 0,
+    "end": 3.6,
+    "screen": "s1-f1",
+    "what": "Coin streaks through a glass tube from the phone; stopwatch runs 00:00 to 00:02 and stops; phone ticks Paid."
+  },
+  {
+    "id": "s1-f2",
+    "start": 3.6,
+    "end": 6,
+    "screen": "s1-f2",
+    "what": "Thumbnail split: 2 SEC / OUT with streaking coin vs 5 DAYS / BACK over five blank tiles, tile 5 copper."
+  },
+  {
+    "id": "s1-f3",
+    "start": 6,
+    "end": 8.4,
+    "screen": "s1-f3",
+    "what": "Dark living room, Saturday night: calendar SAT 10, clock 9:14, city window; phone on the sofa arm is the only light; Pay button pulses."
+  },
+  {
+    "id": "s1-f4",
+    "start": 8.4,
+    "end": 10,
+    "screen": "s1-f4",
+    "what": "Full-frame iron letter slot in the store's door, TIDEWALK engraved; coin drops through; −₹4,000 rolls up in copper."
+  },
+  {
+    "id": "s1-f5",
+    "start": 10,
+    "end": 13.2,
+    "screen": "s1-f5",
+    "what": "Doorstep: shoe box on a mat; a paper RETURN stamp slaps on; a single WED 14 · SENT BACK tile fades in and lights copper."
+  },
+  {
+    "id": "s1-f6",
+    "start": 13.2,
+    "end": 16,
+    "screen": "s1-f6",
+    "what": "The store's email printout (thin, curled) slides up full frame; a copper marker rings 'working'."
+  },
+  {
+    "id": "s1-f7",
+    "start": 16,
+    "end": 18.4,
+    "screen": "s1-f7",
+    "what": "Kinetic type SAME APP. / SAME MONEY. / SAME SYSTEM.; the copper coin slides in beside each line as it lands."
+  },
+  {
+    "id": "s1-f8a",
+    "start": 18.4,
+    "end": 21,
+    "screen": "s1-f8",
+    "what": "Phone PENDING ₹4,000; the coin frozen mid-tube inside a dashed grey ring; stopwatch keeps running past 00:02."
+  },
+  {
+    "id": "s1-f8b",
+    "start": 21,
+    "end": 23.6,
+    "screen": "s1-f8",
+    "what": "The rule card (IF A PAYMENT FAILS · ₹100 · for every day it's late) slides in over the stalled tube; RULE seal lands, ₹100 tag swings."
+  },
+  {
+    "id": "s1-f9",
+    "start": 23.6,
+    "end": 26.8,
+    "screen": "s1-f9",
+    "what": "Close on the rule card's ₹100; a stack of chalk coins counts up beside it, one per late day."
+  },
+  {
+    "id": "s1-f10",
+    "start": 26.8,
+    "end": 29.2,
+    "screen": "s1-f10",
+    "what": "Five blank hook tiles fill the frame width, tile 5 copper; the question types on above; push into tile 5."
+  }
+]
