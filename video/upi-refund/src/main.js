@@ -19,6 +19,35 @@ function previewTag() {
   return PREVIEW ? kicker(40, 58, 'PREVIEW (estimated timing)', { size: 24, op: 0.55, ls: '0.14em' }) : '';
 }
 
+// Motion-carried cuts. The cut point never moves; the outgoing shot accelerates
+// into the move over its last frames and the incoming shot settles out of it.
+//   whip: {type:'whip', dx, dy, dur}  content travels along (dx,dy) with directional blur
+//   push: {type:'push', fx, fy, dur}  camera drives forward through (fx,fy)
+function transition(sh, t, d) {
+  let tx = 0, ty = 0, sc = 1, fx = 960, fy = 540, bx = 0, by = 0;
+  const apply = (o, amt, incoming) => {
+    if (o.type === 'whip') {
+      // outgoing flies far; incoming starts only 320 px back so the cut never lands on an empty frame
+      const k = incoming ? -320 : 1100;
+      tx += k * (o.dx || 0) * amt; ty += k * (o.dy || 0) * amt;
+      bx += Math.abs(o.dx || 0) * 70 * amt; by += Math.abs(o.dy || 0) * 70 * amt;
+    } else if (o.type === 'push') {
+      sc *= 1 + (incoming ? 0.35 : 0.7) * amt; fx = o.fx; fy = o.fy;
+      bx += 14 * amt; by += 14 * amt;
+    }
+  };
+  if (sh.tout && t > d - sh.tout.dur) apply(sh.tout, easeIn(seg(t, d - sh.tout.dur, d)), false);
+  if (sh.tin && t < sh.tin.dur) apply(sh.tin, 1 - easeOut(seg(t, 0, sh.tin.dur)), true);
+  const parts = [];
+  if (tx || ty || sc !== 1) parts.push(`transform="translate(${f1(tx + fx)},${f1(ty + fy)}) scale(${sc.toFixed(4)}) translate(${-fx},${-fy})"`);
+  let defs = '';
+  if (bx > 0.3 || by > 0.3) {
+    defs = `<defs><filter id="trBlur" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="${f1(bx)} ${f1(by)}" edgeMode="duplicate"/></filter></defs>`;
+    parts.push('filter="url(#trBlur)"');
+  }
+  return { defs, attrs: parts.join(' ') };
+}
+
 let sceneEl, ovlEl;
 function setup() {
   makeGrain();
@@ -31,12 +60,13 @@ window.renderAt = function (now, opts = {}) {
   const frame = Math.round(now * FPS);
   const sh = shotAt(now);
   const t = now - sh.start, d = sh.end - sh.start;
-  sceneEl.innerHTML = (sh.defs ? `<defs>${sh.defs}</defs>` : '') + sh.draw(t, d);
+  const tr = transition(sh, t, d);
+  sceneEl.innerHTML = (sh.defs ? `<defs>${sh.defs}</defs>` : '') + tr.defs + `<g ${tr.attrs}>${sh.draw(t, d)}</g>`;
   ovlEl.innerHTML = overlays(frame) + (opts.noCaptions ? '' : captionSvg(now) + previewTag());
   return sh.id;
 };
 
-window.timeline = () => SHOTS.map(s => ({ id: s.id, start: s.start, end: s.end, screen: s.screen, what: s.what, events: s.events, payoff: !!s.payoff, section: s.section }));
+window.timeline = () => SHOTS.map(s => ({ id: s.id, start: s.start, end: s.end, screen: s.screen, what: s.what, events: s.events, tin: s.tin ? s.tin.type : 'cut', tout: s.tout ? s.tout.type : 'cut', payoff: !!s.payoff, section: s.section }));
 
 window.READY = (async () => {
   const faces = ['700 100px "IBM Plex Sans"', '600 100px "IBM Plex Sans"', '400 100px "IBM Plex Sans"', '700 100px "IBM Plex Mono"', '500 100px "IBM Plex Mono"'];

@@ -40,7 +40,7 @@ function outScene(coinX, coinOp, extra = '') {
 // ---------------- s1-f1 ----------------
 shot({
   defs: `<clipPath id="tubeClip"><rect x="${TUBE.x1}" y="${TUBE.y - TUBE.h / 2 - 60}" width="${TUBE.x2 - TUBE.x1}" height="${TUBE.h + 120}"/></clipPath>`,
-  id: 's1-f1', screen: 's1-f1', section: 1, start: 0.0, end: 3.6,
+  tout: { type: 'whip', dx: -1, dy: 0, dur: 0.2 }, id: 's1-f1', screen: 's1-f1', section: 1, start: 0.0, end: 3.6,
   what: 'Coin streaks through a glass tube from the phone; stopwatch runs 00:00 to 00:02 and stops; phone ticks Paid.',
   events: [0, 2.0, 2.3],
   draw(t, d) {
@@ -65,7 +65,7 @@ cap(0, 3.6, 'Your UPI payment leaves your account in two seconds,');
 
 // ---------------- s1-f2 ----------------
 shot({
-  id: 's1-f2', screen: 's1-f2', section: 1, start: 3.6, end: 6.0,
+  tin: { type: 'whip', dx: -1, dy: 0, dur: 0.2 }, id: 's1-f2', screen: 's1-f2', section: 1, start: 3.6, end: 6.0,
   what: 'Thumbnail split: 2 SEC / OUT with streaking coin vs 5 DAYS / BACK over five blank tiles, tile 5 copper.',
   events: [0, 0.25, 0.57, 1.5],
   defs: `<linearGradient id="splitL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E2436"/><stop offset="1" stop-color="#081520"/></linearGradient>
@@ -80,8 +80,8 @@ shot({
       tiles += `<g transform="translate(0,${f1((1 - tp) * 50)})" opacity="${f1(tp)}">${tile(1020 + i * 156, 640, 136, 210, lit ? { solid: true, glow: E(t, 1.5, 1.9) } : { band: 'grey' })}</g>`;
     }
     return `<g transform="${cam(t / d, { s0: 1.0, s1: 1.03, fx: 960, fy: 540, dx: -12 })}">
-      <path d="M-60,-60 L1080,-60 L870,1140 L-60,1140 Z" fill="url(#splitL)"/>
-      <path d="M1080,-60 L1990,-60 L1990,1140 L870,1140 Z" fill="url(#splitR)"/>
+      <path d="M-1200,-60 L1080,-60 L870,1140 L-1200,1140 Z" fill="url(#splitL)"/>
+      <path d="M1080,-60 L3100,-60 L3100,1140 L870,1140 Z" fill="url(#splitR)"/>
       <path d="M1080,-60 L870,1140" stroke="#000" stroke-opacity="0.35" stroke-width="16" filter="url(#blur8)"/>
       ${kicker(170, 330, 'OUT', { size: 44 })}
       ${T(160, 540, '2 SEC', { size: 210, w: 700 })}
@@ -107,7 +107,7 @@ function skyline() {
 }
 const SKY = skyline();
 shot({
-  id: 's1-f3', screen: 's1-f3', section: 1, start: 6.0, end: 8.4,
+  tout: { type: 'push', fx: 1505, fy: 676, dur: 0.25 }, id: 's1-f3', screen: 's1-f3', section: 1, start: 6.0, end: 8.4,
   what: 'Dark living room, Saturday night: calendar SAT 10, clock 9:14, city window; phone on the sofa arm is the only light; Pay button pulses.',
   events: [0, 1.2],
   defs: `<radialGradient id="roomShade" gradientUnits="userSpaceOnUse" cx="1505" cy="640" r="1300">
@@ -156,7 +156,7 @@ cap(6.0, 8.4, 'Saturday night, you buy shoes online.');
 
 // ---------------- s1-f4 ----------------
 shot({
-  id: 's1-f4', screen: 's1-f4', section: 1, start: 8.4, end: 10.0,
+  tin: { type: 'push', fx: 960, fy: 300, dur: 0.22 }, id: 's1-f4', screen: 's1-f4', section: 1, start: 8.4, end: 10.0,
   what: "Full-frame iron letter slot in the store's door, TIDEWALK engraved; coin drops through; −₹4,000 rolls up in copper.",
   events: [0, 0.45, 0.6],
   defs: `<clipPath id="slotClip"><rect x="0" y="0" width="1920" height="348"/></clipPath>
@@ -188,7 +188,7 @@ cap(8.4, 10.0, 'Four thousand rupees, gone.');
 
 // ---------------- s1-f5 ----------------
 shot({
-  id: 's1-f5', screen: 's1-f5', section: 1, start: 10.0, end: 13.2,
+  tout: { type: 'whip', dx: 0, dy: -1, dur: 0.2 }, id: 's1-f5', screen: 's1-f5', section: 1, start: 10.0, end: 13.2,
   what: 'Doorstep: shoe box on a mat; a paper RETURN stamp slaps on; a single WED 14 · SENT BACK tile fades in and lights copper.',
   events: [0, 1.0, 1.8, 2.0],
   defs: `<linearGradient id="wall5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A3B55"/><stop offset="1" stop-color="#132E44"/></linearGradient>`,
@@ -202,7 +202,7 @@ shot({
     for (let i = 0; i < 9; i++) mat += `<line x1="${620 + i * 85}" y1="700" x2="${585 + i * 92}" y2="840" stroke="#2E4A5E" stroke-width="10" opacity="0.6"/>`;
     return `<g transform="translate(0,${f1(shake)})"><g transform="${cam(t / d, { s0: 1.0, s1: 1.04, fx: 900, fy: 600, dx: -10 })}">
       <rect x="-40" y="-40" width="2000" height="700" fill="url(#wall5)"/>
-      <rect x="-40" y="640" width="2000" height="500" fill="#0D2232"/>${planks}
+      <rect x="-40" y="640" width="2000" height="1600" fill="#0D2232"/>${planks}
       <rect x="-40" y="610" width="2000" height="36" fill="#1E4560"/>
       <rect x="140" y="90" width="430" height="560" fill="#0C2131"/>
       <rect x="170" y="110" width="370" height="530" fill="#1C3F5A" filter="url(#sh)"/>
@@ -225,7 +225,7 @@ cap(10.0, 13.2, 'They arrive. Too small. You send them back.');
 
 // ---------------- s1-f6 ----------------
 shot({
-  id: 's1-f6', screen: 's1-f6', section: 1, start: 13.2, end: 16.0,
+  tin: { type: 'whip', dx: 0, dy: -1, dur: 0.15 }, id: 's1-f6', screen: 's1-f6', section: 1, start: 13.2, end: 16.0,
   what: "The store's email printout (thin, curled) slides up full frame; a copper marker rings 'working'.",
   events: [0, 1.1],
   draw(t, d) {
@@ -244,7 +244,7 @@ const SAME = ['SAME APP.', 'SAME MONEY.', 'SAME SYSTEM.'];
 shot({
   id: 's1-f7', screen: 's1-f7', section: 1, start: 16.0, end: 18.4,
   what: 'Kinetic type SAME APP. / SAME MONEY. / SAME SYSTEM.; the copper coin slides in beside each line as it lands.',
-  events: [0, 0.8, 1.6],
+  events: [0, 0.8, 1.6, 2.0],
   draw(t, d) {
     const ys = [350, 570, 790], size = 150;
     const beats = [-0.2, 0.8, 1.6];
@@ -260,7 +260,11 @@ shot({
     if (idx === 0) { const q = E(t, -0.2, 0.25, easeOut); cx = lerp(1900, pos[0][0], q); cy = pos[0][1]; }
     else { const q = E(t, beats[idx], beats[idx] + 0.35); cx = lerp(pos[idx - 1][0], pos[idx][0], q); cy = lerp(pos[idx - 1][1], pos[idx][1], q); }
     for (let i = 0; i < idx; i++) s += `<circle cx="${f1(pos[i][0])}" cy="${f1(pos[i][1])}" r="62" fill="none" stroke="${C.grey}" stroke-width="6" opacity="0.5"/>`;
-    s += coin(cx, cy, 70);
+    // f8a draws its coin at (1140, 610) r84 under cam s=1.02 about (1000,580); undo this shot's end camera
+    const m = E(t, d - 0.4, d, easeInOut);
+    const gx = 700 + (1000 + 140 * 1.02 - 700) / 1.035, gy = 560 + (580 + 30 * 1.02 - 560) / 1.035;
+    cx = lerp(cx, gx, m); cy = lerp(cy, gy, m);
+    s = `<g opacity="${f1(1 - 0.55 * m)}">${s}</g>` + coin(cx, cy, lerp(70, 84 * 1.02 / 1.035, m), { glowOp: lerp(0.9, 0.4, m) });
     return `<g transform="${cam(t / d, { s0: 1.0, s1: 1.035, fx: 700, fy: 560 })}">
       ${s}</g>`;
   },
@@ -289,14 +293,18 @@ shot({
   },
 });
 shot({
-  id: 's1-f8b', screen: 's1-f8', section: 1, start: 21.0, end: 23.6,
+  tout: { type: 'push', fx: 700, fy: 460, dur: 0.25 }, id: 's1-f8b', screen: 's1-f8', section: 1, start: 21.0, end: 23.6,
   what: 'The rule card (IF A PAYMENT FAILS · ₹100 · for every day it\'s late) slides in over the stalled tube; RULE seal lands, ₹100 tag swings.',
   events: [0, 0.9, 1.5],
   draw(t, d) {
     const p = E(t, 0, 0.7, easeOut);
     const swing = t > 1.5 ? 14 * Math.exp(-(t - 1.5) * 2.6) * Math.cos((t - 1.5) * 9) : 14;
-    return `<g transform="${cam(t / d, { s0: 1.0, s1: 1.03, fx: 960, fy: 480 })}">
-      <g opacity="0.22">${outScene()}${coin(1140, TUBE.y, 84, { glow: false })}${tubeFront(TUBE.x1, TUBE.x2, TUBE.y, TUBE.h)}</g>
+    const held = payPhone(150, 185, 380, 720, 'pending', { glow: 0.35 });
+    const ring = `<circle cx="1140" cy="${TUBE.y}" r="128" fill="none" stroke="${C.grey}" stroke-width="9" stroke-dasharray="26 18" transform="rotate(-90 1140 ${TUBE.y})"/>`;
+    const bg = `<g transform="${cam(1, { s0: 1.02, s1: 1.05, fx: 1000, fy: 580 })}" opacity="${f1(lerp(1, 0.22, E(t, 0, 0.6)))}">
+      <ellipse cx="1130" cy="905" rx="760" ry="40" fill="#020910" opacity="0.35"/>${outScene()}${receiver(1650, 430)}
+      ${coin(1140, TUBE.y, 84, { glowOp: 0.4 })}${ring}${tubeFront(TUBE.x1, TUBE.x2, TUBE.y, TUBE.h)}${held}${stopwatch(1300, 292, 140, 6.6, {})}</g>`;
+    return `${bg}<g transform="${cam(t / d, { s0: 1.0, s1: 1.03, fx: 960, fy: 480 })}">
       <g transform="translate(${f1((1 - p) * 760)},0) rotate(${f1((1 - p) * 4)} 960 470)">
         ${ruleCard(360, 140, 1200, 650, { sealP: E(t, 0.9, 1.15, x => x), tagP: E(t, 1.5, 1.7, x => x), tagSwing: swing })}</g>
     </g>`;
@@ -306,7 +314,7 @@ cap(18.4, 23.6, 'If a payment fails instead, the rule says a bank can owe you');
 
 // ---------------- s1-f9 ----------------
 shot({
-  id: 's1-f9', screen: 's1-f9', section: 1, start: 23.6, end: 26.8,
+  tin: { type: 'push', fx: 560, fy: 420, dur: 0.22 }, id: 's1-f9', screen: 's1-f9', section: 1, start: 23.6, end: 26.8,
   what: "Close on the rule card's ₹100; a stack of chalk coins counts up beside it, one per late day.",
   events: [0, 0.25, 0.7, 1.15, 1.6, 2.05, 2.5],
   draw(t, d) {
@@ -332,7 +340,7 @@ cap(23.6, 26.8, "a hundred rupees for every day it's late.");
 
 // ---------------- s1-f10 ----------------
 shot({
-  id: 's1-f10', screen: 's1-f10', section: 1, start: 26.8, end: 29.2,
+  tout: { type: 'push', fx: 1630, fy: 620, dur: 0.3 }, id: 's1-f10', screen: 's1-f10', section: 1, start: 26.8, end: 29.2,
   what: 'Five blank hook tiles fill the frame width, tile 5 copper; the question types on above; push into tile 5.',
   events: [0, 0.3, 1.4],
   draw(t, d) {
