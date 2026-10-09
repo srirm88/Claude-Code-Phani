@@ -27,7 +27,9 @@ No narration WAV, music, hero frames or `hook-animatic.mp4` arrived with the bri
    - s1-f6: the printout started mostly below the frame. It now starts higher.
 
 ## Transitions (v2)
-All transitions are motion-carried cuts, not dissolves or wipes. The cut timecodes are unchanged, so pacing and `shots.json` are unaffected. The outgoing shot speeds into the move over its last 0.2–0.3 s, and the incoming shot settles out of it.
+All transitions are motion-carried cuts, not dissolves or wipes. The cut timecodes are unchanged, so pacing and `shots.json` are unaffected. The outgoing shot speeds into the move over its last 0.5 s, and the incoming shot settles out of it over 0.45 s, so each transition spans about 0.95 s.
+
+v2 used 0.2–0.3 s moves. They were in the file but too short to register at playback speed. v3 lengthens them and roughly doubles the blur and travel.
 
 | Cut | Treatment |
 |---|---|
@@ -42,7 +44,7 @@ All transitions are motion-carried cuts, not dissolves or wipes. The cut timecod
 | s1-f8b → s1-f9 | Push into the ₹100 |
 | s1-f10 → (s2) | Push-through into tile 5. Until Section 2 exists, the hook ends on that blur |
 
-I checked every cut frame. The first pass of the incoming whips opened s1-f2 and s1-f6 on near-empty frames (the content started 1100 px off-frame). The incoming travel is now 320 px, so content is always on screen.
+I checked every cut frame. The first pass of the incoming whips opened s1-f2 and s1-f6 on near-empty frames (the content started 1100 px off-frame). The incoming travel is now 420 px, so content is always on screen. s1-f6's own slide-up was trimmed so it doesn't stack with the whip.
 
 ## Deviations and open points for you to decide
 - **s1-f2 has four text elements** (OUT, 2 SEC, BACK, 5 DAYS) against the cap of three. The brief's own screen description asks for all four, so I kept them. Drop the kickers if the cap is strict.

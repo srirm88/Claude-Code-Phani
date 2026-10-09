@@ -27,13 +27,13 @@ function transition(sh, t, d) {
   let tx = 0, ty = 0, sc = 1, fx = 960, fy = 540, bx = 0, by = 0;
   const apply = (o, amt, incoming) => {
     if (o.type === 'whip') {
-      // outgoing flies far; incoming starts only 320 px back so the cut never lands on an empty frame
-      const k = incoming ? -320 : 1100;
+      // outgoing flies far; incoming starts only 420 px back so the cut never lands on an empty frame
+      const k = incoming ? -420 : 1300;
       tx += k * (o.dx || 0) * amt; ty += k * (o.dy || 0) * amt;
-      bx += Math.abs(o.dx || 0) * 70 * amt; by += Math.abs(o.dy || 0) * 70 * amt;
+      bx += Math.abs(o.dx || 0) * 110 * amt; by += Math.abs(o.dy || 0) * 110 * amt;
     } else if (o.type === 'push') {
-      sc *= 1 + (incoming ? 0.35 : 0.7) * amt; fx = o.fx; fy = o.fy;
-      bx += 14 * amt; by += 14 * amt;
+      sc *= 1 + (incoming ? 0.6 : 1.2) * amt; fx = o.fx; fy = o.fy;
+      bx += 26 * amt; by += 26 * amt;
     }
   };
   if (sh.tout && t > d - sh.tout.dur) apply(sh.tout, easeIn(seg(t, d - sh.tout.dur, d)), false);
